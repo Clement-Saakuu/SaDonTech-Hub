@@ -1,5 +1,5 @@
 /**
- * SaDon-Tech Digital Hub | app.js
+ * SaDonTech Hub | app.js
  * Features:
  *  - Product catalogue with add-to-cart
  *  - Cart drawer (quantity adjust, remove)
@@ -36,7 +36,7 @@ const CONFIG = {
   /**
    * Store name shown in Paystack popup.
    */
-  STORE_NAME: "SaDon-Tech Digital Hub",
+  STORE_NAME: "SaDonTech Hub",
 };
 
 /* ============================================================
