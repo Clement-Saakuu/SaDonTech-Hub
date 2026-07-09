@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SaDon-Tech Digital Hub is your affordable online store for computing and electronic gadgets. Shop mobile phones, laptops, smartwatches, projectors, accessories, Bluetooth speakers, headphones, and more—quality tech made accessible for everyone.">
+  <title>SaDon-Tech Hub </title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <header class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="#intro" class="navbar__logo">
+        <img src="images/SaDon_logo1.PNG" alt="SaDon-Tech Digital Hub logo" />
+      </a>
+      <nav class="navbar__links">
+        <a href="#intro" class="nav-link">Intro</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#shop" class="nav-link">Shop</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a class="nav-link" href="staff_team.html" target="_blank">Staff/Team</a>
+      </nav>
+      <button class="navbar__cart" id="cartBtn" aria-label="Open cart">
+        <img src="images/cart.svg" alt="Cart icon" class="cart-icon" />
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="navbar__hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <!-- Mobile Nav -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#intro" class="nav-link" onclick="closeMobileMenu()">Intro</a>
+      <a href="#about" class="nav-link" onclick="closeMobileMenu()">About</a>
+      <a href="#shop" class="nav-link" onclick="closeMobileMenu()">Shop</a>
+      <a href="#contact" class="nav-link" onclick="closeMobileMenu()">Contact</a>
+      <a href="staff_team.html" class="nav-link" onclick="closeMobileMenu()">Experts/Team</a>
+    </div>
+  </header>
+<!-- Updates section -->
+  <section class="update">
+    <div class="update__track">
+      <div class="update_content">
+        SaDon-Tech Digital Hub - <span class="update__highlight">Your trusted and reliable Hub!</span>
+      </div>
+      <div class="update_content">
+        Customers over 3 years: <span class="update__highlight">250+</span>
+      </div>
+      <div class="update_content">
+        We do our delivery Nationwide: <span class="update__highlight">with a very low delivery fee</span>
+      </div>
+      <div class="update_content">
+        We are always open and ready for your orders - <span class="update__highlight">24 Hours Service!</span>
+      </div>
+      <div class="update_content">
+        SaDon-Tech Digital Hub - <span class="update__highlight">Your trusted and reliable Hub!</span>
+      </div>
+      <div class="update_content">
+        Customers over 3 years: <span class="update__highlight">250+</span>
+      </div>
+      <div class="update_content">
+        We do our delivery Nationwide: <span class="update__highlight">with a very low delivery fee</span>
+      </div>
+      <div class="update_content">
+        We are always open and ready for your orders - <span class="update__highlight">24 Hours Service!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== HERO / INTRO ========== -->
+  <section class="hero" id="intro">
+    <div class="hero__content">
+      <h1 class="hero__wecome">
+        welcome to<br /><br/>
+      </h1>
+      <h2 class="hero__title">
+        SaDon-Tech<br />Digital<br />
+        <span class="hero__title-word">
+          Hub<span class="hero__title-word-highlight">Your Tech – Built & Taught!</span>
+          <!-- <span class="hero__subtitle">Your Tech – Built & Taught!</span>
+        </span> -->
+      </h2>
+      <a href="#shop" class="Explore_products">Explore Our Products</a>
+    </div>
+    <div class="hero__image">
+      <img src="images/heroImage1.PNG" alt="Your Tech – Built & taught" />
+    </div>
+  </section>
+
+<!-- Updates section
+  <section class="update">
+    <div class="update__track">
+      <div class="update_content">
+        SaDon-Tech Digital Hub - <span class="update__highlight">Your trusted and reliable Hub!</span>
+      </div>
+      <div class="update_content">
+        Customers over 3 years: <span class="update__highlight">250+</span>
+      </div>
+      <div class="update_content">
+        We do our delivery Nationwide: <span class="update__highlight">with a very low delivery fee</span>
+      </div>
+      <div class="update_content">
+        We are always open and ready for your orders - <span class="update__highlight">24 Hours Service!</span>
+      </div>
+      <div class="update_content">
+        SaDon-Tech Digital Hub - <span class="update__highlight">Your trusted and reliable Hub!</span>
+      </div>
+      <div class="update_content">
+        Customers over 3 years: <span class="update__highlight">250+</span>
+      </div>
+      <div class="update_content">
+        We do our delivery Nationwide: <span class="update__highlight">with a very low delivery fee</span>
+      </div>
+      <div class="update_content">
+        We are always open and ready for your orders - <span class="update__highlight">24 Hours Service!</span>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- Update flow -->
+  <section class="promo-strip" aria-label="Promotions and perks">
+    <div class="promo-strip__inner">
+      <div class="promo-banner">
+        <div>
+          <p class="promo-banner__eyebrow" style="color: red;">Limited offer</p>
+          <h2>Free delivery on orders above GH₵ 500</h2>
+          <p>Shop with confidence and enjoy rapid support, verified products, and a smooth checkout experience.</p>
+        </div>
+      </div>
+    </div>
+    <div class="promo-perks_inner">
+        <div class="promo-perk">
+          <strong>24/7 support</strong>
+          <span>Fast seller replies on WhatsApp.</span>
+        </div>
+        <div class="promo-perk">
+          <strong>Nationwide delivery</strong>
+          <span>Reliable delivery updates before dispatch.</span>
+        </div>
+        <div class="promo-perk">
+          <strong>Secure checkout</strong>
+          <span>Protected payments and clear order confirmation.</span>
+        </div>
+      </div>
+  </section>
+
+  <!-- ========== ABOUT ========== -->
+  <section class="about" id="about">
+    <div class="about__inner">
+      <p class="about__text">
+        SaDon-Tech Digital Hub is a Digital unit of the SaDon Tech Hub: 
+        an hypothetical online store for all kinds of computing and electronic gadgets
+        we believe every <b>every body regardless of status, financial strength, recognition' can afford with ease.</b><br/>
+        We've got mobile phones, laptops, smartwatches, modern projectors, computer accessories, 
+        Bluetooth speakers & headphones,  and many other
+        productss. <i>Our prices are down to earth</i>. <br/> We are more than a marketplace! <br/> 
+        Work and collaborate with a team, highly resourceful IT and Industry experts who have made an unereasable impact in the IT Industry
+        and beyond. <br/> They are work almost 24 hours to ensure that the right solution is provided to solve your problem. 
+        <br/><ul style="color: var(--orange-light)";>
+          <b>YOU ARE ALWAYS WELCOME, WHENEVER OUR SERVICES ARE NEEDED!</b>
+          </ul> 
+        <ul style="color: var(--orange-light); padding-left: 20px; text-decoration-color: aliceblue;">
+          <li>Everyone is welcome to <b>SaDon-Tech Digital Hub!</b></li>
+          <li>Everyone gets an <b>original product and best services.</b></li>
+          <li>Everyone returns home <b>happy and smiling.</b></li>
+          <a href="#shop" class="nav-link" style="color: blue; font-style:italic;"
+          >Explore all our products and choose the ones that suit you.</a>
+        </ul>
+      </p>
+    </div>
+    <a href="staff_team.html" class="about__experts-link">
+      <div class="about__experts">
+        <div class="about__experts-content">
+          <h3>connect with our experts</h3>
+          <p class="about__experts-text">
+            <b>Our experts are always available for:</b><br/> inquiries, <br/>technical support,
+            <br/>Business Consultancy <br/> Project Contracts
+          </p>
+        </div>
+      </div>
+    </a>
+
+<!-- products preview modal -->
+    <div class="about_pop">
+      <div class="about_pop__stage" id="aboutPopStage">
+        <div class="about_pop__badge" id="aboutPopBadge">Featured pick</div>
+        <img id="aboutPopImage" class="about_pop__image" src="" alt="Featured product" />
+        <div class="about_pop__info">
+          <h3 id="aboutPopName" class="about_pop__name">Featured Product</h3>
+          <p id="aboutPopPrice" class="about_pop__price">GH₵ 0</p>
+          <a href="#shop" class="about_pop__button">Go to Shop</a>
+        </div>
+      </div>
+    </div><br/>
+    <hr>
+  </section>
+
+  <!-- Why customers trust SaDon-Tech -->
+  <section class="trust-section" aria-label="Why customers trust SaDon-Tech">
+    <div class="trust-section__inner">
+      <h2>Why customers trust SaDon-Tech</h2>
+      <div class="trust-grid">
+        <div class="trust-card">
+          <h3>Secure Payments</h3>
+          <p>Safe checkout with encrypted payment processing and trusted payment partners.</p>
+        </div>
+        <div class="trust-card">
+          <h3>Verified Products</h3>
+          <p>Quality gadgets and accessories with clear descriptions and stock updates.</p>
+        </div>
+        <div class="trust-card">
+          <h3>Fast Delivery</h3>
+          <p>Nationwide delivery support with transparent communication before every order.</p>
+        </div>
+        <div class="trust-card">
+          <h3>Helpful Support</h3>
+          <p>Reach the seller directly via WhatsApp for guidance before you purchase.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+<!-- 
+  <section class="how-it-works-section" aria-label="How shopping works">
+    <div class="how-it-works-section__inner">
+      <div class="how-it-works-section__header">
+        <h2>How it works</h2>
+        <p>From discovery to delivery, each step is designed to feel simple and reassuring.</p>
+      </div>
+      <div class="how-it-works-grid">
+        <article class="how-card">
+          <span class="how-card__step">1</span>
+          <h3>Browse with confidence</h3>
+          <p>Explore quality gadgets and accessories with transparent prices, stock detail, and helpful product info.</p>
+        </article>
+        <article class="how-card">
+          <span class="how-card__step">2</span>
+          <h3>Chat before you buy</h3>
+          <p>Use the seller chat option to ask questions, confirm availability, or get product guidance.</p>
+        </article>
+        <article class="how-card">
+          <span class="how-card__step">3</span>
+          <h3>Checkout securely</h3>
+          <p>Complete your order with trusted payment flow and clear delivery and return guidance.</p>
+        </article>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- Best selling products section -->
+  <section class="best-sellers-section" aria-label="Best selling products">
+    <div class="best-sellers-section__inner">
+      <div class="best-sellers-section__title-wrap">
+        <h2>Best Sellers</h2>
+        <p>Popular picks our customers love most.</p>
+      </div>
+      <div class="best-sellers-grid" id="bestSellersGrid"></div>
+    </div>
+  </section>
+
+  <!-- ========== SHOP ========== -->
+  <section class="shop" id="shop">
+    <h2 class="shop__title">OUR PRODUCTS</h2>
+    <div class="shop__layout">
+      <aside class="shop__categories" aria-label="Product categories">
+        <h3 class="shop__categories-title">Categories</h3>
+        <div class="shop__categories-list" id="categorySidebar"></div>
+        <div class="shop__summary" id="salesSummary">
+          <p class="shop__summary-title">7-Day Sales Track</p>
+          <div class="shop__summary-value" id="salesSummaryValue">0</div>
+          <p class="shop__summary-text" id="salesSummaryText">Products sold from completed checkouts</p>
+        </div>
+      </aside>
+
+      <div class="shop__content">
+        <div class="shop__toolbar">
+          <label class="shop__search" for="productSearch">
+            <span class="sr-only">Search products</span>
+            <input id="productSearch" type="search" placeholder="Search products by: brands or categories" />
+          </label>
+          <label class="shop__sort" for="productSort">
+            <span>Sort by</span>
+            <select id="productSort">
+              <option value="featured">Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="name">Name: A to Z</option>
+            </select>
+          </label>
+          <div class="shop__filter-label" id="activeFilterLabel">Showing all products</div>
+        <div class="products-grid" id="productsGrid"><br> 
+          <hr>
+        </div>
+        
+          <!-- Products injected by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!--   Testimonial section -->
+  <section class="reviews-section" aria-label="Customer reviews">
+    <div class="reviews-section__inner">
+      <h2>What customers say</h2>
+      <div class="reviews-grid" id="reviewsGrid"></div>
+    </div><br>
+    <hr style="color: var(--orange-light)";>
+  </section>
+
+  <!-- recently viewed products section -->
+  <section class="recently-viewed-section" id="recentlyViewedSection" aria-label="Recently viewed products">
+    <div class="recently-viewed-section__inner">
+      <h2>Recently viewed</h2>
+      <div class="recently-viewed-list" id="recentlyViewedList"></div>
+    </div>
+  </section>
+
+  <!-- frequently asked questions section -->
+  <section class="faq-section" aria-label="Frequently asked questions">
+    <div class="faq-section__inner">
+      <h3>Frequently Asked Questions</h3>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>How do I place an order?</summary>
+          <p>Add your preferred item to the cart, chat with the seller if needed, then proceed to checkout.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do you offer delivery nationwide?</summary>
+          <p>Yes, delivery is available across the country with transparent pricing and communication.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I get help before buying?</summary>
+          <p>Absolutely. Use the WhatsApp seller button in the cart or the contact section for guidance.</p>
+        </details>
+      </div>
+    </div>
+    <div class="newsletter_section">
+      <h3>Stay in the loop</h3>
+      <p>Get updates on new arrivals, special offers, and helpful shopping tips.</p>
+      <form id="newsletterForm" class="newsletter-form">
+        <input id="newsletterEmail" type="email" placeholder="Enter your email address" required />
+        <button type="submit" class="btn btn--outline">Subscribe</button>
+      </form>
+      <p class="newsletter-note">No spam — just useful updates from SaDon-Tech.</p>
+    </div>
+  </section>
+
+  <!-- Featured deals section -->
+  <section class="deals-section" aria-label="Featured deals">
+    <div class="deals-section__inner">
+      <div class="deals-section__header">
+        <h2>Featured deals</h2>
+        <p>Special offers that make it easier to choose your next gadget.</p>
+      </div>
+      <div class="featured-deals-grid" id="featuredDealsGrid"></div>
+    </div>
+  </section>
+
+  <!-- order tracking and seller dashboard preview -->
+  <section class="experience-section" aria-label="Order tracking and seller dashboard preview">
+    <div class="experience-section__inner">
+      <div class="experience-card">
+        <div class="experience-card__header">
+          <h2>Order tracking preview</h2>
+          <span>Live-style status</span>
+        </div>
+        <div class="order-progress-steps" id="orderProgressSteps"></div>
+        <div class="order-progress-bar" aria-hidden="true">
+          <span id="orderProgressBarFill"></span>
+        </div>
+        <p class="experience-card__note" id="orderProgressNote"></p>
+      </div>
+
+      <div class="experience-card experience-card--dashboard">
+        <div class="experience-card__header">
+          <h2>Seller dashboard preview</h2>
+          <span>Operations view</span>
+        </div>
+        <div class="dashboard-stats" id="sellerDashboardStats"></div>
+        <ul class="dashboard-activity">
+          <li>New inquiries from WhatsApp</li>
+          <li>Daily stock updates synced</li>
+          <li>Fulfillment checklist ready</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+<!-- Contact -->
+    <section id="contact" class="contact-section">
+      <div class="contact-section__inner">
+        <div class="contact-section__intro">
+          <h2 class="contact__title">Get in Touch</h2>
+          <p>Need help choosing a product or want to share your experience? Reach out and we’ll support you quickly.</p>
+        </div>
+        <div class="contact-review-grid">
+          <form id="contactForm" class="checkout-form contact-form">
+            <div class="form__group">
+              <label for="contactName">Your name</label>
+              <input id="contactName" type="text" placeholder="Full name" />
+            </div>
+
+            <div class="form__group">
+              <label for="contactEmail">Email address</label>
+              <input id="contactEmail" type="email" placeholder="E.g: you@example.com" />
+            </div>
+
+            <div class="form__group">
+              <label for="contactPhone">WhatsApp Number</label>
+              <input id="contactPhone" type="tel" placeholder="Enter your WhatsApp here..." />
+            </div>
+
+            <div class="form__group">
+              <label for="contactSubject">Subject</label>
+              <input id="contactSubject" type="text" placeholder="Subject" />
+            </div>
+            
+            <div class="form__group">
+              <label for="contactMessage">Message</label>
+              <textarea id="contactMessage" rows="6" placeholder="How can we help?"></textarea>
+            </div>
+
+            <div style="margin-top:12px; font-size: smaller">
+              <button class="btn btn--primary" type="submit">Send Email</button>
+            </div>
+          </form>
+
+          <div class="review-form-card review-form-card--side">
+            <h3>Leave a review</h3>
+            <form id="reviewForm" class="review-form">
+              <div class="review-form__row">
+                <label>
+                  <span>Your name</span>
+                  <input type="text" name="reviewName" id="reviewName" required />
+                </label>
+                <label>
+                  <span>Review title</span>
+                  <input type="text" name="reviewTitle" id="reviewTitle" required />
+                </label>
+              </div>
+              <label>
+                <span>Rating</span>
+                <select name="reviewRating" id="reviewRating">
+                  <option value="5">5 stars</option>
+                  <option value="4">4 stars</option>
+                  <option value="3">3 stars</option>
+                  <option value="2">2 stars</option>
+                  <option value="1">1 star</option>
+                </select>
+              </label>
+              <label>
+                <span>Your feedback</span>
+                <textarea name="reviewMessage" id="reviewMessage" rows="4" required></textarea>
+              </label>
+              <button type="submit" class="btn btn--primary">Submit review</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <img src="images/SaDon_logo1.PNG" alt="SaDon-Tech Digital Hub logo" class="footer__logo" />
+        <p class="footer__tagline">Your Tech – Built &amp; Taught!</p>
+      </div>
+
+      <div class="footer__section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Support</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__section footer__contact">
+        <h3>Contact Us</h3>
+        <p>Tel: <a href="tel:+233541741421">+233 541 741 421</a></p>
+        <p>Email: <a href="mailto:saakuu.clement@gmail.com">saakuu.clement@gmail.com</a></p>
+        <p>WhatsApp: <a href="https://wa.me/233541741421" target="_blank" rel="noopener">+233 541 741 421</a></p>
+      </div>
+
+      <div class="footer__section">
+        <h3>Follow Us</h3>
+        <div class="social-links">
+          <a href="#">Facebook</a>
+          <a href="#">Twitter</a>
+          <a href="#">Instagram</a>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p>&copy; 2026 SaDon-Tech Digital Hub. All rights reserved.</p>
+         <div class="CEO__brand">
+        <img src="images/clementphoto.png" alt="CEO's photo" class="CEO_image" />
+        <p class="CEO_name">Clement Saakuu <br>(CEO)</p>
+      </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== CART DRAWER ========== -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+    <div class="cart-drawer__header">
+      <h2>Your Cart</h2>
+      <button class="cart-drawer__close" id="cartClose" aria-label="Close cart">&times;</button>
+    </div>
+    <div class="cart-drawer__body" id="cartBody">
+      <!-- Cart items injected by JS -->
+    </div>
+    <div class="cart-drawer__footer" id="cartFooter">
+      <!-- Total & checkout injected by JS -->
+    </div>
+  </aside>
+
+  <button class="floating-whatsapp" id="floatingWhatsAppBtn" type="button" aria-label="Chat with seller on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M20 3H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3l3 3 3-3h7a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"></path>
+      <path d="M7 8h10"></path>
+      <path d="M7 12h6"></path>
+    </svg>
+    <span>Chat Seller</span>
+  </button>
+
+  <!-- ========== PRODUCT DETAIL MODAL ========== -->
+  <div class="modal-overlay" id="productModalOverlay"></div>
+  <div class="modal product-modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+    <div class="modal__header">
+      <h2 id="productModalTitle">Product Details</h2>
+      <button class="modal__close" id="productModalClose" aria-label="Close product details">&times;</button>
+    </div>
+    <div class="modal__body" id="productModalBody"></div>
+  </div>
+
+  <!-- ========== CHECKOUT MODAL ========== -->
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <div class="modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal__header">
+      <h2 id="modalTitle">Checkout</h2>
+      <button class="modal__close" id="modalClose" aria-label="Close checkout">&times;</button>
+    </div>
+    <div class="modal__body">
+      <div class="modal__order-summary" id="modalOrderSummary">
+        <!-- Order summary injected by JS -->
+      </div>
+      <div class="checkout-assurance">
+        <h3>Secure checkout</h3>
+        <p>Your payment is protected and your order details are reviewed before confirmation.</p>
+      </div>
+      <form class="checkout-form" id="checkoutForm" novalidate>
+        <h3 class="form__section-title">Billing Details</h3>
+        <div class="form__row">
+          <div class="form__group">
+            <label for="firstName">First Name <span class="required">*</span></label>
+            <input type="text" id="firstName" name="firstName" placeholder="Enter first name" required />
+            <span class="field-error" id="firstNameError"></span>
+          </div>
+          <div class="form__group">
+            <label for="lastName">Last Name <span class="required">*</span></label>
+            <input type="text" id="lastName" name="lastName" placeholder="Enter Last Name" required />
+            <span class="field-error" id="lastNameError"></span>
+          </div>
+        </div>
+        <div class="form__group">
+          <label for="email">Email Address <span class="required">*</span></label>
+          <input type="email" id="email" name="email" placeholder="email@example.com" required />
+          <span class="field-error" id="emailError"></span>
+        </div>
+        <div class="form__group">
+          <label for="phone">Phone Number <span class="required">*</span></label>
+          <input type="tel" id="phone" name="phone" placeholder="+233 xx xxx xxxx" required />
+          <span class="field-error" id="phoneError"></span>
+        </div>
+        <div class="form__group">
+          <label for="address">Delivery Address <span class="required">*</span></label>
+          <input type="text" id="address" name="address" placeholder="123 Main Street, Techiman" required />
+          <span class="field-error" id="addressError"></span>
+        </div>
+        <div class="form__row">
+          <div class="form__group">
+            <label for="city">City <span class="required">*</span></label>
+            <input type="text" id="city" name="city" placeholder="Name of Current town" required />
+            <span class="field-error" id="cityError"></span>
+          </div>
+          <div class="form__group">
+            <label for="country">Country <span class="required">*</span></label>
+            <select id="country" name="country" required>
+              <option value="">Select country</option>
+              <option value="GH" selected>Ghana</option>
+              <option value="NG">Nigeria</option>
+              <option value="KE">Kenya</option>
+              <option value="ZA">South Africa</option>
+              <option value="US">Ivory Coast</option>
+              <option value="GB">Togo</option>
+              <option value="CA">Zambia</option>
+              <option value="CA">Niger</option>
+              <option value="CA">Morocco</option>
+              <option value="CA">Uganda</option>
+              <option value="CA">Tanzania</option>
+            </select>
+            <span class="field-error" id="countryError"></span>
+          </div>
+        </div>
+
+        <div class="form__total-display" id="formTotalDisplay">
+          <!-- Total shown here -->
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full" id="paystackBtn">
+          <span id="payBtnText">Pay with Paystack</span>
+          <svg class="pay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+            <line x1="1" y1="10" x2="23" y2="10"></line>
+          </svg>
+        </button>
+        <p class="secure-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          Payments are 100% secure and encrypted via Paystack
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== SUCCESS MODAL ========== -->
+  <div class="modal success-modal" id="successModal" role="dialog" aria-modal="true">
+    <div class="success-modal__inner">
+      <div class="success-icon">
+        <img src="images/check.svg" alt="Success" />
+      </div>
+      <h2>Order Confirmed!</h2>
+      <p id="successMessage">Thank you for your purchase. Your order has been received and is being processed.<br/><br/>
+       <b><i>You will receive a confirmation email or SMS shortly, When your order is being processed and ready for delivery.</i></b> 
+      </p>
+      <p class="success-ref" id="successRef"></p>
+      <button class="btn btn--primary" id="successClose">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- Paystack JS SDK -->
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

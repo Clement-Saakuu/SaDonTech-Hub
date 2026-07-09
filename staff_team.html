@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Our Staff/Team</title>
+  <link rel="stylesheet" href="staff.css"/>
+</head>
+<body>
+  <header class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a class="navbar__logo" href="index.html"><img src="images/SaDon_logo1.PNG" alt="Logo"/></a>
+      <div class="navbar__update">
+        <div class="navbar__track">
+          <div class="navbar__item">
+            SaDon-Tech Digital Hub - <span class="navbar__highlight">Your trusted Hub!</span>
+          </div>
+          <div class="navbar__item">
+            Customers over 3 years: <span class="navbar__highlight">250+</span>
+          </div>
+          <div class="navbar__item">
+            New arrivals every week - <span class="navbar__highlight">Fresh deals now live!</span>
+          </div>
+          <div class="navbar__item">
+            SaDon-Tech Digital Hub - <span class="navbar__highlight">Your trusted and reliable Hub!</span>
+          </div>
+          <div class="navbar__item">
+            Customers over 3 years: <span class="navbar__highlight">250+</span>
+          </div>
+          <div class="navbar__item">
+            New arrivals every week - <span class="navbar__highlight">Fresh deals now live!</span>
+          </div>
+        </div>
+      </div>
+      <nav class="navbar__links">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="staff_team.html">Experts/Team</a>
+      </nav>
+    </div>
+  </header>
+
+  <main style="margin-top: var(--navbar-h); padding: 40px 20px; max-width: 1300px; margin-left: auto; margin-right: auto; background-color: var(--cream);">
+    <h1 class="Profile__title"><u>Meet Our Experts</u></h1>
+
+    <section class="team">
+      <div class="profile-grid">
+        <article class="profile-card" data-profile="clement" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)">
+          <img src="images/clementphoto.png" alt="Clement Saakuu" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)" />
+          <h3>Clement Saakuu</h3>
+          <p class="muted"><b>CEO - SaDon-Tech Hub</b><br/>Developer · Data Analyst · Research Assistant, and IT Intrepreneur</p>
+          <button class="btn profile-details-btn" type="button" data-profile="clement">View Profile Details</button>
+        </article>
+
+        <article class="profile-card" data-profile="francis" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)">
+          <img src="images/Francisphoto.PNG" alt="Francis Saakuu" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)" />
+          <h3>Francis Saakuu</h3>
+          <p class="muted"><b>Senior Consultant - GIS Analyst</b><br>(Geographic Information Systems Analyst) at GeoDaline Consult</p>
+          <button class="btn profile-details-btn" type="button" data-profile="francis">View Profile Details</button>
+        </article>
+
+        <article class="profile-card" data-profile="mary" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)">
+          <img src="images/maryphoto.PNG" alt="Professor Mary" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)" />
+          <h3>Professor Mary</h3>
+          <p class="muted"><b>Senior Lecturer & Lead Developer<br/>@ Giants Technology Academy</b><br/>FrontEnd Developer · UI Expert</p>
+          <button class="btn profile-details-btn" type="button" data-profile="mary">View Profile Details</button>
+        </article>
+
+        <article class="profile-card" data-profile="john" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)">
+          <img src="images/johnphoto.png" alt="John Ankuma" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)" />
+          <h3>John Ankuma</h3>
+          <p class="muted"><b>Lead Designer<br/>@ SaDon-Tech Hub</b><br/>Graphic Designer · Videographer</p>
+          <button class="btn profile-details-btn" type="button" data-profile="john">View Profile Details</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="team-details" aria-live="polite">
+      <div class="team-details__panel" id="teamDetailsPanel" hidden>
+        <div class="team-details__header">
+          <h2 id="teamDetailsName">Profile Details</h2>
+          <button class="team-details__close" id="teamDetailsClose" type="button" aria-label="Close profile details">&times;</button>
+        </div>
+        <div class="team-details__content" id="teamDetailsContent">
+          <p>Select a profile to see more information and connect directly.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+    <section class ="contactForm" style="margin-top: 48px;">
+      <h2 class="contact__title">Contact Our Project Manager</h2>
+      <form id="contactForm" class="checkout-form contact-form">
+        <div class="form__group">
+          <label for="contactName">Your name</label>
+          <input id="contactName" type="text" placeholder="Full name" />
+        </div>
+
+        <div class="form__group">
+          <label for="contactEmail">Email address</label>
+          <input id="contactEmail" type="email" placeholder="you@example.com" />
+        </div>
+
+        <div class="form__group">
+          <label for="contactEmail">WhatsApp Number</label>
+          <input id="contactEmail" type="text" placeholder="WhatsApp number" />
+        </div>
+
+        <div class="form__group">
+          <label for="contactSubject">Subject</label>
+          <input id="contactSubject" type="text" placeholder="Subject" />
+        </div>
+        
+        <div class="form__group">
+          <label for="contactMessage">Message</label>
+          <textarea id="contactMessage" rows="6" placeholder="Type your message here..."></textarea>
+        </div>
+
+        <div style="margin-top:12px;">
+          <button class="btn btn--primary" type="submit">Send Email</button>
+        </div>
+      </form>
+    </section>
+ 
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <img src="images/SaDon_logo1.PNG" alt="SaDon-Tech Digital Hub logo" class="footer__logo" />
+        <p class="footer__tagline">Your Tech – Built &amp; Taught!</p>
+      </div>
+
+      <div class="footer__section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Support</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__section footer__contact">
+        <h3>Contact Us</h3>
+        <p>Tel: <a href="tel:+233541741421">+233 541 741 421</a></p>
+        <p>Email: <a href="mailto:saakuu.clement@gmail.com">saakuu.clement@gmail.com</a></p>
+        <p>WhatsApp: <a href="https://wa.me/233541741421" target="_blank" rel="noopener">+233 541 741 421</a></p>
+      </div>
+
+      <div class="footer__section">
+        <h3>Follow Us</h3>
+        <div class="social-links">
+          <a href="#">Facebook</a>
+          <a href="#">Twitter</a>
+          <a href="#">Instagram</a>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p>&copy; 2024 SaDon-Tech Digital Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const profileButtons = document.querySelectorAll('.profile-details-btn');
+    const teamDetailsPanel = document.getElementById('teamDetailsPanel');
+    const teamDetailsName = document.getElementById('teamDetailsName');
+    const teamDetailsContent = document.getElementById('teamDetailsContent');
+    const teamDetailsClose = document.getElementById('teamDetailsClose');
+
+    const profileDetails = {
+      clement: {
+        name: 'Clement Saakuu',
+        role: 'CEO - SaDon-Tech Hub',
+        highlight: 'Developer · Data Analyst · Research Assistant · IT Entrepreneur',
+        description: 'Clement leads the SaDon-Tech Hub vision with a strong focus on digital transformation, practical technology training, and building data-driven solutions for modern communities.',
+        expertise: ['Web development', 'Data analysis', 'Research support', 'Product strategy'],
+        whatsapp: 'https://wa.me/233202173740?text=Hello%20Clement%2C%20I%20would%20like%20to%20get%20in%20touch.'
+      },
+      francis: {
+        name: 'Francis Saakuu',
+        role: 'Senior Consultant - GIS Analyst',
+        highlight: 'Geographic Information Systems Analyst at GeoDaline Consult',
+        description: 'Francis brings deep expertise in geospatial analysis, mapping, and spatial decision-making that helps organizations turn location data into actionable insight.',
+        expertise: ['GIS analysis', 'Spatial mapping', 'Remote sensing support', 'Research-based consulting'],
+        whatsapp: 'https://wa.me/233202173740?text=Hello%20Francis%2C%20I%20would%20like%20to%20get%20in%20touch.'
+      },
+      mary: {
+        name: 'Professor Mary',
+        role: 'Senior Lecturer & Lead Developer',
+        highlight: 'Giants Technology Academy',
+        description: 'Professor Mary combines teaching and technology leadership to mentor learners while shaping modern, user-friendly digital experiences for clients and students alike.',
+        expertise: ['Frontend development', 'UI/UX design', 'Technology mentoring', 'Digital training'],
+        whatsapp: 'https://wa.me/233202173740?text=Hello%20Professor%20Mary%2C%20I%20would%20like%20to%20get%20in%20touch.'
+      },
+      john: {
+        name: 'John Ankuma',
+        role: 'Lead Designer',
+        highlight: 'SaDon-Tech Hub',
+        description: 'John blends visual design, storytelling, and video production to create polished digital assets that communicate ideas with clarity and impact.',
+        expertise: ['Graphic design', 'Brand visuals', 'Videography', 'Creative direction'],
+        whatsapp: 'https://wa.me/233202173740?text=Hello%20John%2C%20I%20would%20like%20to%20get%20in%20touch.'
+      }
+    };
+
+    function openProfileDetails(profileKey) {
+      const profile = profileDetails[profileKey];
+      if (!profile) return;
+
+      teamDetailsName.textContent = profile.name;
+      teamDetailsContent.innerHTML = `
+        <p class="team-details__lead">${profile.role}</p>
+        <p class="team-details__highlight">${profile.highlight}</p>
+        <p>${profile.description}</p>
+        <div class="team-details__list-wrap">
+          <h3>Areas of Expertise</h3>
+          <ul>
+            ${profile.expertise.map((item) => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+        <a class="btn whatsapp-btn team-details__contact" href="${profile.whatsapp}" target="_blank" rel="noopener">Let's Chat</a>
+      `;
+      teamDetailsPanel.hidden = false;
+      teamDetailsPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    profileButtons.forEach((button) => {
+      button.addEventListener('click', () => openProfileDetails(button.dataset.profile));
+    });
+
+    teamDetailsClose.addEventListener('click', () => {
+      teamDetailsPanel.hidden = true;
+    });
+  </script>
+</body>
+</html>
+
