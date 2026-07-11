@@ -103,7 +103,7 @@ const PRODUCTS = [
     category: "Accessories",
     subcategory: "Airpods",
   },
-   {
+  {
     id: 7,
     name: "Samsung TV",
     price: 3500,
@@ -155,9 +155,9 @@ const ORDER_PROGRESS_DATA = {
   note: "Estimated delivery: Tomorrow by 4:00 PM",
 };
 const SELLER_DASHBOARD_DATA = [
-  { title: "Orders today", value: "12" },
-  { title: "Pending chats", value: "5" },
-  { title: "Items in stock", value: "48" },
+  { title: "Orders today", target: 12 },
+  { title: "Pending chats", target: 5 },
+  { title: "Items in stock", target: 48 },
 ];
 const FEATURED_DEALS = [
   { id: 1, badge: "Hot deal", title: "Hp Notebook", text: "Powerful everyday laptop with 16GB RAM and a fast SSD.", savings: "Save 10%" },
@@ -197,24 +197,27 @@ let currentSearchQuery = "";
 let currentSortBy = "featured";
 let aboutPreviewIndex = 0;
 let aboutPreviewTimer = null;
+let sellerDashboardTimer = null;
+let sellerDashboardTick = 0;
+const sellerDashboardStatsState = SELLER_DASHBOARD_DATA.map((item) => ({ ...item, value: 0 }));
 
 /* ============================================================
    DOM REFERENCES
    ============================================================ */
-const $  = (sel) => document.querySelector(sel);
+const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
-const navbar       = $("#navbar");
-const cartBtn      = $("#cartBtn");
-const cartClose    = $("#cartClose");
-const cartDrawer   = $("#cartDrawer");
-const cartOverlay  = $("#cartOverlay");
-const cartBody     = $("#cartBody");
-const cartFooter   = $("#cartFooter");
-const cartCount    = $("#cartCount");
+const navbar = $("#navbar");
+const cartBtn = $("#cartBtn");
+const cartClose = $("#cartClose");
+const cartDrawer = $("#cartDrawer");
+const cartOverlay = $("#cartOverlay");
+const cartBody = $("#cartBody");
+const cartFooter = $("#cartFooter");
+const cartCount = $("#cartCount");
 const modalOverlay = $("#modalOverlay");
-const checkoutModal= $("#checkoutModal");
-const modalClose   = $("#modalClose");
+const checkoutModal = $("#checkoutModal");
+const modalClose = $("#modalClose");
 const checkoutForm = $("#checkoutForm");
 const successModal = $("#successModal");
 const successClose = $("#successClose");
@@ -224,9 +227,9 @@ const activeFilterLabel = $("#activeFilterLabel");
 const salesSummaryValue = $("#salesSummaryValue");
 const salesSummaryText = $("#salesSummaryText");
 const hamburgerBtn = $("#hamburgerBtn");
-const mobileMenu   = $("#mobileMenu");
+const mobileMenu = $("#mobileMenu");
 const productSearch = $("#productSearch");
-const productSort   = $("#productSort");
+const productSort = $("#productSort");
 const productModal = $("#productModal");
 const productModalOverlay = $("#productModalOverlay");
 const productModalBody = $("#productModalBody");
@@ -308,6 +311,8 @@ function initApp() {
   renderReviews();
   renderRecentlyViewed();
   initAboutPopupSlideshow();
+  startSellerDashboardPreview();
+  startDevelopmentAlerts();
 }
 
 if (document.readyState === 'loading') {
@@ -359,9 +364,9 @@ function renderCategorySidebar() {
   const markup = `
     <button type="button" class="shop__filter-pill ${!currentProductFilter.category && !currentProductFilter.subcategory ? "active" : ""}" data-category="" data-subcategory="">All products</button>
     ${CATEGORY_DATA.map((category) => {
-      const isActiveCategory = currentProductFilter.category === category.name && !currentProductFilter.subcategory;
-      const isActiveSubcategory = currentProductFilter.category === category.name && currentProductFilter.subcategory;
-      return `
+    const isActiveCategory = currentProductFilter.category === category.name && !currentProductFilter.subcategory;
+    const isActiveSubcategory = currentProductFilter.category === category.name && currentProductFilter.subcategory;
+    return `
         <details class="shop__category" ${isActiveCategory || isActiveSubcategory ? "open" : ""}>
           <summary class="shop__category-summary">
             <span>${category.name}</span>
@@ -370,13 +375,13 @@ function renderCategorySidebar() {
           <div class="shop__subcategory-list">
             <button type="button" class="shop__filter-pill shop__filter-pill--sub ${isActiveCategory ? "active" : ""}" data-category="${category.name}" data-subcategory="">All in ${category.name}</button>
             ${category.subcategories.map((subcategory) => {
-              const isActive = currentProductFilter.category === category.name && currentProductFilter.subcategory === subcategory;
-              return `<button type="button" class="shop__filter-pill shop__filter-pill--sub ${isActive ? "active" : ""}" data-category="${category.name}" data-subcategory="${subcategory}">${subcategory}</button>`;
-            }).join("")}
+      const isActive = currentProductFilter.category === category.name && currentProductFilter.subcategory === subcategory;
+      return `<button type="button" class="shop__filter-pill shop__filter-pill--sub ${isActive ? "active" : ""}" data-category="${category.name}" data-subcategory="${subcategory}">${subcategory}</button>`;
+    }).join("")}
           </div>
         </details>
       `;
-    }).join("")}
+  }).join("")}
   `;
 
   categorySidebar.innerHTML = markup;
@@ -625,6 +630,55 @@ function renderFeaturedDeals() {
   `).join("");
 }
 
+function startSellerDashboardPreview() {
+  if (sellerDashboardTimer) return;
+
+  sellerDashboardTimer = window.setInterval(() => {
+    sellerDashboardTick += 1;
+
+    sellerDashboardStatsState.forEach((item, index) => {
+      const increment = index === 0 ? 1 : index === 1 ? 0.5 : 0.2;
+      const drift = sellerDashboardTick % 3 === 0 && index === 0 ? 1 : 0;
+      item.value = Math.min(item.target, Number((item.value + increment + drift).toFixed(0)));
+    });
+
+    renderExperiencePreview();
+  }, 1000);
+}
+
+function showDevelopmentAlert() {
+  if (!document.body) return;
+
+  let alertBox = document.getElementById("systemDevelopmentAlert");
+
+  if (!alertBox) {
+    alertBox = document.createElement("div");
+    alertBox.id = "systemDevelopmentAlert";
+    alertBox.className = "system-development-alert";
+    alertBox.setAttribute("role", "alert");
+    alertBox.setAttribute("aria-live", "assertive");
+    alertBox.innerHTML = "<strong>SYSTEM UNDER DEVELOPMENT</strong>";
+    document.body.appendChild(alertBox);
+  }
+
+  window.requestAnimationFrame(() => {
+    alertBox.classList.add("is-visible");
+  });
+
+  window.clearTimeout(showDevelopmentAlert.hideTimer);
+  showDevelopmentAlert.hideTimer = window.setTimeout(() => {
+    alertBox.classList.remove("is-visible");
+  }, 60000);
+}
+
+function startDevelopmentAlerts() {
+  if (window.__sadonDevelopmentAlertStarted) return;
+  window.__sadonDevelopmentAlertStarted = true;
+
+  showDevelopmentAlert();
+  window.setInterval(showDevelopmentAlert, 300000);
+}
+
 function renderExperiencePreview() {
   const stepsEl = document.getElementById("orderProgressSteps");
   const fillEl = document.getElementById("orderProgressBarFill");
@@ -632,12 +686,20 @@ function renderExperiencePreview() {
   const statsEl = document.getElementById("sellerDashboardStats");
 
   if (stepsEl) {
-    stepsEl.innerHTML = ORDER_PROGRESS_DATA.steps.map((step, index) => `
-      <div class="order-step ${index <= ORDER_PROGRESS_DATA.currentStep ? "is-active" : ""}">
-        <span>${index + 1}</span>
-        <p>${step}</p>
-      </div>
-    `).join("");
+    stepsEl.innerHTML = ORDER_PROGRESS_DATA.steps.map((step, index) => {
+      const stateClass = index < ORDER_PROGRESS_DATA.currentStep
+        ? "complete"
+        : index === ORDER_PROGRESS_DATA.currentStep
+          ? "active"
+          : "";
+
+      return `
+        <div class="order-progress-step ${stateClass}">
+          <span>${index + 1}</span>
+          <p>${step}</p>
+        </div>
+      `;
+    }).join("");
   }
 
   if (fillEl) {
@@ -650,9 +712,9 @@ function renderExperiencePreview() {
   }
 
   if (statsEl) {
-    statsEl.innerHTML = SELLER_DASHBOARD_DATA.map((item) => `
+    statsEl.innerHTML = sellerDashboardStatsState.map((item) => `
       <div class="dashboard-stat">
-        <strong>${item.value}</strong>
+        <strong>${Math.round(item.value)}</strong>
         <span>${item.title}</span>
       </div>
     `).join("");
@@ -744,8 +806,8 @@ function renderReviews() {
 
   reviewsGrid.innerHTML = `
     ${visibleReviews.map((review) => {
-      const stars = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
-      return `
+    const stars = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
+    return `
         <article class="review-card">
           <div class="review-card__stars">${stars}</div>
           <h3>${review.title}</h3>
@@ -753,12 +815,12 @@ function renderReviews() {
           <span>${review.name}</span>
         </article>
       `;
-    }).join("")}
+  }).join("")}
     ${hasMore ? `
       <div class="review-extra-list" id="reviewExtraList" hidden>
         ${hiddenReviews.map((review) => {
-          const stars = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
-          return `
+    const stars = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
+    return `
             <article class="review-card review-card--extra">
               <div class="review-card__stars">${stars}</div>
               <h3>${review.title}</h3>
@@ -766,7 +828,7 @@ function renderReviews() {
               <span>${review.name}</span>
             </article>
           `;
-        }).join("")}
+  }).join("")}
       </div>
     ` : ""}
     ${hasMore ? `<button class="review-toggle" type="button" id="reviewToggleBtn">View more</button>` : ""}
@@ -1048,13 +1110,13 @@ function validateForm() {
   clearFormErrors();
 
   const fields = [
-    { id: "firstName",  label: "First name" },
-    { id: "lastName",   label: "Last name" },
-    { id: "email",      label: "Email address" },
-    { id: "phone",      label: "Phone number" },
-    { id: "address",    label: "Delivery address" },
-    { id: "city",       label: "City" },
-    { id: "country",    label: "Country" },
+    { id: "firstName", label: "First name" },
+    { id: "lastName", label: "Last name" },
+    { id: "email", label: "Email address" },
+    { id: "phone", label: "Phone number" },
+    { id: "address", label: "Delivery address" },
+    { id: "city", label: "City" },
+    { id: "country", label: "Country" },
   ];
 
   fields.forEach(({ id, label }) => {
@@ -1101,14 +1163,14 @@ function initiatePaystackPayment(formData) {
   const totalInKobo = getCartTotal() * 100; // Paystack accepts amount in the smallest currency unit (pesewas/kobo)
 
   const handler = PaystackPop.setup({
-    key:       CONFIG.PAYSTACK_PUBLIC_KEY,
-    email:     formData.email,
-    amount:    totalInKobo,
-    currency:  CONFIG.CURRENCY,
-    ref:       generateReference(),
+    key: CONFIG.PAYSTACK_PUBLIC_KEY,
+    email: formData.email,
+    amount: totalInKobo,
+    currency: CONFIG.CURRENCY,
+    ref: generateReference(),
     firstname: formData.firstName,
-    lastname:  formData.lastName,
-    phone:     formData.phone,
+    lastname: formData.lastName,
+    phone: formData.phone,
 
     metadata: {
       custom_fields: [
@@ -1167,7 +1229,7 @@ function initiatePaystackPayment(formData) {
 
 function generateReference() {
   const timestamp = Date.now();
-  const random    = Math.random().toString(36).substring(2, 9).toUpperCase();
+  const random = Math.random().toString(36).substring(2, 9).toUpperCase();
   return `SDTH-${timestamp}-${random}`;
 }
 
@@ -1252,12 +1314,12 @@ function attachFormEvents() {
 
       const formData = {
         firstName: $("#firstName").value.trim(),
-        lastName:  $("#lastName").value.trim(),
-        email:     $("#email").value.trim(),
-        phone:     $("#phone").value.trim(),
-        address:   $("#address").value.trim(),
-        city:      $("#city").value.trim(),
-        country:   $("#country").value,
+        lastName: $("#lastName").value.trim(),
+        email: $("#email").value.trim(),
+        phone: $("#phone").value.trim(),
+        address: $("#address").value.trim(),
+        city: $("#city").value.trim(),
+        country: $("#country").value,
       };
 
       // Short delay for UX, then open Paystack
@@ -1382,10 +1444,10 @@ function renderSalesSummary() {
 /* ============================================================
    EXPOSE GLOBALS NEEDED BY INLINE CART HANDLERS
    ============================================================ */
-window.changeQty      = changeQty;
+window.changeQty = changeQty;
 window.removeFromCart = removeFromCart;
-window.openCheckout   = openCheckout;
-window.closeCart      = closeCart;
+window.openCheckout = openCheckout;
+window.closeCart = closeCart;
 window.openSellerChat = openSellerChat;
 window.toggleWishlist = toggleWishlist;
 window.closeProductModal = closeProductModal;
