@@ -137,9 +137,10 @@ const PRODUCTS = [
 
 const CATEGORY_DATA = [
   { name: "Computers", subcategories: ["Desktops", "Laptop computers"] },
-  { name: "Electronics", subcategories: ["Televisions", "Speaks", "Others"] },
+  { name: "Electronics", subcategories: ["Televisions", "Speakers", "Others"] },
   { name: "Accessories", subcategories: ["Headsets", "Airpods", "Storages", "Mouse", "Keyboards", "Cases", "Others"] },
-  { name: "Stationeries", subcategories: ["Paper", "Wirters", "Stickys", "Measurements", "Others"] },
+  { name: "Smart Devices", subcategories: ["Phones", "Tablets", "Watches"] },
+  { name: "Stationeries", subcategories: ["Paper", "Writers", "Stickys", "Measurements", "Others"] },
   { name: "Fashion", subcategories: ["Bags", "Men Clothes", "Women Clothes", "T-shirts", "FootWears", "Others"] },
   { name: "Services", subcategories: [] },
 ];
