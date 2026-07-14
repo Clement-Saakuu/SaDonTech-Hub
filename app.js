@@ -1038,6 +1038,7 @@ function openCheckout() {
   closeCart();
   populateOrderSummary();
   updateFormTotal();
+  updatePaymentMethodUI();
   modalOverlay.classList.add("open");
   checkoutModal.classList.add("open");
   document.body.style.overflow = "hidden";
@@ -1080,13 +1081,59 @@ function updateFormTotal() {
   }
 }
 
+function getSelectedPaymentMethod() {
+  const selected = document.querySelector('input[name="paymentMethod"]:checked');
+  return selected ? selected.value : "paystack";
+}
+
+function updatePaymentMethodUI() {
+  const selectedMethod = getSelectedPaymentMethod();
+  const btn = $("#paystackBtn");
+  const payText = $("#payBtnText");
+  const secureNote = $(".secure-note");
+  const options = $$(".payment-option");
+
+  options.forEach((option) => {
+    const input = option.querySelector("input");
+    option.classList.toggle("is-selected", input && input.checked);
+  });
+
+  if (btn && payText) {
+    payText.textContent = selectedMethod === "pay_on_delivery" ? "Place Order (Pay on Delivery)" : "Pay with Paystack";
+  }
+
+  if (secureNote) {
+    secureNote.innerHTML = selectedMethod === "pay_on_delivery"
+      ? `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        Pay on Delivery keeps checkout flexible and trusted.
+      `
+      : `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        Payments are 100% secure and encrypted via Paystack
+      `;
+  }
+}
+
 /* ============================================================
    SUCCESS MODAL
    ============================================================ */
-function openSuccess(reference) {
+function openSuccess(reference, paymentMethod = "paystack") {
   recordCheckoutSale(cart);
   closeCheckout();
   $("#successRef").textContent = `Reference: ${reference}`;
+  const messageEl = $("#successMessage");
+  if (messageEl) {
+    messageEl.innerHTML = paymentMethod === "pay_on_delivery"
+      ? "Thank you for your purchase. Your order has been received and is being processed.<br/><br/><b><i>Pay on Delivery was selected. You will pay when your order arrives.</i></b>"
+      : "Thank you for your purchase. Your order has been received and is being processed.<br/><br/><b><i>You will receive a confirmation email or SMS shortly, when your order is being processed and ready for delivery.</i></b>";
+  }
   successModal.classList.add("open");
   modalOverlay.classList.add("open");
   document.body.style.overflow = "hidden";
@@ -1101,6 +1148,7 @@ function closeSuccess() {
   updateCartUI();
   checkoutForm.reset();
   clearFormErrors();
+  updatePaymentMethodUI();
 }
 
 /* ============================================================
@@ -1236,8 +1284,8 @@ function generateReference() {
 
 function resetPayBtn() {
   const btn = $("#paystackBtn");
-  btn.classList.remove("loading");
-  $("#payBtnText").textContent = "Pay with Paystack";
+  if (btn) btn.classList.remove("loading");
+  updatePaymentMethodUI();
 }
 
 /* ============================================================
@@ -1308,11 +1356,7 @@ function attachFormEvents() {
         return;
       }
 
-      const btn = $("#paystackBtn");
-      if (btn) btn.classList.add("loading");
-      const payText = $("#payBtnText");
-      if (payText) payText.textContent = "Processing";
-
+      const paymentMethod = getSelectedPaymentMethod();
       const formData = {
         firstName: $("#firstName").value.trim(),
         lastName: $("#lastName").value.trim(),
@@ -1323,12 +1367,28 @@ function attachFormEvents() {
         country: $("#country").value,
       };
 
+      if (paymentMethod === "pay_on_delivery") {
+        openSuccess(`POD-${Date.now()}`, paymentMethod);
+        return;
+      }
+
+      const btn = $("#paystackBtn");
+      if (btn) btn.classList.add("loading");
+      const payText = $("#payBtnText");
+      if (payText) payText.textContent = "Processing";
+
       // Short delay for UX, then open Paystack
       setTimeout(() => {
         initiatePaystackPayment(formData);
       }, 500);
     });
   }
+
+  $$(".payment-option input").forEach((input) => {
+    input.addEventListener("change", updatePaymentMethodUI);
+  });
+
+  updatePaymentMethodUI();
 
   // Live validation — clear error on input (safe to run even if no elements)
   $$(".checkout-form input, .checkout-form select").forEach((el) => {
