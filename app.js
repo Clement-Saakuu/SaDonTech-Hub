@@ -1083,7 +1083,7 @@ function updateFormTotal() {
 
 function getSelectedPaymentMethod() {
   const selected = document.querySelector('input[name="paymentMethod"]:checked');
-  return selected ? selected.value : "paystack";
+  return selected ? selected.value : "momo";
 }
 
 function updatePaymentMethodUI() {
@@ -1092,14 +1092,25 @@ function updatePaymentMethodUI() {
   const payText = $("#payBtnText");
   const secureNote = $(".secure-note");
   const options = $$(".payment-option");
+  const momoWrap = $("#momoInputWrap");
 
   options.forEach((option) => {
     const input = option.querySelector("input");
     option.classList.toggle("is-selected", input && input.checked);
   });
 
+  if (momoWrap) {
+    momoWrap.style.display = selectedMethod === "momo" ? "flex" : "none";
+  }
+
   if (btn && payText) {
-    payText.textContent = selectedMethod === "pay_on_delivery" ? "Place Order (Pay on Delivery)" : "Pay with Paystack";
+    if (selectedMethod === "pay_on_delivery") {
+      payText.textContent = "Place Order (Pay on Delivery)";
+    } else if (selectedMethod === "momo") {
+      payText.textContent = "Pay with Mobile Money";
+    } else {
+      payText.textContent = "Place Order";
+    }
   }
 
   if (secureNote) {
@@ -1116,7 +1127,7 @@ function updatePaymentMethodUI() {
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
           <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
         </svg>
-        Payments are 100% secure and encrypted via Paystack
+        Payments can be completed through Mobile Money and confirmed shortly.
       `;
   }
 }
@@ -1124,7 +1135,7 @@ function updatePaymentMethodUI() {
 /* ============================================================
    SUCCESS MODAL
    ============================================================ */
-function openSuccess(reference, paymentMethod = "paystack") {
+function openSuccess(reference, paymentMethod = "momo") {
   recordCheckoutSale(cart);
   closeCheckout();
   $("#successRef").textContent = `Reference: ${reference}`;
@@ -1132,7 +1143,9 @@ function openSuccess(reference, paymentMethod = "paystack") {
   if (messageEl) {
     messageEl.innerHTML = paymentMethod === "pay_on_delivery"
       ? "Thank you for your purchase. Your order has been received and is being processed.<br/><br/><b><i>Pay on Delivery was selected. You will pay when your order arrives.</i></b>"
-      : "Thank you for your purchase. Your order has been received and is being processed.<br/><br/><b><i>You will receive a confirmation email or SMS shortly, when your order is being processed and ready for delivery.</i></b>";
+      : paymentMethod === "momo"
+        ? "Thank you for your purchase. Your order has been received and is being processed.<br/><br/><b><i>Mobile Money payment was selected. Please complete your MoMo payment and we will confirm your order shortly.</i></b>"
+        : "Thank you for your purchase. Your order has been received and is being processed.<br/><br/><b><i>You will receive a confirmation email or SMS shortly, when your order is being processed and ready for delivery.</i></b>";
   }
   successModal.classList.add("open");
   modalOverlay.classList.add("open");
@@ -1365,10 +1378,11 @@ function attachFormEvents() {
         address: $("#address").value.trim(),
         city: $("#city").value.trim(),
         country: $("#country").value,
+        momoNumber: $("#momoNumber") ? $("#momoNumber").value.trim() : "",
       };
 
-      if (paymentMethod === "pay_on_delivery") {
-        openSuccess(`POD-${Date.now()}`, paymentMethod);
+      if (paymentMethod === "pay_on_delivery" || paymentMethod === "momo") {
+        openSuccess(paymentMethod === "momo" ? `MOMO-${Date.now()}` : `POD-${Date.now()}`, paymentMethod);
         return;
       }
 

@@ -624,37 +624,44 @@
           <!-- Total shown here -->
         </div>
 
-        <div class="payment-methods" role="radiogroup" aria-label="Choose payment method">
-          <p class="payment-methods__title">Choose payment method</p>
-          <label class="payment-option is-selected" for="paymentPaystack">
-            <input type="radio" id="paymentPaystack" name="paymentMethod" value="paystack" checked />
-            <span class="payment-option__content">
-              <strong>Pay with Paystack</strong>
-              <small>Secure online payment with card or wallet</small>
-            </span>
-          </label>
-          <label class="payment-option" for="paymentCod">
-            <input type="radio" id="paymentCod" name="paymentMethod" value="pay_on_delivery" />
-            <span class="payment-option__content">
-              <strong>Pay on Delivery</strong>
-              <small>Pay for your order when it arrives</small>
-            </span>
-          </label>
-        </div>
+        <section class="PayOptions">
+          <div class="payment-methods" role="radiogroup" aria-label="Choose payment method">
+            <p class="payment-methods__title">Choose payment method</p>
+            <label class="payment-option is-selected" for="paymentMomo">
+              <input type="radio" id="paymentMomo" name="paymentMethod" value="momo" checked />
+              <span class="payment-option__content">
+                <strong>Pay with Mobile Money</strong>
+                <small>Secure local MoMo payment for your order</small>
+              </span>
+            </label>
+            <label class="payment-option" for="paymentCod">
+              <input type="radio" id="paymentCod" name="paymentMethod" value="pay_on_delivery" />
+              <span class="payment-option__content">
+                <strong>Pay on Delivery</strong>
+                <small>Pay for your order when it arrives</small>
+              </span>
+            </label>
+          </div>
 
-        <button type="submit" class="btn btn--primary btn--full" id="paystackBtn">
-          <span id="payBtnText">Pay with Paystack</span>
-          <svg class="pay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-            <line x1="1" y1="10" x2="23" y2="10"></line>
-          </svg>
-        </button>
+          <div class="momo-input" id="momoInputWrap">
+            <label for="momoNumber">Enter MoMo number</label>
+            <input type="tel" id="momoNumber" name="momoNumber" placeholder="024 123 4567" />
+          </div>
+
+          <button type="submit" class="Confirm-order" id="paystackBtn">
+            <span id="payBtnText">Pay with Mobile Money</span>
+            <svg class="pay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+              <line x1="1" y1="10" x2="23" y2="10"></line>
+            </svg>
+          </button>
+        </section>
         <p class="secure-note">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
-          Payments are 100% secure and encrypted via Paystack
+          Payments can be completed through Mobile Money and confirmed shortly.
         </p>
       </form>
     </div>
@@ -677,8 +684,6 @@
     </div>
   </div>
 
-  <!-- Paystack JS SDK -->
-  <script src="https://js.paystack.co/v1/inline.js"></script>
   <script src="app.js"></script>
 </body>
 
