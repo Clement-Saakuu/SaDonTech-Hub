@@ -6,7 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
     content="SaDonTech Hub is your affordable online store for computing and electronic gadgets. Shop mobile phones, laptops, smartwatches, projectors, accessories, Bluetooth speakers, headphones, and more—quality tech made accessible for everyone.">
-  <title>SaDonTech Hub </title>
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="SaDonTech Hub" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description"
+    content="Affordable online store for computing and electronic gadgets — phones, laptops, smartwatches, accessories and more." />
+  <meta property="og:image" content="images/heroImage1.PNG" />
+  <meta name="theme-color" content="#FF7A00" />
+  <!--
+    Note on the CSP below: a <meta> CSP is weaker than a real HTTP response header
+    (it can't set frame-ancestors or report-uri) and should be replaced with a
+    server-sent Content-Security-Policy header once this site is behind a backend.
+    Kept here as a baseline hardening layer for the static build.
+
+    'unsafe-inline' is included in script-src because this page relies on
+    inline onclick="..." handlers throughout — rewriting all of them to
+    addEventListener is a larger refactor than fits here. This still blocks
+    the main thing CSP is for: loading a *script from* an untrusted origin.
+  -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://js.paystack.co https://cdn.jsdelivr.net; frame-src https://js.paystack.co https://checkout.paystack.com; connect-src 'self' https://api.paystack.co https://*.supabase.co; base-uri 'self'; form-action 'self' mailto:;" />
+  <title>SaDonTech Hub</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,8 +48,12 @@
         <a href="#about" class="nav-link">About</a>
         <a href="#shop" class="nav-link">Shop</a>
         <a href="#contact" class="nav-link">Contact</a>
-        <a class="nav-link" href="staff_team.html" target="_blank">Experts/Team</a>
+        <a class="nav-link" href="staff_team.html" target="_blank" rel="noopener noreferrer">Experts/Team</a>
       </nav>
+      <button class="navbar__account" id="accountBtn" aria-label="Account">
+        <img src="images/user.svg" alt="" class="account-icon" onerror="this.style.display='none'" />
+        <span id="accountBtnLabel">Login</span>
+      </button>
       <button class="navbar__cart" id="cartBtn" aria-label="Open cart">
         <img src="images/cart.svg" alt="Cart icon" class="cart-icon" />
         <span class="cart-count" id="cartCount">0</span>
@@ -45,6 +69,7 @@
       <a href="#shop" class="nav-link" onclick="closeMobileMenu()">Shop</a>
       <a href="#contact" class="nav-link" onclick="closeMobileMenu()">Contact</a>
       <a href="staff_team.html" class="nav-link" onclick="closeMobileMenu()">Experts/Team</a>
+      <a href="account.html" class="nav-link" id="mobileAccountLink">My Account</a>
     </div>
   </header>
   <!-- Updates section -->
@@ -97,37 +122,7 @@
     </div>
   </section>
 
-  <!-- <Updates section -->
-  <!-- <section class="update">
-    <div class="update__track">
-      <div class="update_content">
-        SaDonTechHub - <span class="update__highlight">Your trusted and reliable Hub!</span>
-      </div>
-      <div class="update_content">
-        Customers over 3 years: <span class="update__highlight">250+</span>
-      </div>
-      <div class="update_content">
-        We do our delivery Nationwide: <span class="update__highlight">with a very low delivery fee</span>
-      </div>
-      <div class="update_content">
-        We are always open and ready for your orders - <span class="update__highlight">24 Hours Service!</span>
-      </div>
-      <div class="update_content">
-        SaDonTech Hub - <span class="update__highlight">Your trusted and reliable Hub!</span>
-      </div>
-      <div class="update_content">
-        Customers over 3 years: <span class="update__highlight">250+</span>
-      </div>
-      <div class="update_content">
-        We do our delivery Nationwide: <span class="update__highlight">with a very low delivery fee</span>
-      </div>
-      <div class="update_content">
-        We are always open and ready for your orders - <span class="update__highlight">24 Hours Service!</span>
-      </div>
-    </div>
-  </section>  -->
-
-  <!-- Update flow -->
+  <!-- Promotions strip -->
   <section class="promo-strip" aria-label="Promotions and perks">
     <div class="promo-strip__inner">
       <div class="promo-banner">
@@ -157,29 +152,26 @@
   <!-- ========== ABOUT ========== -->
   <section class="about" id="about">
     <div class="about__inner">
-      <p class="about__text">
-        SaDonTech Hub is a Technology Branch of the SaDonCle Group of Companies:
-        A hypothetical online store for all kinds of computing and electronic gadgets
-        we believed <b>every body regardless of status, financial strength, recognition' can afford with ease.</b><br />
-        We got original mobile phones, laptops, smartwatches, modern projectors, computer accessories,
-        Bluetooth speakers & headphones, and many other
-        productss. <i>Our prices are down to earth</i>. <br /> We are more than a marketplace! <br />
-        We Work and collaborate with a team, highly resourceful IT and Industry experts who have made an unereasable
-        impact in the IT Industry
-        and beyond. <br /> They work almost 24 hours to ensure that the right solution is provided to solve your
-        problem.
-        <br />
-      <ul style="color: var(--orange-light)" ;>
-        <b>YOU ARE ALWAYS WELCOME, WHENEVER OUR SERVICES ARE NEEDED!</b>
-      </ul>
-      <ul style="color: var(--orange-light); padding-left: 20px; text-decoration-color: aliceblue;">
-        <li>Everyone is welcome to <b>SaDonTech Hub!</b></li>
-        <li>Everyone gets an <b>original product and the best services.</b></li>
-        <li>Everyone returns home <b>happy and smiling.</b></li>
-        <a href="#shop" class="nav-link" style="color: blue; font-style:italic;">Explore all our products and choose the
-          ones that suit you.</a>
-      </ul>
-      </p>
+      <div class="about__text">
+        <p>
+          SaDonTech Hub is a Technology Branch of the SaDonCle Group of Companies:
+          a hypothetical online store for all kinds of computing and electronic gadgets
+          we believe <b>everybody, regardless of status, financial strength, or recognition, can afford with ease.</b><br />
+          We stock original mobile phones, laptops, smartwatches, modern projectors, computer accessories,
+          Bluetooth speakers &amp; headphones, and many other
+          products. <i>Our prices are down to earth</i>. <br /> We are more than a marketplace! <br />
+          We work and collaborate with a team of highly resourceful IT and industry experts who have made an immeasurable
+          impact in the IT industry and beyond. <br /> They work almost 24 hours to ensure that the right solution is
+          provided to solve your problem.
+        </p>
+        <p class="about__banner">YOU ARE ALWAYS WELCOME, WHENEVER OUR SERVICES ARE NEEDED!</p>
+        <ul class="about__list">
+          <li>Everyone is welcome to <b>SaDonTech Hub!</b></li>
+          <li>Everyone gets an <b>original product and the best services.</b></li>
+          <li>Everyone returns home <b>happy and smiling.</b></li>
+          <li><a href="#shop" class="about__list-link">Explore all our products and choose the ones that suit you.</a></li>
+        </ul>
+      </div>
     </div>
     <a href="staff_team.html" class="about__experts-link">
       <div class="about__experts">
@@ -204,8 +196,7 @@
           <a href="#shop" class="about_pop__button">Go to Shop</a>
         </div>
       </div>
-    </div><br />
-    <hr>
+    </div>
   </section>
 
   <!-- Why customers trust SaDonTech -->
@@ -232,33 +223,6 @@
       </div>
     </div>
   </section>
-  <!-- 
-  <section class="how-it-works-section" aria-label="How shopping works">
-    <div class="how-it-works-section__inner">
-      <div class="how-it-works-section__header">
-        <h2>How it works</h2>
-        <p>From discovery to delivery, each step is designed to feel simple and reassuring.</p>
-      </div>
-      <div class="how-it-works-grid">
-        <article class="how-card">
-          <span class="how-card__step">1</span>
-          <h3>Browse with confidence</h3>
-          <p>Explore quality gadgets and accessories with transparent prices, stock detail, and helpful product info.</p>
-        </article>
-        <article class="how-card">
-          <span class="how-card__step">2</span>
-          <h3>Chat before you buy</h3>
-          <p>Use the seller chat option to ask questions, confirm availability, or get product guidance.</p>
-        </article>
-        <article class="how-card">
-          <span class="how-card__step">3</span>
-          <h3>Checkout securely</h3>
-          <p>Complete your order with trusted payment flow and clear delivery and return guidance.</p>
-        </article>
-      </div>
-    </div>
-  </section> -->
-
   <!-- Best selling products section -->
   <section class="best-sellers-section" aria-label="Best selling products">
     <div class="best-sellers-section__inner">
@@ -300,11 +264,9 @@
             </select>
           </label>
           <div class="shop__filter-label" id="activeFilterLabel">Showing all products</div>
-          <div class="products-grid" id="productsGrid"><br>
-            <hr>
+          <div class="products-grid" id="productsGrid">
+            <!-- Products injected by JS -->
           </div>
-
-          <!-- Products injected by JS -->
         </div>
       </div>
     </div>
@@ -315,8 +277,7 @@
     <div class="reviews-section__inner">
       <h2>What customers say</h2>
       <div class="reviews-grid" id="reviewsGrid"></div>
-    </div><br>
-    <hr style="color: var(--orange-light)" ;>
+    </div>
   </section>
 
   <!-- recently viewed products section -->
@@ -328,7 +289,7 @@
   </section>
 
   <!-- frequently asked questions section -->
-  <section class="faq-section" aria-label="Frequently asked questions">
+  <section class="faq-section" id="faq" aria-label="Frequently asked questions">
     <div class="faq-section__inner">
       <h3>Frequently Asked Questions</h3>
       <div class="faq-list">
@@ -482,10 +443,13 @@
       <div class="footer__section">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="#">Shipping Info</a></li>
-          <li><a href="#">Returns</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Support</a></li>
+          <li><a href="policies.html#shipping">Shipping Info</a></li>
+          <li><a href="policies.html#returns">Returns</a></li>
+          <li><a href="policies.html#refunds">Refund Policy</a></li>
+          <li><a href="policies.html#privacy">Privacy Policy</a></li>
+          <li><a href="policies.html#terms">Terms of Service</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Support</a></li>
         </ul>
       </div>
 
@@ -551,6 +515,63 @@
   </div>
 
   <!-- ========== CHECKOUT MODAL ========== -->
+  <!-- ========== AUTH MODAL (login / signup / forgot password) ========== -->
+  <div class="modal-overlay" id="authModalOverlay"></div>
+  <div class="modal auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+    <div class="modal__header">
+      <h2 id="authModalTitle">Log in</h2>
+      <button class="modal__close" id="authModalClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal__body">
+      <div class="auth-tabs" role="tablist">
+        <button type="button" class="auth-tab is-active" id="authTabLogin" role="tab" aria-selected="true">Log
+          in</button>
+        <button type="button" class="auth-tab" id="authTabSignup" role="tab" aria-selected="false">Sign up</button>
+      </div>
+
+      <!-- LOGIN -->
+      <form id="loginForm" class="auth-form" autocomplete="on">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" name="email" required autocomplete="email" />
+
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" name="password" required autocomplete="current-password"
+          minlength="6" />
+
+        <button type="submit" class="auth-submit-btn" id="loginSubmitBtn">Log in</button>
+        <button type="button" class="auth-link-btn" id="forgotPasswordBtn">Forgot your password?</button>
+        <p class="auth-form__message" id="loginMessage" role="alert" aria-live="polite"></p>
+      </form>
+
+      <!-- SIGN UP -->
+      <form id="signupForm" class="auth-form" hidden autocomplete="on">
+        <label for="signupName">Full name</label>
+        <input type="text" id="signupName" name="name" required autocomplete="name" maxlength="80" />
+
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" name="email" required autocomplete="email" />
+
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" name="password" required autocomplete="new-password"
+          minlength="6" />
+        <p class="auth-form__hint">At least 6 characters.</p>
+
+        <button type="submit" class="auth-submit-btn" id="signupSubmitBtn">Create account</button>
+        <p class="auth-form__message" id="signupMessage" role="alert" aria-live="polite"></p>
+      </form>
+
+      <!-- FORGOT PASSWORD -->
+      <form id="forgotPasswordForm" class="auth-form" hidden autocomplete="on">
+        <p class="auth-form__hint">Enter your email and we'll send you a reset link.</p>
+        <label for="forgotEmail">Email</label>
+        <input type="email" id="forgotEmail" name="email" required autocomplete="email" />
+        <button type="submit" class="auth-submit-btn" id="forgotSubmitBtn">Send reset link</button>
+        <button type="button" class="auth-link-btn" id="backToLoginBtn">Back to log in</button>
+        <p class="auth-form__message" id="forgotMessage" role="alert" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="modalOverlay"></div>
   <div class="modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal__header">
@@ -608,13 +629,13 @@
               <option value="NG">Nigeria</option>
               <option value="KE">Kenya</option>
               <option value="ZA">South Africa</option>
-              <option value="US">Ivory Coast</option>
-              <option value="GB">Togo</option>
-              <option value="CE">Zambia</option>
-              <option value="DA">Niger</option>
+              <option value="CI">Ivory Coast</option>
+              <option value="TG">Togo</option>
+              <option value="ZM">Zambia</option>
+              <option value="NE">Niger</option>
               <option value="MA">Morocco</option>
-              <option value="UA">Uganda</option>
-              <option value="TA">Tanzania</option>
+              <option value="UG">Uganda</option>
+              <option value="TZ">Tanzania</option>
             </select>
             <span class="field-error" id="countryError"></span>
           </div>
@@ -684,6 +705,10 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+  <script src="https://js.paystack.co/v2/inline.js"></script>
   <script src="app.js"></script>
 </body>
 

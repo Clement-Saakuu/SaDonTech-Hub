@@ -42,7 +42,12 @@ const CONFIG = {
 /* ============================================================
    PRODUCT CATALOGUE
    ============================================================ */
-const PRODUCTS = [
+// Fallback catalog — used only if Supabase isn't configured yet or a fetch
+// fails, so the storefront doesn't render completely empty during setup.
+// Once supabase-config.js has real credentials, PRODUCTS is populated from
+// the `products` table instead (see loadProducts() below) and this is
+// ignored in normal operation.
+const LOCAL_FALLBACK_PRODUCTS = [
   {
     id: 1,
     name: "Hp Notebook",
@@ -135,6 +140,46 @@ const PRODUCTS = [
   },
 ];
 
+// The live, mutable catalog the rest of the app reads from. Populated by
+// loadProducts() before anything renders.
+let PRODUCTS = [];
+
+/**
+ * Loads the product catalog from Supabase (the same table the admin
+ * dashboard edits), so admin changes are immediately visible to shoppers.
+ * Falls back to the local hardcoded list if Supabase isn't configured or
+ * the request fails, so the site is never blank.
+ */
+async function loadProducts() {
+  if (!window.sbClient) {
+    PRODUCTS = LOCAL_FALLBACK_PRODUCTS;
+    return;
+  }
+
+  const { data, error } = await window.sbClient
+    .from("products")
+    .select("*")
+    .order("id", { ascending: true });
+
+  if (error || !data || data.length === 0) {
+    if (error) console.warn("Falling back to local product data:", error.message);
+    PRODUCTS = LOCAL_FALLBACK_PRODUCTS;
+    return;
+  }
+
+  PRODUCTS = data.map((row) => ({
+    id: row.id,
+    name: row.name,
+    price: Number(row.price),
+    quantity: row.quantity,
+    image: row.image_url || "images/product1.png",
+    description: row.description || "",
+    category: row.category,
+    subcategory: row.subcategory || "",
+    isFeatured: !!row.is_featured,
+  }));
+}
+
 const CATEGORY_DATA = [
   { name: "Computers", subcategories: ["Desktops", "Laptop computers"] },
   { name: "Electronics", subcategories: ["Televisions", "Speakers", "Others"] },
@@ -148,6 +193,8 @@ const CATEGORY_DATA = [
 const SALES_TRACK_KEY = "sdon_sales_data";
 const RECENTLY_VIEWED_KEY = "sdon_recently_viewed";
 const NEWSLETTER_KEY = "sdon_newsletter_emails";
+const CART_KEY = "sdon_cart";
+const WISHLIST_KEY = "sdon_wishlist";
 
 const REVIEWS_KEY = "sdon_customer_reviews";
 const ORDER_PROGRESS_DATA = {
@@ -185,6 +232,25 @@ const INITIAL_REVIEWS = [
     quote: "I chatted with the seller before ordering and that helped me choose the right accessory confidently.",
   },
 ];
+
+/* ============================================================
+   SECURITY HELPERS
+   ============================================================ */
+/**
+ * Escapes text before it is interpolated into innerHTML.
+ * Any content that originated from a user (reviews, form fields, etc.)
+ * MUST be passed through this before being placed in template strings
+ * that are assigned to .innerHTML — otherwise a review like
+ * "<img src=x onerror=alert(1)>" would execute in every visitor's browser
+ * (stored XSS), since reviews are persisted in localStorage and re-rendered.
+ */
+function escapeHTML(value) {
+  const div = document.createElement("div");
+  div.textContent = String(value ?? "");
+  return div.innerHTML;
+}
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /* ============================================================
    STATE
@@ -285,7 +351,12 @@ function initAboutPopupSlideshow() {
 /* ============================================================
    INIT
    ============================================================ */
-function initApp() {
+async function initApp() {
+  await loadProducts();
+
+  cart = loadCart();
+  wishlist = await loadWishlist();
+
   if (typeof productsGrid !== 'undefined' && productsGrid) {
     renderCategorySidebar();
     renderProducts();
@@ -313,7 +384,7 @@ function initApp() {
   renderRecentlyViewed();
   initAboutPopupSlideshow();
   startSellerDashboardPreview();
-  startDevelopmentAlerts();
+  updateCartUI();
 }
 
 if (document.readyState === 'loading') {
@@ -526,12 +597,26 @@ function updateProductButtons() {
 }
 
 function toggleWishlist(productId) {
-  if (wishlist.includes(productId)) {
+  const user = window.sbGetCurrentUser && window.sbGetCurrentUser();
+  const wasInWishlist = wishlist.includes(productId);
+
+  if (wasInWishlist) {
     wishlist = wishlist.filter((id) => id !== productId);
     showToast("Removed from wishlist");
   } else {
     wishlist.push(productId);
     showToast("Added to wishlist");
+  }
+  saveWishlist();
+
+  if (window.sbClient && user) {
+    const op = wasInWishlist
+      ? window.sbClient.from("wishlist_items").delete().eq("user_id", user.id).eq("product_id", productId)
+      : window.sbClient.from("wishlist_items").insert({ user_id: user.id, product_id: productId });
+
+    op.then(({ error }) => {
+      if (error) console.warn("Wishlist sync failed:", error.message);
+    });
   }
 }
 
@@ -647,39 +732,6 @@ function startSellerDashboardPreview() {
   }, 1000);
 }
 
-function showDevelopmentAlert() {
-  if (!document.body) return;
-
-  let alertBox = document.getElementById("systemDevelopmentAlert");
-
-  if (!alertBox) {
-    alertBox = document.createElement("div");
-    alertBox.id = "systemDevelopmentAlert";
-    alertBox.className = "system-development-alert";
-    alertBox.setAttribute("role", "alert");
-    alertBox.setAttribute("aria-live", "assertive");
-    alertBox.innerHTML = "<strong>SYSTEM UNDER DEVELOPMENT</strong>";
-    document.body.appendChild(alertBox);
-  }
-
-  window.requestAnimationFrame(() => {
-    alertBox.classList.add("is-visible");
-  });
-
-  window.clearTimeout(showDevelopmentAlert.hideTimer);
-  showDevelopmentAlert.hideTimer = window.setTimeout(() => {
-    alertBox.classList.remove("is-visible");
-  }, 60000);
-}
-
-function startDevelopmentAlerts() {
-  if (window.__sadonDevelopmentAlertStarted) return;
-  window.__sadonDevelopmentAlertStarted = true;
-
-  showDevelopmentAlert();
-  window.setInterval(showDevelopmentAlert, 300000);
-}
-
 function renderExperiencePreview() {
   const stepsEl = document.getElementById("orderProgressSteps");
   const fillEl = document.getElementById("orderProgressBarFill");
@@ -731,7 +783,7 @@ function attachNewsletterForm() {
     event.preventDefault();
     const email = input.value.trim();
 
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!email || !EMAIL_PATTERN.test(email)) {
       showToast("Please enter a valid email address.");
       return;
     }
@@ -780,10 +832,12 @@ function attachReviewForm() {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const name = document.getElementById("reviewName")?.value.trim() || "";
-    const title = document.getElementById("reviewTitle")?.value.trim() || "";
-    const rating = Number(document.getElementById("reviewRating")?.value || 5);
-    const quote = document.getElementById("reviewMessage")?.value.trim() || "";
+    const clamp = (value, max) => value.trim().slice(0, max);
+    const name = clamp(document.getElementById("reviewName")?.value || "", 60);
+    const title = clamp(document.getElementById("reviewTitle")?.value || "", 80);
+    const ratingRaw = Number(document.getElementById("reviewRating")?.value || 5);
+    const rating = Math.min(5, Math.max(1, Number.isFinite(ratingRaw) ? ratingRaw : 5));
+    const quote = clamp(document.getElementById("reviewMessage")?.value || "", 500);
 
     if (!name || !title || !quote) {
       showToast("Please complete all review fields.");
@@ -811,9 +865,9 @@ function renderReviews() {
     return `
         <article class="review-card">
           <div class="review-card__stars">${stars}</div>
-          <h3>${review.title}</h3>
-          <p>“${review.quote}”</p>
-          <span>${review.name}</span>
+          <h3>${escapeHTML(review.title)}</h3>
+          <p>“${escapeHTML(review.quote)}”</p>
+          <span>${escapeHTML(review.name)}</span>
         </article>
       `;
   }).join("")}
@@ -824,9 +878,9 @@ function renderReviews() {
     return `
             <article class="review-card review-card--extra">
               <div class="review-card__stars">${stars}</div>
-              <h3>${review.title}</h3>
-              <p>“${review.quote}”</p>
-              <span>${review.name}</span>
+              <h3>${escapeHTML(review.title)}</h3>
+              <p>“${escapeHTML(review.quote)}”</p>
+              <span>${escapeHTML(review.name)}</span>
             </article>
           `;
   }).join("")}
@@ -884,12 +938,75 @@ function attachProductModalEvents() {
   }
 }
 
+function loadCart() {
+  try {
+    const stored = localStorage.getItem(CART_KEY);
+    if (!stored) return [];
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed)) return [];
+    // Re-hydrate against the live catalogue so stale/removed items and price
+    // changes don't linger in a returning visitor's cart.
+    return parsed
+      .map((item) => {
+        const product = PRODUCTS.find((p) => p.id === item.id);
+        if (!product) return null;
+        const qty = Math.max(1, Math.min(Number(item.qty) || 1, product.quantity ?? 1));
+        return { ...product, qty };
+      })
+      .filter(Boolean);
+  } catch (error) {
+    console.warn("Unable to load saved cart", error);
+    return [];
+  }
+}
+
+function saveCart() {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart.map((i) => ({ id: i.id, qty: i.qty }))));
+}
+
+async function loadWishlist() {
+  const user = window.sbGetCurrentUser && window.sbGetCurrentUser();
+
+  if (window.sbClient && user) {
+    const { data, error } = await window.sbClient
+      .from("wishlist_items")
+      .select("product_id")
+      .eq("user_id", user.id);
+
+    if (!error && data) {
+      return data.map((row) => row.product_id);
+    }
+    console.warn("Unable to load wishlist from Supabase, falling back to local copy.", error?.message);
+  }
+
+  try {
+    const stored = localStorage.getItem(WISHLIST_KEY);
+    if (!stored) return [];
+    const parsed = JSON.parse(stored);
+    return Array.isArray(parsed) ? parsed.filter((id) => PRODUCTS.some((p) => p.id === id)) : [];
+  } catch (error) {
+    console.warn("Unable to load saved wishlist", error);
+    return [];
+  }
+}
+
+function saveWishlist() {
+  // Guests: keep the localStorage copy in sync. Logged-in users are written
+  // to Supabase directly inside toggleWishlist(), row by row.
+  localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
+}
+
 /* ============================================================
    CART LOGIC
    ============================================================ */
 function addToCart(productId) {
   const product = PRODUCTS.find((p) => p.id === productId);
   if (!product) return;
+
+  if ((product.quantity ?? 0) <= 0) {
+    showToast(`${product.name} is out of stock.`);
+    return;
+  }
 
   const existing = cart.find((i) => i.id === productId);
   if (existing) {
@@ -909,6 +1026,16 @@ function removeFromCart(productId) {
 function changeQty(productId, delta) {
   const item = cart.find((i) => i.id === productId);
   if (!item) return;
+
+  if (delta > 0) {
+    const product = PRODUCTS.find((p) => p.id === productId);
+    const stockLimit = product ? (product.quantity ?? Infinity) : Infinity;
+    if (item.qty >= stockLimit) {
+      showToast(`Only ${stockLimit} in stock for ${item.name}.`);
+      return;
+    }
+  }
+
   item.qty += delta;
   if (item.qty <= 0) {
     removeFromCart(productId);
@@ -946,6 +1073,10 @@ function openSellerChat() {
    CART UI
    ============================================================ */
 function updateCartUI() {
+  saveCart();
+
+  if (!cartCount || !cartBody || !cartFooter) return;
+
   // Badge
   const count = getCartCount();
   cartCount.textContent = count;
@@ -1137,6 +1268,15 @@ function updatePaymentMethodUI() {
    ============================================================ */
 function openSuccess(reference, paymentMethod = "momo") {
   recordCheckoutSale(cart);
+
+  // place_order() already decremented stock server-side; mirror that in the
+  // local catalog copy so displayed stock stays accurate without a reload.
+  cart.forEach((item) => {
+    const product = PRODUCTS.find((p) => p.id === item.id);
+    if (product) product.quantity = Math.max(0, product.quantity - item.qty);
+  });
+  if (typeof productsGrid !== 'undefined' && productsGrid) renderProducts();
+
   closeCheckout();
   $("#successRef").textContent = `Reference: ${reference}`;
   const messageEl = $("#successMessage");
@@ -1194,7 +1334,7 @@ function validateForm() {
       return;
     }
 
-    if (id === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+    if (id === "email" && !EMAIL_PATTERN.test(value)) {
       setFieldError(input, error, "Enter a valid email address");
       valid = false;
     }
@@ -1221,10 +1361,20 @@ function clearFormErrors() {
 /* ============================================================
    PAYSTACK PAYMENT INTEGRATION
    ============================================================ */
-function initiatePaystackPayment(formData) {
-  const totalInKobo = getCartTotal() * 100; // Paystack accepts amount in the smallest currency unit (pesewas/kobo)
+function initiatePaystackPayment(formData, paymentMethod = "momo", orderId) {
+  if (typeof PaystackPop === "undefined") {
+    // The Paystack SDK didn't load (ad-blocker, offline, or the script tag was
+    // removed). Never silently treat this as a successful order.
+    showToast("Payment service unavailable right now. Please check your connection and try again.");
+    if (orderId && window.sbClient) window.sbClient.rpc("cancel_order", { p_order_id: orderId });
+    resetPayBtn();
+    return;
+  }
 
-  const handler = PaystackPop.setup({
+  const totalInKobo = getCartTotal() * 100; // Paystack accepts amount in the smallest currency unit (pesewas/kobo)
+  const paystack = new PaystackPop();
+
+  paystack.newTransaction({
     key: CONFIG.PAYSTACK_PUBLIC_KEY,
     email: formData.email,
     amount: totalInKobo,
@@ -1233,6 +1383,7 @@ function initiatePaystackPayment(formData) {
     firstname: formData.firstName,
     lastname: formData.lastName,
     phone: formData.phone,
+    channels: paymentMethod === "momo" ? ["mobile_money"] : undefined,
 
     metadata: {
       custom_fields: [
@@ -1251,42 +1402,69 @@ function initiatePaystackPayment(formData) {
           variable_name: "order_items",
           value: cart.map((i) => `${i.name} x${i.qty}`).join(", "),
         },
+        {
+          display_name: "Order ID",
+          variable_name: "order_id",
+          value: orderId || "",
+        },
       ],
     },
 
     /**
-     * onSuccess — called when payment is completed successfully.
-     * Here you would typically:
-     *  1. Send the reference to your backend to verify the transaction
-     *     via Paystack's /transaction/verify/:reference endpoint.
-     *  2. Update your database / fulfil the order.
-     *  3. Show a confirmation to the user.
+     * onSuccess — called when the popup reports the payment completed.
      *
-     * @param {Object} response - { reference, status, trans, trxref }
+     * This callback firing is NOT proof of payment on its own — it runs in
+     * the browser and could be spoofed. So instead of trusting it directly,
+     * we hand the reference to the verify-payment Edge Function, which
+     * re-checks the transaction with Paystack using the SECRET key
+     * (server-side only) and cross-checks the amount before marking the
+     * order paid. Only a "verified: true" response counts as success.
+     *
+     * @param {Object} transaction - { reference, status, trans, message, ... }
      */
-    callback: function (response) {
-      console.log("Payment successful:", response);
-      // TODO: Verify transaction on your backend before fulfilling order.
-      // Example backend call:
-      //   fetch(`/api/verify-payment/${response.reference}`)
-      //     .then(res => res.json())
-      //     .then(data => { if (data.status === 'success') fulfillOrder(); });
-      openSuccess(response.reference);
+    onSuccess: async function (transaction) {
+      if (!window.sbClient || !orderId) {
+        showToast("We couldn't confirm your payment automatically. Please contact support with reference: " + transaction.reference);
+        resetPayBtn();
+        return;
+      }
+
+      const payText = $("#payBtnText");
+      if (payText) payText.textContent = "Confirming payment...";
+
+      const { data, error } = await window.sbClient.functions.invoke("verify-payment", {
+        body: { reference: transaction.reference, orderId },
+      });
+
+      if (error || !data?.verified) {
+        showToast(
+          "We couldn't confirm your payment. If money was deducted, contact support with reference: " +
+          transaction.reference
+        );
+        resetPayBtn();
+        return;
+      }
+
+      // Cart is cleared by closeSuccess() once the user dismisses the modal —
+      // recordCheckoutSale(cart) inside openSuccess() needs it intact until then.
+      openSuccess(transaction.reference, paymentMethod);
       resetPayBtn();
     },
 
     /**
-     * onClose — called when the user dismisses the Paystack popup.
-     * Payment was NOT completed.
+     * onCancel — called when the user dismisses the Paystack popup.
+     * Payment was NOT completed — release the reserved stock.
      */
-    onClose: function () {
-      console.log("Paystack popup closed by user.");
+    onCancel: function () {
+      if (orderId && window.sbClient) {
+        window.sbClient.rpc("cancel_order", { p_order_id: orderId }).then(({ error }) => {
+          if (error) console.warn("Couldn't release stock for cancelled order:", error.message);
+        });
+      }
       showToast("Payment cancelled. You can try again.");
       resetPayBtn();
     },
   });
-
-  handler.openIframe();
 }
 
 function generateReference() {
@@ -1361,11 +1539,23 @@ function attachModalEvents() {
 
 function attachFormEvents() {
   if (checkoutForm) {
-    checkoutForm.addEventListener("submit", (e) => {
+    checkoutForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       if (!validateForm()) {
         showToast("Please fill in all required fields correctly.");
+        return;
+      }
+
+      if (cart.length === 0) {
+        showToast("Your cart is empty.");
+        return;
+      }
+
+      const user = window.sbGetCurrentUser && window.sbGetCurrentUser();
+      if (!window.sbClient || !user) {
+        showToast("Please log in to complete checkout — it's how we keep your order history and receipts.");
+        if (typeof window.openAuthModal === "function") window.openAuthModal("login");
         return;
       }
 
@@ -1381,20 +1571,47 @@ function attachFormEvents() {
         momoNumber: $("#momoNumber") ? $("#momoNumber").value.trim() : "",
       };
 
-      if (paymentMethod === "pay_on_delivery" || paymentMethod === "momo") {
-        openSuccess(paymentMethod === "momo" ? `MOMO-${Date.now()}` : `POD-${Date.now()}`, paymentMethod);
+      const submitBtn = $("#paystackBtn");
+      if (submitBtn) submitBtn.classList.add("loading");
+      const payText = $("#payBtnText");
+      if (payText) payText.textContent = "Placing order...";
+
+      // place_order() is a database function: it validates stock, computes
+      // the total itself (never trusts a client-supplied price), and
+      // decrements stock — all in one atomic transaction. See
+      // supabase/phase2_migration.sql.
+      const { data: orderId, error } = await window.sbClient.rpc("place_order", {
+        p_items: cart.map((item) => ({ product_id: item.id, quantity: item.qty })),
+        p_full_name: `${formData.firstName} ${formData.lastName}`.trim(),
+        p_phone: formData.phone,
+        p_street: formData.address,
+        p_city: formData.city,
+        p_country: formData.country,
+        p_payment_method: paymentMethod,
+        p_contact_email: formData.email,
+        p_contact_phone: formData.phone,
+        p_delivery_fee: 0,
+      });
+
+      if (error) {
+        resetPayBtn();
+        showToast(error.message || "Couldn't place your order. Please try again.");
         return;
       }
 
-      const btn = $("#paystackBtn");
-      if (btn) btn.classList.add("loading");
-      const payText = $("#payBtnText");
-      if (payText) payText.textContent = "Processing";
+      // Pay on Delivery legitimately collects no payment now, so it's safe to
+      // confirm the order immediately. Every other method (Mobile Money, card)
+      // MUST go through the real Paystack popup — never fake a success state.
+      if (paymentMethod === "pay_on_delivery") {
+        resetPayBtn();
+        openSuccess(`POD-${orderId.slice(0, 8).toUpperCase()}`, paymentMethod);
+        return;
+      }
 
-      // Short delay for UX, then open Paystack
+      if (payText) payText.textContent = "Processing";
       setTimeout(() => {
-        initiatePaystackPayment(formData);
-      }, 500);
+        initiatePaystackPayment(formData, paymentMethod, orderId);
+      }, 300);
     });
   }
 
@@ -1544,8 +1761,6 @@ function attachContactPageEvents() {
       btn.classList.add('is-clicked');
       setTimeout(() => btn.classList.remove('is-clicked'), 220);
 
-      // Debug / UX feedback
-      console.log('WhatsApp button clicked', { number: btn.dataset.number });
       showToast('Opening WhatsApp...');
 
       const number = (btn.dataset.number || "+233202173740").replace(/[^+\d]/g, "");
@@ -1581,12 +1796,23 @@ function attachContactPageEvents() {
   if (contactForm) {
     contactForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const name = (document.getElementById("contactName") || {}).value || "";
-      const email = (document.getElementById("contactEmail") || {}).value || "";
-      const phone = (document.getElementById("contactPhone") || {}).value || "";
-      const message = (document.getElementById("contactMessage") || {}).value || "";
-      const subject = encodeURIComponent(`Contact from website: ${name}`);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+      const name = (document.getElementById("contactName") || {}).value.trim() || "";
+      const email = (document.getElementById("contactEmail") || {}).value.trim() || "";
+      const phone = (document.getElementById("contactPhone") || {}).value.trim() || "";
+      const message = (document.getElementById("contactMessage") || {}).value.trim() || "";
+      const subjectField = (document.getElementById("contactSubject") || {}).value.trim() || "";
+
+      if (!name || !email || !message) {
+        showToast("Please fill in your name, email, and message.");
+        return;
+      }
+      if (!EMAIL_PATTERN.test(email)) {
+        showToast("Please enter a valid email address.");
+        return;
+      }
+
+      const subject = encodeURIComponent(subjectField || `Contact from website: ${name}`);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\n${message}`);
       // Use mailto: fallback — update recipient as needed
       const recipient = 'saakuu.clement@gmail.com';
       const mailto = `mailto:${recipient}?subject=${subject}&body=${body}`;

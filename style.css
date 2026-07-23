@@ -56,35 +56,6 @@ body {
   overflow-x: hidden;
 }
 
-.system-development-alert {
-  position: fixed;
-  top: 90px;
-  right: 24px;
-  z-index: 1100;
-  max-width: min(320px, calc(100% - 24px));
-  padding: 14px 16px;
-  border-radius: 12px;
-  background: var(--cream);
-  color: var(--blue);
-  box-shadow: var(--shadow-md);
-  border: 1px solid rgba(13, 3, 99, 0.16);
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.system-development-alert.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.system-development-alert strong {
-  display: block;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-}
-
 img {
   display: block;
   max-width: 100%;
@@ -3444,3 +3415,714 @@ img.is-pop {
   transform: translateY(-8px) scale(1.06);
   box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
 }
+/* ============================================================
+   ABOUT SECTION — banner + list (replaces old inline-styled markup)
+   ============================================================ */
+.about__banner {
+  color: var(--orange-light);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  margin: 18px 0 10px;
+}
+
+.about__list {
+  color: var(--orange-light);
+  padding-left: 20px;
+  margin: 0 0 12px;
+}
+
+.about__list li {
+  margin-bottom: 6px;
+}
+
+.about__list-link {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--blue);
+  font-style: italic;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   POLICY PAGE (privacy / terms / shipping / returns / refunds)
+   ============================================================ */
+.policy-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: calc(var(--navbar-h) + 32px) 20px 64px;
+}
+
+.policy-page__inner h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  margin-bottom: 12px;
+}
+
+.policy-page__intro {
+  color: var(--grey-text);
+  margin-bottom: 24px;
+}
+
+.policy-page__intro a {
+  color: var(--orange);
+}
+
+.policy-page__toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.policy-page__toc a {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--grey-light);
+  color: var(--black);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.policy-page__toc a:hover,
+.policy-page__toc a:focus-visible {
+  background: var(--peach);
+}
+
+.policy-section {
+  padding: 22px 0;
+  border-top: 1px solid var(--grey-mid);
+  scroll-margin-top: calc(var(--navbar-h) + 16px);
+}
+
+.policy-section h2 {
+  font-family: var(--font-display);
+  margin-bottom: 10px;
+  color: var(--blue);
+}
+
+.policy-section p {
+  margin-bottom: 10px;
+  color: var(--black);
+}
+
+.policy-page__updated {
+  margin-top: 24px;
+  color: var(--grey-text);
+  font-size: 0.85rem;
+}
+
+/* ============================================================
+   ACCOUNT BUTTON (navbar)
+   ============================================================ */
+.navbar__account {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid var(--light-blue);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--orange-light);
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.navbar__account:hover,
+.navbar__account:focus-visible {
+  background: var(--grey-light);
+}
+
+.account-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* ============================================================
+   AUTH MODAL
+   ============================================================ */
+.auth-modal .modal__body {
+  max-width: 420px;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--grey-mid);
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-weight: 700;
+  color: var(--grey-text);
+  cursor: pointer;
+}
+
+.auth-tab.is-active {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-form label {
+  font-weight: 600;
+  font-size: 0.88rem;
+  margin-top: 8px;
+}
+
+.auth-form input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--grey-mid);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
+
+.auth-form input:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 1px;
+}
+
+.auth-form__hint {
+  font-size: 0.8rem;
+  color: var(--grey-text);
+  margin: 2px 0 0;
+}
+
+.auth-submit-btn {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: var(--orange);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  background: var(--orange-dark, #d8660a);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-link-btn {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: var(--blue);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.88rem;
+  align-self: center;
+}
+
+.auth-form__message {
+  min-height: 20px;
+  font-size: 0.88rem;
+  margin-top: 8px;
+}
+
+.auth-form__message.is-error {
+  color: #c0392b;
+}
+
+.auth-form__message.is-success {
+  color: #1e8e3e;
+}
+
+/* ============================================================
+   ACCOUNT / RESET-PASSWORD PAGES
+   ============================================================ */
+.account-page {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: calc(var(--navbar-h) + 40px) 20px 64px;
+}
+
+.account-page h1 {
+  font-family: var(--font-display);
+  margin-bottom: 18px;
+}
+
+.account-card {
+  background: var(--grey-light);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+}
+
+.account-card p {
+  margin-bottom: 8px;
+}
+
+.account-page__note {
+  color: var(--grey-text);
+  font-size: 0.92rem;
+  margin-bottom: 20px;
+}
+
+.account-page__cta,
+.account-page__logout {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: var(--orange);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* ============================================================
+   ACCOUNT PAGE — tabs, panels, order/address/wishlist cards
+   ============================================================ */
+.account-page {
+  max-width: 760px;
+}
+
+.account-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--grey-mid);
+}
+
+.account-tab {
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-weight: 700;
+  color: var(--grey-text);
+  cursor: pointer;
+}
+
+.account-tab.is-active {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+}
+
+.account-panel {
+  display: none;
+}
+
+.account-panel.is-active {
+  display: block;
+}
+
+.account-empty {
+  color: var(--grey-text);
+  padding: 20px 0;
+}
+
+/* Orders */
+.order-card {
+  border: 1px solid var(--grey-mid);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+
+.order-card__header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.order-card__date {
+  color: var(--grey-text);
+  font-weight: 400;
+  font-size: 0.85rem;
+}
+
+.order-card__items {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+}
+
+.order-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.order-card__total {
+  margin-left: auto;
+  font-weight: 800;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  background: var(--grey-light);
+  color: var(--black);
+}
+
+.status-badge--paid,
+.status-badge--delivered {
+  background: #e3f7e8;
+  color: #1e8e3e;
+}
+
+.status-badge--pending,
+.status-badge--processing,
+.status-badge--dispatched,
+.status-badge--out_for_delivery {
+  background: #fff3e0;
+  color: #b25f00;
+}
+
+.status-badge--failed,
+.status-badge--cancelled {
+  background: #fdecea;
+  color: #c0392b;
+}
+
+/* Addresses */
+.addresses-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.address-card {
+  border: 1px solid var(--grey-mid);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.address-card h3 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.address-card p {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+  color: var(--grey-text);
+}
+
+.address-card__delete {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  color: #c0392b;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.address-add {
+  border: 1px dashed var(--grey-mid);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-top: 8px;
+}
+
+.address-add summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* Wishlist */
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.wishlist-card {
+  border: 1px solid var(--grey-mid);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.wishlist-card img {
+  width: 100%;
+  height: 110px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.wishlist-card h3 {
+  font-size: 0.92rem;
+  margin: 0 0 4px;
+}
+
+.wishlist-card__actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 0.82rem;
+}
+
+.wishlist-card__view {
+  color: var(--blue);
+}
+
+.wishlist-card__remove {
+  background: none;
+  border: none;
+  color: #c0392b;
+  cursor: pointer;
+}
+
+/* ============================================================
+   ADMIN DASHBOARD
+   ============================================================ */
+.admin-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: calc(var(--navbar-h) + 32px) 20px 64px;
+}
+
+.admin-page h1 {
+  font-family: var(--font-display);
+  margin-bottom: 18px;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.admin-form label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+.admin-form input,
+.admin-form textarea {
+  padding: 9px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--grey-mid);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+}
+
+.admin-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  margin-top: 18px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--grey-light);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.admin-table th {
+  background: var(--grey-light);
+  font-weight: 700;
+}
+
+.admin-inline-input {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--grey-mid);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+}
+
+.admin-inline-input--sm {
+  width: 80px;
+}
+
+.admin-table__actions {
+  display: flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.admin-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.admin-btn--save {
+  background: var(--orange);
+  color: #fff;
+}
+
+.admin-btn--delete {
+  background: #fdecea;
+  color: #c0392b;
+}
+
+/* ============================================================
+   ADMIN DASHBOARD — KPIs, bar charts, reports
+   ============================================================ */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: var(--grey-light);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kpi-card__label {
+  font-size: 0.8rem;
+  color: var(--grey-text);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.kpi-card__value {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--black);
+}
+
+.kpi-card__sub {
+  font-size: 0.8rem;
+  color: var(--grey-text);
+}
+
+.admin-panel-block {
+  margin-bottom: 30px;
+}
+
+.admin-panel-block h2 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 200px;
+  padding: 10px 6px 0;
+  border-bottom: 1px solid var(--grey-mid);
+  overflow-x: auto;
+}
+
+.bar-chart__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 44px;
+  height: 100%;
+}
+
+.bar-chart__bar {
+  width: 60%;
+  min-width: 18px;
+  background: var(--orange);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease;
+}
+
+.bar-chart__value {
+  font-size: 0.7rem;
+  color: var(--grey-text);
+  margin-top: 4px;
+  white-space: nowrap;
+}
+
+.bar-chart__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.report-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 14px 0 20px;
+}
+
+.report-controls label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.report-controls input[type="month"] {
+  padding: 9px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--grey-mid);
+  font-family: var(--font-body);
+}
+
+.report-controls .auth-submit-btn {
+  margin-top: 0;
+  width: auto;
+  padding: 10px 18px;
+}
+
+.report-download-btn {
+  width: auto;
+  padding: 10px 18px;
+}
+/*npm install -g supabase       # one-time install of the Supabase CLI
+supabase login                 # opens your browser to authenticate
+supabase link --project-ref cgwffvsabwecpuuvmohn
+supabase functions deploy verify-payment
+supabase secrets set PAYSTACK_SECRET_KEY=sk_test_a42f6dbc3082fc827894268d3916c7a7ec579fc3 */

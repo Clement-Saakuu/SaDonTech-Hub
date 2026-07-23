@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Expert Dashboard | SaDonTech Hub</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="staff.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+</head>
+
+<body>
+  <header class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="staff_team.html" class="navbar__logo">
+        <img src="images/SaDon_logo1.PNG" alt="SaDonTech Hub logo" />
+      </a>
+      <nav class="navbar__links">
+        <a href="staff_team.html" class="nav-link">Experts Directory</a>
+        <a href="index.html" class="nav-link">Storefront</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="account-page expert-dashboard-page">
+    <div class="account-page__inner">
+      <div id="loadingState"><p>Loading...</p></div>
+
+      <div id="signedOutState" hidden>
+        <h1>You're not logged in</h1>
+        <p>Please log in from the Experts directory to access your dashboard.</p>
+        <a href="staff_team.html" class="account-page__cta">Go to Experts Directory</a>
+      </div>
+
+      <!-- Shown when a logged-in user has no expert_profiles row yet -->
+      <div id="onboardingState" hidden>
+        <h1>Set up your Expert Profile</h1>
+
+        <div id="claimBlock" hidden class="account-card">
+          <p>We found an existing profile under your email — is this you?</p>
+          <p><strong id="claimName"></strong></p>
+          <button type="button" class="auth-submit-btn" id="claimBtn">Yes, this is my profile</button>
+        </div>
+
+        <form id="onboardForm" class="auth-form">
+          <label for="obName">Full name</label>
+          <input type="text" id="obName" required maxlength="80" />
+
+          <label for="obRoleTitle">Role / Title</label>
+          <input type="text" id="obRoleTitle" placeholder="e.g. Frontend Developer" maxlength="100" />
+
+          <label for="obHighlight">Highlight / Tagline</label>
+          <input type="text" id="obHighlight" placeholder="e.g. React · UI/UX · 5 years experience" maxlength="150" />
+
+          <label for="obBio">Bio</label>
+          <textarea id="obBio" rows="3" maxlength="600"></textarea>
+
+          <label for="obExpertise">Areas of expertise (comma-separated)</label>
+          <input type="text" id="obExpertise" placeholder="Web development, UI design, ..." maxlength="300" />
+
+          <label for="obPhoto">Photo URL</label>
+          <input type="text" id="obPhoto" placeholder="images/your-photo.jpg" maxlength="300" />
+
+          <label for="obWhatsapp">WhatsApp link</label>
+          <input type="text" id="obWhatsapp" placeholder="https://wa.me/233..." maxlength="200" />
+
+          <label class="expert-agree">
+            <input type="checkbox" id="obAgree" required />
+            I agree to pay the monthly platform fee (<span id="obFeeAmount">GH₵ 50</span>/month) to keep my
+            profile active and visible in the directory.
+          </label>
+
+          <button type="submit" class="auth-submit-btn">Create my profile</button>
+          <p class="auth-form__message" id="onboardMessage" role="alert" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <!-- Main dashboard -->
+      <div id="dashboardState" hidden>
+        <h1>My Expert Dashboard</h1>
+
+        <nav class="account-tabs">
+          <button type="button" class="account-tab is-active" data-tab="profile">Profile</button>
+          <button type="button" class="account-tab" data-tab="projects">Projects</button>
+          <button type="button" class="account-tab" data-tab="documents">CV / Resume</button>
+          <button type="button" class="account-tab" data-tab="subscription">Subscription</button>
+        </nav>
+
+        <!-- PROFILE -->
+        <section class="account-panel is-active" id="panel-profile">
+          <form id="profileForm" class="auth-form">
+            <label for="pfName">Full name</label>
+            <input type="text" id="pfName" required maxlength="80" />
+
+            <label for="pfRoleTitle">Role / Title</label>
+            <input type="text" id="pfRoleTitle" maxlength="100" />
+
+            <label for="pfHighlight">Highlight / Tagline</label>
+            <input type="text" id="pfHighlight" maxlength="150" />
+
+            <label for="pfBio">Bio</label>
+            <textarea id="pfBio" rows="3" maxlength="600"></textarea>
+
+            <label for="pfExpertise">Areas of expertise (comma-separated)</label>
+            <input type="text" id="pfExpertise" maxlength="300" />
+
+            <label for="pfPhoto">Photo URL</label>
+            <input type="text" id="pfPhoto" maxlength="300" />
+
+            <label for="pfWhatsapp">WhatsApp link</label>
+            <input type="text" id="pfWhatsapp" maxlength="200" />
+
+            <button type="submit" class="auth-submit-btn">Save changes</button>
+            <p class="auth-form__message" id="profileMessage" role="alert" aria-live="polite"></p>
+          </form>
+          <button type="button" id="logoutBtn" class="account-page__logout" style="margin-top:16px;">Log out</button>
+        </section>
+
+        <!-- PROJECTS -->
+        <section class="account-panel" id="panel-projects">
+          <details class="address-add" open>
+            <summary>+ Add a project</summary>
+            <form id="addProjectForm" class="auth-form">
+              <label for="projTitle">Title</label>
+              <input type="text" id="projTitle" required maxlength="100" />
+
+              <label for="projDescription">Description</label>
+              <textarea id="projDescription" rows="2" maxlength="400"></textarea>
+
+              <label for="projUrl">Project link</label>
+              <input type="text" id="projUrl" placeholder="https://..." maxlength="300" />
+
+              <label for="projTemplateUrl">Template / resource link (optional)</label>
+              <input type="text" id="projTemplateUrl" placeholder="https://..." maxlength="300" />
+
+              <label for="projImage">Thumbnail image URL (optional)</label>
+              <input type="text" id="projImage" placeholder="https://..." maxlength="300" />
+
+              <button type="submit" class="auth-submit-btn">Add project</button>
+              <p class="auth-form__message" id="addProjectMessage" role="alert" aria-live="polite"></p>
+            </form>
+          </details>
+
+          <div id="projectsList" class="projects-list"></div>
+        </section>
+
+        <!-- DOCUMENTS -->
+        <section class="account-panel" id="panel-documents">
+          <p class="account-page__note">
+            Upload a PDF CV or resume. Visitors view it in an in-page reader (rendered page-by-page, no
+            download button, no visible file link, right-click disabled, watermarked) rather than the
+            browser's own PDF viewer. This raises the bar against casual saving, but nothing running in a
+            browser can stop someone from screenshotting their own screen — treat it as view-first, not
+            copy-proof.
+          </p>
+
+          <form id="uploadDocForm" class="auth-form">
+            <label for="docType">Document type</label>
+            <select id="docType">
+              <option value="cv">CV</option>
+              <option value="resume">Resume</option>
+            </select>
+            <label for="docFile">PDF file</label>
+            <input type="file" id="docFile" accept="application/pdf" required />
+            <button type="submit" class="auth-submit-btn">Upload</button>
+            <p class="auth-form__message" id="uploadDocMessage" role="alert" aria-live="polite"></p>
+          </form>
+
+          <div id="documentsList" class="documents-list" style="margin-top:16px;"></div>
+        </section>
+
+        <!-- SUBSCRIPTION -->
+        <section class="account-panel" id="panel-subscription">
+          <div class="account-card">
+            <p><strong>Status:</strong> <span id="subStatus">—</span></p>
+            <p><strong>Paid until:</strong> <span id="subPaidUntil">—</span></p>
+            <p><strong>Monthly fee:</strong> <span id="subFee">—</span></p>
+          </div>
+          <button type="button" class="auth-submit-btn" id="payFeeBtn">Pay monthly fee</button>
+          <p class="auth-form__message" id="subMessage" role="alert" aria-live="polite"></p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="supabase-config.js"></script>
+  <script type="module" src="pdf-viewer.js"></script>
+  <script>
+    (async function () {
+      const loadingEl = document.getElementById("loadingState");
+      const signedOutEl = document.getElementById("signedOutState");
+      const onboardingEl = document.getElementById("onboardingState");
+      const dashboardEl = document.getElementById("dashboardState");
+
+      const configured =
+        typeof SUPABASE_CONFIG !== "undefined" &&
+        SUPABASE_CONFIG.url &&
+        !SUPABASE_CONFIG.url.includes("YOUR-PROJECT-REF");
+
+      if (!configured || typeof window.supabase === "undefined") {
+        loadingEl.hidden = true;
+        signedOutEl.hidden = false;
+        signedOutEl.querySelector("p").textContent = "Account features aren't set up yet. See SETUP.md.";
+        return;
+      }
+
+      const sb = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+      const { data: sessionData } = await sb.auth.getSession();
+      const user = sessionData.session?.user;
+
+      loadingEl.hidden = true;
+
+      if (!user) {
+        signedOutEl.hidden = false;
+        return;
+      }
+
+      function escapeHTML(value) {
+        const div = document.createElement("div");
+        div.textContent = String(value ?? "");
+        return div.innerHTML;
+      }
+
+      function money(n) {
+        return `GH₵ ${Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+      }
+
+      let myProfile = null;
+
+      async function loadMyProfile() {
+        const { data, error } = await sb.from("expert_profiles").select("*").eq("user_id", user.id).maybeSingle();
+        if (error) {
+          console.warn("Couldn't load expert profile:", error.message);
+          return null;
+        }
+        return data;
+      }
+
+      myProfile = await loadMyProfile();
+
+      if (!myProfile) {
+        onboardingEl.hidden = false;
+
+        // Check for an unclaimed founder profile matching this email
+        const { data: unclaimed } = await sb
+          .from("expert_profiles")
+          .select("*")
+          .eq("email", user.email)
+          .is("user_id", null)
+          .maybeSingle();
+
+        if (unclaimed) {
+          document.getElementById("claimBlock").hidden = false;
+          document.getElementById("claimName").textContent = unclaimed.full_name;
+          document.getElementById("claimBtn").addEventListener("click", async () => {
+            const { error } = await sb
+              .from("expert_profiles")
+              .update({ user_id: user.id, updated_at: new Date().toISOString() })
+              .eq("id", unclaimed.id);
+            if (error) {
+              alert("Couldn't claim this profile: " + error.message);
+              return;
+            }
+            window.location.reload();
+          });
+        }
+
+        document.getElementById("obFeeAmount").textContent = money(50);
+
+        document.getElementById("onboardForm").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const messageEl = document.getElementById("onboardMessage");
+
+          if (!document.getElementById("obAgree").checked) {
+            messageEl.textContent = "You must agree to the monthly fee to continue.";
+            messageEl.classList.add("is-error");
+            return;
+          }
+
+          const payload = {
+            user_id: user.id,
+            email: user.email,
+            full_name: document.getElementById("obName").value.trim(),
+            role_title: document.getElementById("obRoleTitle").value.trim(),
+            highlight: document.getElementById("obHighlight").value.trim(),
+            bio: document.getElementById("obBio").value.trim(),
+            expertise: document.getElementById("obExpertise").value.split(",").map((s) => s.trim()).filter(Boolean),
+            photo_url: document.getElementById("obPhoto").value.trim() || null,
+            whatsapp_link: document.getElementById("obWhatsapp").value.trim() || null,
+            status: "pending_payment",
+          };
+
+          if (!payload.full_name) {
+            messageEl.textContent = "Please enter your full name.";
+            messageEl.classList.add("is-error");
+            return;
+          }
+
+          const { error } = await sb.from("expert_profiles").insert(payload);
+          if (error) {
+            messageEl.textContent = error.message;
+            messageEl.classList.add("is-error");
+            return;
+          }
+
+          window.location.reload();
+        });
+
+        return; // stop here — dashboard needs myProfile
+      }
+
+      dashboardEl.hidden = false;
+
+      /* ---------------- TABS ---------------- */
+      document.querySelectorAll(".account-tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll(".account-tab").forEach((t) => t.classList.remove("is-active"));
+          document.querySelectorAll(".account-panel").forEach((p) => p.classList.remove("is-active"));
+          tab.classList.add("is-active");
+          document.getElementById(`panel-${tab.dataset.tab}`).classList.add("is-active");
+        });
+      });
+
+      document.getElementById("logoutBtn").addEventListener("click", async () => {
+        await sb.auth.signOut();
+        window.location.href = "staff_team.html";
+      });
+
+      /* ---------------- PROFILE TAB ---------------- */
+      function fillProfileForm() {
+        document.getElementById("pfName").value = myProfile.full_name || "";
+        document.getElementById("pfRoleTitle").value = myProfile.role_title || "";
+        document.getElementById("pfHighlight").value = myProfile.highlight || "";
+        document.getElementById("pfBio").value = myProfile.bio || "";
+        document.getElementById("pfExpertise").value = (myProfile.expertise || []).join(", ");
+        document.getElementById("pfPhoto").value = myProfile.photo_url || "";
+        document.getElementById("pfWhatsapp").value = myProfile.whatsapp_link || "";
+      }
+      fillProfileForm();
+
+      document.getElementById("profileForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const messageEl = document.getElementById("profileMessage");
+        const update = {
+          full_name: document.getElementById("pfName").value.trim(),
+          role_title: document.getElementById("pfRoleTitle").value.trim(),
+          highlight: document.getElementById("pfHighlight").value.trim(),
+          bio: document.getElementById("pfBio").value.trim(),
+          expertise: document.getElementById("pfExpertise").value.split(",").map((s) => s.trim()).filter(Boolean),
+          photo_url: document.getElementById("pfPhoto").value.trim() || null,
+          whatsapp_link: document.getElementById("pfWhatsapp").value.trim() || null,
+          updated_at: new Date().toISOString(),
+        };
+
+        const { error } = await sb.from("expert_profiles").update(update).eq("id", myProfile.id);
+        if (error) {
+          messageEl.textContent = error.message;
+          messageEl.classList.add("is-error");
+          return;
+        }
+        Object.assign(myProfile, update);
+        messageEl.textContent = "Saved.";
+        messageEl.classList.remove("is-error");
+        messageEl.classList.add("is-success");
+      });
+
+      /* ---------------- PROJECTS TAB ---------------- */
+      async function loadProjects() {
+        const { data: projects, error } = await sb
+          .from("expert_projects")
+          .select("*")
+          .eq("expert_id", myProfile.id)
+          .order("created_at", { ascending: false });
+
+        const listEl = document.getElementById("projectsList");
+        if (error) {
+          listEl.innerHTML = `<p class="account-empty">Couldn't load projects.</p>`;
+          return;
+        }
+        if (!projects || projects.length === 0) {
+          listEl.innerHTML = `<p class="account-empty">No projects added yet.</p>`;
+          return;
+        }
+
+        listEl.innerHTML = projects
+          .map(
+            (p) => `
+              <article class="address-card" data-id="${p.id}">
+                <h3>${escapeHTML(p.title)}</h3>
+                <p>${escapeHTML(p.description || "")}</p>
+                <p>
+                  ${p.project_url ? `<a href="${escapeHTML(p.project_url)}" target="_blank" rel="noopener">Project link</a>` : ""}
+                  ${p.template_url ? ` · <a href="${escapeHTML(p.template_url)}" target="_blank" rel="noopener">Template link</a>` : ""}
+                </p>
+                <button type="button" class="address-card__delete" data-id="${p.id}">Remove</button>
+              </article>
+            `
+          )
+          .join("");
+
+        listEl.querySelectorAll(".address-card__delete").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            btn.disabled = true;
+            const { error } = await sb.from("expert_projects").delete().eq("id", btn.dataset.id);
+            if (error) {
+              alert("Couldn't remove: " + error.message);
+              btn.disabled = false;
+              return;
+            }
+            loadProjects();
+          });
+        });
+      }
+
+      document.getElementById("addProjectForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const messageEl = document.getElementById("addProjectMessage");
+        const payload = {
+          expert_id: myProfile.id,
+          title: document.getElementById("projTitle").value.trim(),
+          description: document.getElementById("projDescription").value.trim() || null,
+          project_url: document.getElementById("projUrl").value.trim() || null,
+          template_url: document.getElementById("projTemplateUrl").value.trim() || null,
+          image_url: document.getElementById("projImage").value.trim() || null,
+        };
+
+        if (!payload.title) {
+          messageEl.textContent = "Please enter a project title.";
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        const { error } = await sb.from("expert_projects").insert(payload);
+        if (error) {
+          messageEl.textContent = error.message;
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        messageEl.textContent = "Project added.";
+        messageEl.classList.remove("is-error");
+        messageEl.classList.add("is-success");
+        e.target.reset();
+        loadProjects();
+      });
+
+      loadProjects();
+
+      /* ---------------- DOCUMENTS TAB ---------------- */
+      async function loadDocuments() {
+        const { data: docs, error } = await sb
+          .from("expert_documents")
+          .select("*")
+          .eq("expert_id", myProfile.id)
+          .order("uploaded_at", { ascending: false });
+
+        const listEl = document.getElementById("documentsList");
+        if (error) {
+          listEl.innerHTML = `<p class="account-empty">Couldn't load documents.</p>`;
+          return;
+        }
+        if (!docs || docs.length === 0) {
+          listEl.innerHTML = `<p class="account-empty">No documents uploaded yet.</p>`;
+          return;
+        }
+
+        listEl.innerHTML = docs
+          .map(
+            (d) => `
+              <article class="address-card" data-id="${d.id}">
+                <h3>${escapeHTML(d.doc_type.toUpperCase())}</h3>
+                <p>${escapeHTML(d.original_filename || "")}</p>
+                <button type="button" class="address-card__delete view-btn" data-path="${escapeHTML(d.file_path)}" data-title="${escapeHTML(d.doc_type.toUpperCase())} — ${escapeHTML(d.original_filename || "")}" style="color:var(--blue);">View</button>
+                <button type="button" class="address-card__delete" data-id="${d.id}" data-path="${escapeHTML(d.file_path)}">Delete</button>
+              </article>
+            `
+          )
+          .join("");
+
+        listEl.querySelectorAll(".view-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const { data, error } = await sb.storage.from("expert-documents").createSignedUrl(btn.dataset.path, 300);
+            if (error || !data?.signedUrl) {
+              alert("Couldn't open document.");
+              return;
+            }
+            openPdfViewer(data.signedUrl, btn.dataset.title);
+          });
+        });
+
+        listEl.querySelectorAll(".address-card__delete:not(.view-btn)").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            if (!confirm("Delete this document?")) return;
+            btn.disabled = true;
+            await sb.storage.from("expert-documents").remove([btn.dataset.path]);
+            const { error } = await sb.from("expert_documents").delete().eq("id", btn.dataset.id);
+            if (error) {
+              alert("Couldn't delete: " + error.message);
+              btn.disabled = false;
+              return;
+            }
+            loadDocuments();
+          });
+        });
+      }
+
+      document.getElementById("uploadDocForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const messageEl = document.getElementById("uploadDocMessage");
+        const fileInput = document.getElementById("docFile");
+        const file = fileInput.files[0];
+        const docType = document.getElementById("docType").value;
+
+        if (!file) {
+          messageEl.textContent = "Please choose a PDF file.";
+          messageEl.classList.add("is-error");
+          return;
+        }
+        if (file.type !== "application/pdf") {
+          messageEl.textContent = "Only PDF files are accepted.";
+          messageEl.classList.add("is-error");
+          return;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+          messageEl.textContent = "File is too large (max 10MB).";
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        messageEl.textContent = "Uploading...";
+        messageEl.classList.remove("is-error", "is-success");
+
+        const path = `${myProfile.id}/${docType}-${Date.now()}.pdf`;
+        const { error: uploadError } = await sb.storage.from("expert-documents").upload(path, file, {
+          contentType: "application/pdf",
+          upsert: false,
+        });
+
+        if (uploadError) {
+          messageEl.textContent = uploadError.message;
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        const { error: insertError } = await sb.from("expert_documents").insert({
+          expert_id: myProfile.id,
+          doc_type: docType,
+          file_path: path,
+          original_filename: file.name,
+        });
+
+        if (insertError) {
+          messageEl.textContent = insertError.message;
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        messageEl.textContent = "Uploaded.";
+        messageEl.classList.add("is-success");
+        e.target.reset();
+        loadDocuments();
+      });
+
+      loadDocuments();
+
+      /* ---------------- SUBSCRIPTION TAB ---------------- */
+      function renderSubscription() {
+        const statusLabels = { active: "Active", pending_payment: "Pending payment", inactive: "Inactive" };
+        document.getElementById("subStatus").textContent = statusLabels[myProfile.status] || myProfile.status;
+        document.getElementById("subPaidUntil").textContent = myProfile.subscription_paid_until
+          ? new Date(myProfile.subscription_paid_until).toLocaleDateString()
+          : "—";
+        document.getElementById("subFee").textContent = money(myProfile.monthly_fee);
+      }
+      renderSubscription();
+
+      document.getElementById("payFeeBtn").addEventListener("click", () => {
+        const messageEl = document.getElementById("subMessage");
+
+        if (typeof PaystackPop === "undefined") {
+          messageEl.textContent = "Payment service unavailable right now. Please check your connection and try again.";
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        const paystack = new PaystackPop();
+        paystack.newTransaction({
+          key: SUPABASE_CONFIG.paystackPublicKey,
+          email: user.email,
+          amount: Math.round(Number(myProfile.monthly_fee) * 100),
+          currency: "GHS",
+          ref: `EXPFEE-${Date.now()}-${Math.floor(Math.random() * 100000)}`,
+          onSuccess: async function (transaction) {
+            messageEl.textContent = "Confirming payment...";
+            messageEl.classList.remove("is-error", "is-success");
+
+            const { data, error } = await sb.functions.invoke("verify-expert-payment", {
+              body: { reference: transaction.reference, expertId: myProfile.id },
+            });
+
+            if (error || !data?.verified) {
+              messageEl.textContent =
+                "We couldn't confirm your payment. If money was deducted, contact support with reference: " +
+                transaction.reference;
+              messageEl.classList.add("is-error");
+              return;
+            }
+
+            myProfile.status = "active";
+            myProfile.subscription_paid_until = data.paid_until;
+            renderSubscription();
+            messageEl.textContent = "Payment confirmed! Your profile is active.";
+            messageEl.classList.add("is-success");
+          },
+          onCancel: function () {
+            messageEl.textContent = "Payment cancelled.";
+          },
+        });
+      });
+    })();
+  </script>
+</body>
+
+</html>

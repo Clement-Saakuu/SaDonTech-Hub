@@ -569,3 +569,169 @@ select, input { font-family: inherit; }
     grid-template-columns: 1fr;
   }
 }
+/* ============================================================
+   EXPERTS PORTAL — CTA, nav button, loading states, misc
+   ============================================================ */
+.expert-portal-btn {
+  background: var(--orange);
+  color: var(--white) !important;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.85rem !important;
+  font-weight: 700;
+}
+
+.expert-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  background: var(--white);
+  border: 1px solid rgba(12, 3, 99, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 18px 22px;
+  margin-bottom: 28px;
+}
+
+.expert-cta p {
+  color: var(--grey-text);
+  font-weight: 600;
+  margin: 0;
+}
+
+.experts-loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--grey-text);
+  padding: 30px 0;
+}
+
+.doc-note {
+  font-size: 0.8rem;
+  color: var(--grey-text);
+  margin-top: 6px;
+}
+
+.expert-agree {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--black);
+  margin: 10px 0;
+}
+
+.expert-agree input {
+  margin-top: 3px;
+}
+
+.projects-list,
+.documents-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* ============================================================
+   IN-PAGE PDF VIEWER (view-only CV/resume)
+   ============================================================ */
+.pdfv-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pdfv-overlay.is-open {
+  display: flex;
+}
+
+.pdfv-modal {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  width: min(100%, 800px);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+}
+
+.pdfv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--grey-mid);
+}
+
+.pdfv-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--blue);
+}
+
+.pdfv-close {
+  font-size: 1.6rem;
+  line-height: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--blue);
+}
+
+.pdfv-body {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+  text-align: center;
+  background: var(--grey-light);
+}
+
+.pdfv-status {
+  color: var(--grey-text);
+  padding: 40px 0;
+}
+
+.pdfv-canvas {
+  max-width: 100%;
+  box-shadow: var(--shadow-md);
+  pointer-events: none; /* blocks right-click/drag-to-save at the browser level */
+}
+
+.pdfv-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--grey-mid);
+}
+
+.pdfv-nav {
+  background: var(--blue);
+  color: var(--white);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+}
+
+.pdfv-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pdfv-page-label {
+  font-weight: 600;
+  color: var(--grey-text);
+  font-size: 0.9rem;
+}

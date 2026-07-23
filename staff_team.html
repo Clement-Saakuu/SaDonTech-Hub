@@ -3,8 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Our Staff/Team</title>
+  <title>Our Experts | SaDonTech Hub</title>
+  <link rel="stylesheet" href="style.css"/>
   <link rel="stylesheet" href="staff.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 </head>
 <body>
   <header class="navbar" id="navbar">
@@ -12,29 +14,18 @@
       <a class="navbar__logo" href="index.html"><img src="images/SaDon_logo1.PNG" alt="Logo"/></a>
       <div class="navbar__update">
         <div class="navbar__track">
-          <div class="navbar__item">
-            SaDonTech Hub - <span class="navbar__highlight">Your trusted Hub!</span>
-          </div>
-          <div class="navbar__item">
-            Customers over 3 years: <span class="navbar__highlight">250+</span>
-          </div>
-          <div class="navbar__item">
-            New arrivals every week - <span class="navbar__highlight">Fresh deals now live!</span>
-          </div>
-          <div class="navbar__item">
-            SaDonTech Hub - <span class="navbar__highlight">Your trusted and reliable Hub!</span>
-          </div>
-          <div class="navbar__item">
-            Customers over 3 years: <span class="navbar__highlight">250+</span>
-          </div>
-          <div class="navbar__item">
-            New arrivals every week - <span class="navbar__highlight">Fresh deals now live!</span>
-          </div>
+          <div class="navbar__item">SaDonTech Hub - <span class="navbar__highlight">Your trusted Hub!</span></div>
+          <div class="navbar__item">Customers over 3 years: <span class="navbar__highlight">250+</span></div>
+          <div class="navbar__item">New arrivals every week - <span class="navbar__highlight">Fresh deals now live!</span></div>
+          <div class="navbar__item">SaDonTech Hub - <span class="navbar__highlight">Your trusted and reliable Hub!</span></div>
+          <div class="navbar__item">Customers over 3 years: <span class="navbar__highlight">250+</span></div>
+          <div class="navbar__item">New arrivals every week - <span class="navbar__highlight">Fresh deals now live!</span></div>
         </div>
       </div>
       <nav class="navbar__links">
         <a class="nav-link" href="index.html">Home</a>
         <a class="nav-link" href="staff_team.html">Experts/Team</a>
+        <button class="nav-link expert-portal-btn" id="expertPortalBtn" type="button">Expert Login</button>
       </nav>
     </div>
   </header>
@@ -42,35 +33,14 @@
   <main style="margin-top: var(--navbar-h); padding: 40px 20px; max-width: 1300px; margin-left: auto; margin-right: auto; background-color: var(--cream);">
     <h1 class="Profile__title"><u>Meet Our Experts</u></h1>
 
+    <div class="expert-cta">
+      <p>Are you a developer, designer, analyst, or consultant? Showcase your work and get discovered.</p>
+      <button class="btn btn--primary" id="joinAsExpertBtn" type="button">Join as an Expert</button>
+    </div>
+
     <section class="team">
-      <div class="profile-grid">
-        <article class="profile-card" data-profile="clement" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)">
-          <img src="images/clementphoto.png" alt="Clement Saakuu" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)" />
-          <h3>Clement Saakuu</h3>
-          <p class="muted"><b>CEO - SaDonTech Hub</b><br/>Developer · Data Analyst · Research Assistant, and IT Intrepreneur</p>
-          <button class="btn profile-details-btn" type="button" data-profile="clement">View Profile Details</button>
-        </article>
-
-        <article class="profile-card" data-profile="francis" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)">
-          <img src="images/Francisphoto.PNG" alt="Francis Saakuu" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)" />
-          <h3>Francis Saakuu</h3>
-          <p class="muted"><b>Senior Consultant - GIS Analyst</b><br>(Geographic Information Systems Analyst) at GeoDaline Consult</p>
-          <button class="btn profile-details-btn" type="button" data-profile="francis">View Profile Details</button>
-        </article>
-
-        <article class="profile-card" data-profile="mary" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)">
-          <img src="images/maryphoto.PNG" alt="Professor Mary" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)" />
-          <h3>Professor Mary</h3>
-          <p class="muted"><b>Senior Lecturer & Lead Developer<br/>@ Giants Technology Academy</b><br/>FrontEnd Developer · UI Expert</p>
-          <button class="btn profile-details-btn" type="button" data-profile="mary">View Profile Details</button>
-        </article>
-
-        <article class="profile-card" data-profile="john" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)">
-          <img src="images/johnphoto.png" alt="John Ankuma" onmouseenter="this.classList.add('is-pop')" onmouseleave="this.classList.remove('is-pop')" onfocus="this.classList.add('is-pop')" onblur="this.classList.remove('is-pop')" ontouchstart="this.classList.add('is-pop'); setTimeout(()=>this.classList.remove('is-pop'),1200)" />
-          <h3>John Ankuma</h3>
-          <p class="muted"><b>Lead Designer<br/>@ SaDonTech Hub</b><br/>Graphic Designer · Videographer</p>
-          <button class="btn profile-details-btn" type="button" data-profile="john">View Profile Details</button>
-        </article>
+      <div class="profile-grid" id="expertsGrid">
+        <p class="experts-loading">Loading experts...</p>
       </div>
     </section>
 
@@ -86,40 +56,97 @@
       </div>
     </section>
   </main>
-    <section class ="contactForm" style="margin-top: 48px;">
-      <h2 class="contact__title">Contact Our Project Manager</h2>
-      <form id="contactForm" class="checkout-form contact-form">
-        <div class="form__group">
-          <label for="contactName">Your name</label>
-          <input id="contactName" type="text" placeholder="Full name" />
-        </div>
 
-        <div class="form__group">
-          <label for="contactEmail">Email address</label>
-          <input id="contactEmail" type="email" placeholder="you@example.com" />
-        </div>
+  <!-- ========== EXPERT AUTH MODAL ========== -->
+  <div class="modal-overlay" id="expertAuthOverlay"></div>
+  <div class="modal auth-modal" id="expertAuthModal" role="dialog" aria-modal="true">
+    <div class="modal__header">
+      <h2 id="expertAuthTitle">Expert Login</h2>
+      <button class="modal__close" id="expertAuthClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal__body">
+      <div class="auth-tabs" role="tablist">
+        <button type="button" class="auth-tab is-active" id="expertTabLogin">Log in</button>
+        <button type="button" class="auth-tab" id="expertTabSignup">Sign up</button>
+      </div>
 
-        <div class="form__group">
-          <label for="contactEmail">WhatsApp Number</label>
-          <input id="contactEmail" type="text" placeholder="WhatsApp number" />
-        </div>
-
-        <div class="form__group">
-          <label for="contactSubject">Subject</label>
-          <input id="contactSubject" type="text" placeholder="Subject" />
-        </div>
-        
-        <div class="form__group">
-          <label for="contactMessage">Message</label>
-          <textarea id="contactMessage" rows="6" placeholder="Type your message here..."></textarea>
-        </div>
-
-        <div style="margin-top:12px;">
-          <button class="btn btn--primary" type="submit">Send Email</button>
-        </div>
+      <form id="expertLoginForm" class="auth-form">
+        <label for="expertLoginEmail">Email</label>
+        <input type="email" id="expertLoginEmail" required autocomplete="email" />
+        <label for="expertLoginPassword">Password</label>
+        <input type="password" id="expertLoginPassword" required autocomplete="current-password" minlength="6" />
+        <button type="submit" class="auth-submit-btn">Log in</button>
+        <p class="auth-form__message" id="expertLoginMessage" role="alert" aria-live="polite"></p>
       </form>
-    </section>
- 
+
+      <form id="expertSignupForm" class="auth-form" hidden>
+        <label for="expertSignupName">Full name</label>
+        <input type="text" id="expertSignupName" required maxlength="80" />
+        <label for="expertSignupEmail">Email</label>
+        <input type="email" id="expertSignupEmail" required autocomplete="email" />
+        <label for="expertSignupPassword">Password</label>
+        <input type="password" id="expertSignupPassword" required autocomplete="new-password" minlength="6" />
+        <p class="auth-form__hint">At least 6 characters. You'll confirm your email, then set up your profile.</p>
+        <button type="submit" class="auth-submit-btn">Create account</button>
+        <p class="auth-form__message" id="expertSignupMessage" role="alert" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== IN-PAGE PDF VIEWER (view-only) ========== -->
+  <div class="modal-overlay" id="pdfViewerOverlay"></div>
+  <div class="modal pdf-viewer-modal" id="pdfViewerModal" role="dialog" aria-modal="true">
+    <div class="modal__header">
+      <h2 id="pdfViewerTitle">Document</h2>
+      <button class="modal__close" id="pdfViewerClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal__body">
+      <p class="pdf-viewer-note">View only — this document can't be downloaded from here.</p>
+      <div class="pdf-viewer-canvas-wrap" id="pdfViewerCanvasWrap" oncontextmenu="return false;">
+        <canvas id="pdfViewerCanvas"></canvas>
+        <div class="pdf-viewer-watermark" aria-hidden="true">SaDonTech Hub &middot; View Only</div>
+      </div>
+      <div class="pdf-viewer-controls">
+        <button type="button" id="pdfPrevBtn" class="btn btn--outline">&larr; Prev</button>
+        <span id="pdfPageIndicator">Page 1 of 1</span>
+        <button type="button" id="pdfNextBtn" class="btn btn--outline">Next &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <section class ="contactForm" style="margin-top: 48px;">
+    <h2 class="contact__title">Contact Our Project Manager</h2>
+    <form id="contactForm" class="checkout-form contact-form">
+      <div class="form__group">
+        <label for="contactName">Your name</label>
+        <input id="contactName" type="text" placeholder="Full name" />
+      </div>
+
+      <div class="form__group">
+        <label for="contactEmail">Email address</label>
+        <input id="contactEmail" type="email" placeholder="you@example.com" />
+      </div>
+
+      <div class="form__group">
+        <label for="contactWhatsapp">WhatsApp Number</label>
+        <input id="contactWhatsapp" type="text" placeholder="WhatsApp number" />
+      </div>
+
+      <div class="form__group">
+        <label for="contactSubject">Subject</label>
+        <input id="contactSubject" type="text" placeholder="Subject" />
+      </div>
+
+      <div class="form__group">
+        <label for="contactMessage">Message</label>
+        <textarea id="contactMessage" rows="6" placeholder="Type your message here..."></textarea>
+      </div>
+
+      <div style="margin-top:12px;">
+        <button class="btn btn--primary" type="submit">Send Email</button>
+      </div>
+    </form>
+  </section>
 
   <!-- ========== FOOTER ========== -->
   <footer class="footer">
@@ -132,10 +159,10 @@
       <div class="footer__section">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="#">Shipping Info</a></li>
-          <li><a href="#">Returns</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Support</a></li>
+          <li><a href="policies.html#shipping">Shipping Info</a></li>
+          <li><a href="policies.html#returns">Returns</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="index.html#contact">Support</a></li>
         </ul>
       </div>
 
@@ -161,78 +188,373 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="supabase-config.js"></script>
+  <script type="module" src="pdf-viewer.js"></script>
   <script>
-    const profileButtons = document.querySelectorAll('.profile-details-btn');
-    const teamDetailsPanel = document.getElementById('teamDetailsPanel');
-    const teamDetailsName = document.getElementById('teamDetailsName');
-    const teamDetailsContent = document.getElementById('teamDetailsContent');
-    const teamDetailsClose = document.getElementById('teamDetailsClose');
+    (function () {
+      const configured =
+        typeof SUPABASE_CONFIG !== "undefined" &&
+        SUPABASE_CONFIG.url &&
+        !SUPABASE_CONFIG.url.includes("YOUR-PROJECT-REF");
 
-    const profileDetails = {
-      clement: {
-        name: 'Clement Saakuu',
-        role: 'CEO - SaDon-Tech Hub',
-        highlight: 'Developer · Data Analyst · Research Assistant · IT Entrepreneur',
-        description: 'Clement leads the SaDonTech Hub vision with a strong focus on digital transformation, practical technology training, and building data-driven solutions for modern communities.',
-        expertise: ['Web development', 'Data analysis', 'Research support', 'Product strategy'],
-        whatsapp: 'https://wa.me/233202173740?text=Hello%20Clement%2C%20I%20would%20like%20to%20get%20in%20touch.'
-      },
-      francis: {
-        name: 'Francis Saakuu',
-        role: 'Senior Consultant - GIS Analyst',
-        highlight: 'Geographic Information Systems Analyst at GeoDaline Consult',
-        description: 'Francis brings deep expertise in geospatial analysis, mapping, and spatial decision-making that helps organizations turn location data into actionable insight.',
-        expertise: ['GIS analysis', 'Spatial mapping', 'Remote sensing support', 'Research-based consulting'],
-        whatsapp: 'https://wa.me/233202173740?text=Hello%20Francis%2C%20I%20would%20like%20to%20get%20in%20touch.'
-      },
-      mary: {
-        name: 'Professor Mary',
-        role: 'Senior Lecturer & Lead Developer',
-        highlight: 'Giants Technology Academy',
-        description: 'Professor Mary combines teaching and technology leadership to mentor learners while shaping modern, user-friendly digital experiences for clients and students alike.',
-        expertise: ['Frontend development', 'UI/UX design', 'Technology mentoring', 'Digital training'],
-        whatsapp: 'https://wa.me/233202173740?text=Hello%20Professor%20Mary%2C%20I%20would%20like%20to%20get%20in%20touch.'
-      },
-      john: {
-        name: 'John Ankuma',
-        role: 'Lead Designer',
-        highlight: 'SaDonTech Hub',
-        description: 'John blends visual design, storytelling, and video production to create polished digital assets that communicate ideas with clarity and impact.',
-        expertise: ['Graphic design', 'Brand visuals', 'Videography', 'Creative direction'],
-        whatsapp: 'https://wa.me/233202173740?text=Hello%20John%2C%20I%20would%20like%20to%20get%20in%20touch.'
+      const expertsGrid = document.getElementById("expertsGrid");
+
+      if (!configured || typeof window.supabase === "undefined") {
+        expertsGrid.innerHTML = `<p class="experts-loading">Expert profiles aren't set up yet. See SETUP_EXPERTS.md.</p>`;
+        return;
       }
-    };
 
-    function openProfileDetails(profileKey) {
-      const profile = profileDetails[profileKey];
-      if (!profile) return;
+      const sb = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+      let currentUser = null;
 
-      teamDetailsName.textContent = profile.name;
-      teamDetailsContent.innerHTML = `
-        <p class="team-details__lead">${profile.role}</p>
-        <p class="team-details__highlight">${profile.highlight}</p>
-        <p>${profile.description}</p>
-        <div class="team-details__list-wrap">
-          <h3>Areas of Expertise</h3>
+      function escapeHTML(value) {
+        const div = document.createElement("div");
+        div.textContent = String(value ?? "");
+        return div.innerHTML;
+      }
+
+      /* ---------------- AUTH STATE / NAV BUTTON ---------------- */
+      const expertPortalBtn = document.getElementById("expertPortalBtn");
+      const joinAsExpertBtn = document.getElementById("joinAsExpertBtn");
+
+      function updateAuthUI() {
+        if (currentUser) {
+          expertPortalBtn.textContent = "My Dashboard";
+          joinAsExpertBtn.textContent = "Go to My Dashboard";
+        } else {
+          expertPortalBtn.textContent = "Expert Login";
+          joinAsExpertBtn.textContent = "Join as an Expert";
+        }
+      }
+
+      function goToPortal() {
+        if (currentUser) {
+          window.location.href = "expert-dashboard.html";
+        } else {
+          openExpertAuth("login");
+        }
+      }
+
+      expertPortalBtn.addEventListener("click", goToPortal);
+      joinAsExpertBtn.addEventListener("click", goToPortal);
+
+      /* ---------------- AUTH MODAL ---------------- */
+      const expertAuthModal = document.getElementById("expertAuthModal");
+      const expertAuthOverlay = document.getElementById("expertAuthOverlay");
+      const expertLoginForm = document.getElementById("expertLoginForm");
+      const expertSignupForm = document.getElementById("expertSignupForm");
+
+      function openExpertAuth(view) {
+        showExpertAuthView(view);
+        expertAuthModal.classList.add("open");
+        expertAuthOverlay.classList.add("open");
+      }
+
+      function closeExpertAuth() {
+        expertAuthModal.classList.remove("open");
+        expertAuthOverlay.classList.remove("open");
+      }
+
+      function showExpertAuthView(view) {
+        const isLogin = view === "login";
+        expertLoginForm.hidden = !isLogin;
+        expertSignupForm.hidden = isLogin;
+        document.getElementById("expertTabLogin").classList.toggle("is-active", isLogin);
+        document.getElementById("expertTabSignup").classList.toggle("is-active", !isLogin);
+        document.getElementById("expertAuthTitle").textContent = isLogin ? "Expert Login" : "Join as an Expert";
+      }
+
+      document.getElementById("expertTabLogin").addEventListener("click", () => showExpertAuthView("login"));
+      document.getElementById("expertTabSignup").addEventListener("click", () => showExpertAuthView("signup"));
+      document.getElementById("expertAuthClose").addEventListener("click", closeExpertAuth);
+      expertAuthOverlay.addEventListener("click", closeExpertAuth);
+
+      expertLoginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const messageEl = document.getElementById("expertLoginMessage");
+        const email = document.getElementById("expertLoginEmail").value.trim();
+        const password = document.getElementById("expertLoginPassword").value;
+
+        const { error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) {
+          messageEl.textContent = error.message;
+          messageEl.classList.add("is-error");
+          return;
+        }
+        window.location.href = "expert-dashboard.html";
+      });
+
+      expertSignupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const messageEl = document.getElementById("expertSignupMessage");
+        const fullName = document.getElementById("expertSignupName").value.trim();
+        const email = document.getElementById("expertSignupEmail").value.trim();
+        const password = document.getElementById("expertSignupPassword").value;
+
+        if (!fullName || !email || password.length < 6) {
+          messageEl.textContent = "Please fill in every field (password: 6+ characters).";
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        const { error } = await sb.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { full_name: fullName },
+            emailRedirectTo: window.location.origin + "/expert-dashboard.html",
+          },
+        });
+
+        if (error) {
+          messageEl.textContent = error.message;
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        messageEl.textContent = "Check your email to confirm your account, then log in to set up your profile.";
+        messageEl.classList.remove("is-error");
+        messageEl.classList.add("is-success");
+        expertSignupForm.reset();
+      });
+
+      /* ---------------- IN-PAGE PDF VIEWER (view-only) ---------------- */
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+
+      const pdfViewerOverlay = document.getElementById("pdfViewerOverlay");
+      const pdfViewerModal = document.getElementById("pdfViewerModal");
+      const pdfViewerCanvas = document.getElementById("pdfViewerCanvas");
+      const pdfPageIndicator = document.getElementById("pdfPageIndicator");
+      let pdfDoc = null;
+      let pdfCurrentPage = 1;
+
+      async function renderPdfPage(pageNum) {
+        const page = await pdfDoc.getPage(pageNum);
+        const viewport = page.getViewport({ scale: 1.4 });
+        pdfViewerCanvas.width = viewport.width;
+        pdfViewerCanvas.height = viewport.height;
+        await page.render({ canvasContext: pdfViewerCanvas.getContext("2d"), viewport }).promise;
+        pdfPageIndicator.textContent = `Page ${pageNum} of ${pdfDoc.numPages}`;
+      }
+
+      async function openPdfViewer(signedUrl, title) {
+        document.getElementById("pdfViewerTitle").textContent = title || "Document";
+        pdfViewerModal.classList.add("open");
+        pdfViewerOverlay.classList.add("open");
+        pdfPageIndicator.textContent = "Loading...";
+
+        try {
+          pdfDoc = await pdfjsLib.getDocument(signedUrl).promise;
+          pdfCurrentPage = 1;
+          await renderPdfPage(pdfCurrentPage);
+        } catch (err) {
+          pdfPageIndicator.textContent = "Couldn't load this document.";
+        }
+      }
+
+      function closePdfViewer() {
+        pdfViewerModal.classList.remove("open");
+        pdfViewerOverlay.classList.remove("open");
+        pdfDoc = null;
+        pdfViewerCanvas.getContext("2d").clearRect(0, 0, pdfViewerCanvas.width, pdfViewerCanvas.height);
+      }
+
+      document.getElementById("pdfViewerClose").addEventListener("click", closePdfViewer);
+      pdfViewerOverlay.addEventListener("click", closePdfViewer);
+
+      document.getElementById("pdfPrevBtn").addEventListener("click", () => {
+        if (pdfDoc && pdfCurrentPage > 1) renderPdfPage(--pdfCurrentPage);
+      });
+      document.getElementById("pdfNextBtn").addEventListener("click", () => {
+        if (pdfDoc && pdfCurrentPage < pdfDoc.numPages) renderPdfPage(++pdfCurrentPage);
+      });
+
+      // Best-effort deterrents only — none of this stops a determined user
+      // (screenshots, OS tools), but it removes the easy/obvious paths.
+      document.addEventListener("keydown", (e) => {
+        if (!pdfViewerModal.classList.contains("open")) return;
+        const key = e.key.toLowerCase();
+        if ((e.ctrlKey || e.metaKey) && (key === "s" || key === "p")) {
+          e.preventDefault();
+        }
+      });
+
+      /* ---------------- PUBLIC EXPERT DIRECTORY ---------------- */
+      const teamDetailsPanel = document.getElementById("teamDetailsPanel");
+      const teamDetailsName = document.getElementById("teamDetailsName");
+      const teamDetailsContent = document.getElementById("teamDetailsContent");
+      document.getElementById("teamDetailsClose").addEventListener("click", () => {
+        teamDetailsPanel.hidden = true;
+      });
+
+      async function loadExperts() {
+        const { data: experts, error } = await sb
+          .from("expert_profiles")
+          .select("*")
+          .eq("status", "active")
+          .order("created_at", { ascending: true });
+
+        if (error) {
+          expertsGrid.innerHTML = `<p class="experts-loading">Couldn't load experts right now.</p>`;
+          return;
+        }
+
+        if (!experts || experts.length === 0) {
+          expertsGrid.innerHTML = `<p class="experts-loading">No experts listed yet — be the first to join!</p>`;
+          return;
+        }
+
+        expertsGrid.innerHTML = experts
+          .map(
+            (ex) => `
+              <article class="profile-card" data-id="${ex.id}">
+                <img src="${escapeHTML(ex.photo_url || "images/user.svg")}" alt="${escapeHTML(ex.full_name)}"
+                     onerror="this.src='images/SaDon_logo1.PNG'" />
+                <h3>${escapeHTML(ex.full_name)}</h3>
+                <p class="muted"><b>${escapeHTML(ex.role_title || "")}</b><br/>${escapeHTML(ex.highlight || "")}</p>
+                <button class="btn profile-details-btn" type="button" data-id="${ex.id}">View Profile Details</button>
+              </article>
+            `
+          )
+          .join("");
+
+        expertsGrid.querySelectorAll(".profile-details-btn").forEach((btn) => {
+          btn.addEventListener("click", () => openProfileDetails(btn.dataset.id, experts));
+        });
+      }
+
+      async function openProfileDetails(expertId, experts) {
+        const expert = experts.find((e) => e.id === expertId);
+        if (!expert) return;
+
+        teamDetailsName.textContent = expert.full_name;
+        teamDetailsContent.innerHTML = `
+          <p class="team-details__lead">${escapeHTML(expert.role_title || "")}</p>
+          <p class="team-details__highlight">${escapeHTML(expert.highlight || "")}</p>
+          <p>${escapeHTML(expert.bio || "")}</p>
+          <div class="team-details__list-wrap">
+            <h3>Areas of Expertise</h3>
+            <ul>${(expert.expertise || []).map((item) => `<li>${escapeHTML(item)}</li>`).join("") || "<li>—</li>"}</ul>
+          </div>
+          <div class="team-details__list-wrap" id="expertProjectsWrap">
+            <h3>Projects</h3>
+            <p>Loading projects...</p>
+          </div>
+          <div class="team-details__list-wrap" id="expertDocsWrap">
+            <h3>CV / Resume</h3>
+            <p>Loading...</p>
+          </div>
+          ${expert.whatsapp_link ? `<a class="btn whatsapp-btn team-details__contact" href="${escapeHTML(expert.whatsapp_link)}" target="_blank" rel="noopener">Let's Chat</a>` : ""}
+        `;
+        teamDetailsPanel.hidden = false;
+        teamDetailsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        loadExpertProjects(expertId);
+        loadExpertDocuments(expertId);
+      }
+
+      async function loadExpertProjects(expertId) {
+        const wrap = document.getElementById("expertProjectsWrap");
+        const { data: projects, error } = await sb
+          .from("expert_projects")
+          .select("*")
+          .eq("expert_id", expertId)
+          .order("created_at", { ascending: false });
+
+        if (!wrap) return;
+
+        if (error || !projects || projects.length === 0) {
+          wrap.innerHTML = `<h3>Projects</h3><p>No projects listed yet.</p>`;
+          return;
+        }
+
+        wrap.innerHTML = `
+          <h3>Projects</h3>
           <ul>
-            ${profile.expertise.map((item) => `<li>${item}</li>`).join('')}
+            ${projects
+              .map(
+                (p) => `
+                  <li>
+                    <strong>${escapeHTML(p.title)}</strong>${p.description ? ` — ${escapeHTML(p.description)}` : ""}
+                    ${p.project_url ? ` · <a href="${escapeHTML(p.project_url)}" target="_blank" rel="noopener">View project</a>` : ""}
+                    ${p.template_url ? ` · <a href="${escapeHTML(p.template_url)}" target="_blank" rel="noopener">Template</a>` : ""}
+                  </li>
+                `
+              )
+              .join("")}
           </ul>
-        </div>
-        <a class="btn whatsapp-btn team-details__contact" href="${profile.whatsapp}" target="_blank" rel="noopener">Let's Chat</a>
-      `;
-      teamDetailsPanel.hidden = false;
-      teamDetailsPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+        `;
+      }
 
-    profileButtons.forEach((button) => {
-      button.addEventListener('click', () => openProfileDetails(button.dataset.profile));
-    });
+      async function loadExpertDocuments(expertId) {
+        const wrap = document.getElementById("expertDocsWrap");
+        const { data: docs, error } = await sb
+          .from("expert_documents")
+          .select("*")
+          .eq("expert_id", expertId);
 
-    teamDetailsClose.addEventListener('click', () => {
-      teamDetailsPanel.hidden = true;
-    });
+        if (!wrap) return;
+
+        if (error || !docs || docs.length === 0) {
+          wrap.innerHTML = `<h3>CV / Resume</h3><p>Not uploaded yet.</p>`;
+          return;
+        }
+
+        wrap.innerHTML = `<h3>CV / Resume</h3><ul>${docs
+          .map((d) => `<li><a href="#" class="view-doc-link" data-path="${escapeHTML(d.file_path)}" data-title="${escapeHTML(d.doc_type.toUpperCase())} — ${escapeHTML(d.original_filename || "")}">View ${escapeHTML(d.doc_type.toUpperCase())} (${escapeHTML(d.original_filename || "")})</a></li>`)
+          .join("")}</ul><p class="doc-note">Opens in an in-page viewer only — not downloadable from here.</p>`;
+
+        wrap.querySelectorAll(".view-doc-link").forEach((link) => {
+          link.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const { data, error } = await sb.storage
+              .from("expert-documents")
+              .createSignedUrl(link.dataset.path, 300); // 5-minute view link
+            if (error || !data?.signedUrl) {
+              alert("Couldn't open this document right now.");
+              return;
+            }
+            openPdfViewer(data.signedUrl, link.dataset.title);
+          });
+        });
+      }
+
+      /* ---------------- INIT ---------------- */
+      sb.auth.getSession().then(({ data }) => {
+        currentUser = data.session?.user ?? null;
+        updateAuthUI();
+      });
+      sb.auth.onAuthStateChange((_event, session) => {
+        currentUser = session?.user ?? null;
+        updateAuthUI();
+      });
+
+      loadExperts();
+
+      /* ---------------- CONTACT FORM (unchanged mailto behavior) ---------------- */
+      const contactForm = document.getElementById("contactForm");
+      if (contactForm) {
+        contactForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const name = document.getElementById("contactName").value.trim();
+          const email = document.getElementById("contactEmail").value.trim();
+          const whatsapp = document.getElementById("contactWhatsapp").value.trim();
+          const subjectField = document.getElementById("contactSubject").value.trim();
+          const message = document.getElementById("contactMessage").value.trim();
+
+          if (!name || !email || !message) {
+            alert("Please fill in your name, email, and message.");
+            return;
+          }
+
+          const subject = encodeURIComponent(subjectField || `Contact from Experts page: ${name}`);
+          const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nWhatsApp: ${whatsapp}\n\n${message}`);
+          window.location.href = `mailto:saakuu.clement@gmail.com?subject=${subject}&body=${body}`;
+        });
+      }
+    })();
   </script>
 </body>
 </html>
-

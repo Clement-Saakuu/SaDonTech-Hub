@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Admin Dashboard | SaDonTech Hub</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <header class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="index.html#intro" class="navbar__logo">
+        <img src="images/SaDon_logo1.PNG" alt="SaDonTech Hub logo" />
+      </a>
+      <nav class="navbar__links">
+        <a href="index.html#intro" class="nav-link">Storefront</a>
+        <a href="account.html" class="nav-link">My Account</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="admin-page">
+    <div class="admin-page__inner">
+      <div id="adminLoadingState"><p>Checking admin access...</p></div>
+
+      <div id="adminDeniedState" hidden>
+        <h1>Admins only</h1>
+        <p>This page is restricted. Log in with an admin account to continue.</p>
+        <a href="index.html" class="account-page__cta">Go to homepage</a>
+      </div>
+
+      <div id="adminDashboard" hidden>
+        <h1>Admin Dashboard</h1>
+
+        <nav class="account-tabs">
+          <button type="button" class="account-tab is-active" data-tab="overview">Overview</button>
+          <button type="button" class="account-tab" data-tab="products">Products</button>
+          <button type="button" class="account-tab" data-tab="orders">Orders</button>
+          <button type="button" class="account-tab" data-tab="customers">Customers</button>
+          <button type="button" class="account-tab" data-tab="experts">Experts</button>
+          <button type="button" class="account-tab" data-tab="reports">Reports</button>
+        </nav>
+
+        <!-- ================= OVERVIEW ================= -->
+        <section class="account-panel is-active" id="panel-overview">
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <span class="kpi-card__label">This Week Revenue</span>
+              <span class="kpi-card__value" id="kpiWeekRevenue">—</span>
+              <span class="kpi-card__sub" id="kpiWeekOrders"></span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-card__label">This Month Revenue</span>
+              <span class="kpi-card__value" id="kpiMonthRevenue">—</span>
+              <span class="kpi-card__sub" id="kpiMonthOrders"></span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-card__label">Total Customers</span>
+              <span class="kpi-card__value" id="kpiTotalCustomers">—</span>
+              <span class="kpi-card__sub" id="kpiNewCustomers"></span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-card__label">Avg Order Value</span>
+              <span class="kpi-card__value" id="kpiAOV">—</span>
+              <span class="kpi-card__sub">paid orders</span>
+            </div>
+          </div>
+
+          <div class="admin-panel-block">
+            <h2>Sales — last 7 days</h2>
+            <div class="bar-chart" id="weeklyChart"></div>
+          </div>
+
+          <div class="admin-panel-block">
+            <h2>Sales — last 6 months</h2>
+            <div class="bar-chart" id="monthlyChart"></div>
+          </div>
+
+          <div class="admin-panel-block">
+            <h2>Best Sellers</h2>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead><tr><th>#</th><th>Product</th><th>Units Sold</th><th>Revenue</th></tr></thead>
+                <tbody id="bestSellersBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PRODUCTS ================= -->
+        <section class="account-panel" id="panel-products">
+          <details class="address-add" open>
+            <summary>+ Add a new product</summary>
+            <form id="addProductForm" class="admin-form">
+              <div class="admin-form__row">
+                <div>
+                  <label for="pName">Name</label>
+                  <input type="text" id="pName" required maxlength="100" />
+                </div>
+                <div>
+                  <label for="pPrice">Price (GH₵)</label>
+                  <input type="number" id="pPrice" required min="0" step="0.01" />
+                </div>
+              </div>
+              <div class="admin-form__row">
+                <div>
+                  <label for="pQuantity">Stock quantity</label>
+                  <input type="number" id="pQuantity" required min="0" step="1" />
+                </div>
+                <div>
+                  <label for="pFeatured">Featured?</label>
+                  <select id="pFeatured">
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                  </select>
+                </div>
+              </div>
+              <div class="admin-form__row">
+                <div>
+                  <label for="pCategory">Category</label>
+                  <input type="text" id="pCategory" required maxlength="60" />
+                </div>
+                <div>
+                  <label for="pSubcategory">Subcategory</label>
+                  <input type="text" id="pSubcategory" maxlength="60" />
+                </div>
+              </div>
+              <label for="pImage">Image path or URL</label>
+              <input type="text" id="pImage" placeholder="images/my-product.jpg" maxlength="300" />
+              <label for="pDescription">Description</label>
+              <textarea id="pDescription" rows="2" maxlength="500"></textarea>
+              <button type="submit" class="auth-submit-btn">Add product</button>
+              <p class="auth-form__message" id="addProductMessage" role="alert" aria-live="polite"></p>
+            </form>
+          </details>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table" id="productsTable">
+              <thead>
+                <tr>
+                  <th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Featured</th><th></th>
+                </tr>
+              </thead>
+              <tbody id="productsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ================= ORDERS ================= -->
+        <section class="account-panel" id="panel-orders">
+          <div class="admin-table-wrap">
+            <table class="admin-table" id="ordersTable">
+              <thead>
+                <tr>
+                  <th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Delivery</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ================= CUSTOMERS ================= -->
+        <section class="account-panel" id="panel-customers">
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <span class="kpi-card__label">Total Customers</span>
+              <span class="kpi-card__value" id="custTotal">—</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-card__label">New This Week</span>
+              <span class="kpi-card__value" id="custNewWeek">—</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-card__label">New This Month</span>
+              <span class="kpi-card__value" id="custNewMonth">—</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-card__label">Repeat Customers</span>
+              <span class="kpi-card__value" id="custRepeat">—</span>
+            </div>
+          </div>
+
+          <div class="admin-panel-block">
+            <h2>Top Customers by Spend</h2>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead><tr><th>Customer</th><th>Orders</th><th>Total Spent</th><th>Last Order</th></tr></thead>
+                <tbody id="topCustomersBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= EXPERTS ================= -->
+        <section class="account-panel" id="panel-experts">
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <span class="kpi-card__label">Total Experts</span>
+              <span class="kpi-card__value" id="expTotal">—</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-card__label">Active</span>
+              <span class="kpi-card__value" id="expActive">—</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-card__label">Pending Payment</span>
+              <span class="kpi-card__value" id="expPending">—</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-card__label">Overdue (past paid-until)</span>
+              <span class="kpi-card__value" id="expOverdue">—</span>
+            </div>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table" id="expertsTable">
+              <thead>
+                <tr>
+                  <th>Expert</th><th>Status</th><th>Paid Until</th><th>Monthly Fee</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="expertsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ================= REPORTS ================= -->
+        <section class="account-panel" id="panel-reports">
+          <div class="admin-panel-block">
+            <h2>Monthly Sales Report</h2>
+            <p class="account-page__note">
+              Pick a month to see a summary, then download a full CSV breakdown of every order placed that
+              month (openable in Excel/Google Sheets).
+            </p>
+            <div class="report-controls">
+              <label for="reportMonth">Month</label>
+              <input type="month" id="reportMonth" />
+              <button type="button" class="auth-submit-btn" id="generateReportBtn">Generate report</button>
+            </div>
+            <div id="reportSummary" class="kpi-grid" hidden></div>
+            <button type="button" class="auth-submit-btn report-download-btn" id="downloadReportBtn" hidden>
+              Download CSV
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="supabase-config.js"></script>
+  <script>
+    (async function () {
+      const loadingEl = document.getElementById("adminLoadingState");
+      const deniedEl = document.getElementById("adminDeniedState");
+      const dashboardEl = document.getElementById("adminDashboard");
+
+      const configured =
+        typeof SUPABASE_CONFIG !== "undefined" &&
+        SUPABASE_CONFIG.url &&
+        !SUPABASE_CONFIG.url.includes("YOUR-PROJECT-REF");
+
+      if (!configured || typeof window.supabase === "undefined") {
+        loadingEl.hidden = true;
+        deniedEl.hidden = false;
+        deniedEl.querySelector("p").textContent = "Account features aren't set up yet. See SETUP.md.";
+        return;
+      }
+
+      const sb = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+      const { data: sessionData } = await sb.auth.getSession();
+      const user = sessionData.session?.user;
+
+      if (!user) {
+        loadingEl.hidden = true;
+        deniedEl.hidden = false;
+        return;
+      }
+
+      const { data: profile, error: profileError } = await sb
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+
+      loadingEl.hidden = true;
+
+      if (profileError || !profile || profile.role !== "admin") {
+        deniedEl.hidden = false;
+        return;
+      }
+
+      dashboardEl.hidden = false;
+
+      /* ---------------- TABS ---------------- */
+      document.querySelectorAll(".account-tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll(".account-tab").forEach((t) => t.classList.remove("is-active"));
+          document.querySelectorAll(".account-panel").forEach((p) => p.classList.remove("is-active"));
+          tab.classList.add("is-active");
+          document.getElementById(`panel-${tab.dataset.tab}`).classList.add("is-active");
+        });
+      });
+
+      /* ---------------- HELPERS ---------------- */
+      function escapeHTML(value) {
+        const div = document.createElement("div");
+        div.textContent = String(value ?? "");
+        return div.innerHTML;
+      }
+
+      function money(n) {
+        return `GH₵ ${Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+      }
+
+      function startOfDay(d) {
+        const x = new Date(d);
+        x.setHours(0, 0, 0, 0);
+        return x;
+      }
+
+      function daysAgo(n) {
+        const d = new Date();
+        d.setDate(d.getDate() - n);
+        return startOfDay(d);
+      }
+
+      function startOfMonth(d = new Date()) {
+        return new Date(d.getFullYear(), d.getMonth(), 1);
+      }
+
+      // offset 0 = start of current month, 1 = start of last month, -1 = start of next month, etc.
+      function monthStartOffset(offset) {
+        const now = new Date();
+        return new Date(now.getFullYear(), now.getMonth() - offset, 1);
+      }
+
+      /* ---------------- DATA CACHE (shared across Overview / Orders / Customers / Reports) ---------------- */
+      let ORDERS_CACHE = [];
+      let PROFILES_CACHE = [];
+
+      async function fetchOrders() {
+        const { data, error } = await sb
+          .from("orders")
+          .select("*, order_items(*)")
+          .order("created_at", { ascending: false });
+        if (!error) ORDERS_CACHE = data || [];
+        return !error;
+      }
+
+      async function fetchProfiles() {
+        const { data, error } = await sb.from("profiles").select("id, full_name, role, created_at");
+        if (!error) PROFILES_CACHE = data || [];
+        return !error;
+      }
+
+      /* ---------------- OVERVIEW ---------------- */
+      function renderOverview() {
+        const paidOrders = ORDERS_CACHE.filter((o) => o.payment_status === "paid");
+
+        const weekStart = daysAgo(6);
+        const weekOrders = paidOrders.filter((o) => new Date(o.created_at) >= weekStart);
+        const weekRevenue = weekOrders.reduce((sum, o) => sum + Number(o.total), 0);
+        document.getElementById("kpiWeekRevenue").textContent = money(weekRevenue);
+        document.getElementById("kpiWeekOrders").textContent = `${weekOrders.length} order${weekOrders.length === 1 ? "" : "s"}`;
+
+        const monthStart = startOfMonth();
+        const monthOrders = paidOrders.filter((o) => new Date(o.created_at) >= monthStart);
+        const monthRevenue = monthOrders.reduce((sum, o) => sum + Number(o.total), 0);
+        document.getElementById("kpiMonthRevenue").textContent = money(monthRevenue);
+        document.getElementById("kpiMonthOrders").textContent = `${monthOrders.length} order${monthOrders.length === 1 ? "" : "s"}`;
+
+        const customers = PROFILES_CACHE.filter((p) => p.role !== "admin");
+        document.getElementById("kpiTotalCustomers").textContent = customers.length;
+        const newThisMonth = customers.filter((c) => new Date(c.created_at) >= monthStart).length;
+        document.getElementById("kpiNewCustomers").textContent = `${newThisMonth} new this month`;
+
+        const aov = paidOrders.length ? paidOrders.reduce((s, o) => s + Number(o.total), 0) / paidOrders.length : 0;
+        document.getElementById("kpiAOV").textContent = money(aov);
+
+        renderWeeklyChart(paidOrders);
+        renderMonthlyChart(paidOrders);
+        renderBestSellers(paidOrders);
+      }
+
+      function renderWeeklyChart(paidOrders) {
+        const days = [];
+        for (let i = 6; i >= 0; i--) {
+          const day = daysAgo(i);
+          const next = new Date(day);
+          next.setDate(next.getDate() + 1);
+          const dayOrders = paidOrders.filter((o) => {
+            const d = new Date(o.created_at);
+            return d >= day && d < next;
+          });
+          const revenue = dayOrders.reduce((s, o) => s + Number(o.total), 0);
+          days.push({ label: day.toLocaleDateString(undefined, { weekday: "short" }), revenue });
+        }
+        renderBarChart("weeklyChart", days);
+      }
+
+      function renderMonthlyChart(paidOrders) {
+        const months = [];
+        for (let i = 5; i >= 0; i--) {
+          const mStart = monthStartOffset(i);
+          const mEnd = monthStartOffset(i - 1);
+          const monthOrders = paidOrders.filter((o) => {
+            const d = new Date(o.created_at);
+            return d >= mStart && d < mEnd;
+          });
+          const revenue = monthOrders.reduce((s, o) => s + Number(o.total), 0);
+          months.push({ label: mStart.toLocaleDateString(undefined, { month: "short" }), revenue });
+        }
+        renderBarChart("monthlyChart", months);
+      }
+
+      function renderBarChart(elementId, points) {
+        const el = document.getElementById(elementId);
+        const max = Math.max(1, ...points.map((p) => p.revenue));
+        el.innerHTML = points
+          .map(
+            (p) => `
+              <div class="bar-chart__col">
+                <div class="bar-chart__bar" style="height:${Math.max(4, (p.revenue / max) * 140)}px" title="${money(p.revenue)}"></div>
+                <span class="bar-chart__value">${p.revenue > 0 ? money(p.revenue) : ""}</span>
+                <span class="bar-chart__label">${escapeHTML(p.label)}</span>
+              </div>
+            `
+          )
+          .join("");
+      }
+
+      function renderBestSellers(paidOrders) {
+        const map = new Map();
+        paidOrders.forEach((o) => {
+          (o.order_items || []).forEach((item) => {
+            const key = item.product_id ?? item.product_name;
+            const existing = map.get(key) || { name: item.product_name, qty: 0, revenue: 0 };
+            existing.qty += item.quantity;
+            existing.revenue += Number(item.unit_price) * item.quantity;
+            map.set(key, existing);
+          });
+        });
+
+        const sorted = [...map.values()].sort((a, b) => b.qty - a.qty).slice(0, 10);
+        const tbody = document.getElementById("bestSellersBody");
+
+        if (sorted.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4">No paid sales yet.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = sorted
+          .map(
+            (p, i) => `
+              <tr>
+                <td>${i + 1}</td>
+                <td>${escapeHTML(p.name)}</td>
+                <td>${p.qty}</td>
+                <td>${money(p.revenue)}</td>
+              </tr>
+            `
+          )
+          .join("");
+      }
+
+      /* ---------------- PRODUCTS ---------------- */
+      async function loadProducts() {
+        const { data: products, error } = await sb.from("products").select("*").order("id");
+        const tbody = document.getElementById("productsTableBody");
+
+        if (error) {
+          tbody.innerHTML = `<tr><td colspan="6">Couldn't load products.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = (products || [])
+          .map(
+            (p) => `
+              <tr data-id="${p.id}">
+                <td><input type="text" class="admin-inline-input" data-field="name" value="${escapeHTML(p.name)}" /></td>
+                <td><input type="text" class="admin-inline-input" data-field="category" value="${escapeHTML(p.category)}" /></td>
+                <td><input type="number" step="0.01" min="0" class="admin-inline-input admin-inline-input--sm" data-field="price" value="${p.price}" /></td>
+                <td><input type="number" step="1" min="0" class="admin-inline-input admin-inline-input--sm" data-field="quantity" value="${p.quantity}" /></td>
+                <td>
+                  <select class="admin-inline-input admin-inline-input--sm" data-field="is_featured">
+                    <option value="false" ${!p.is_featured ? "selected" : ""}>No</option>
+                    <option value="true" ${p.is_featured ? "selected" : ""}>Yes</option>
+                  </select>
+                </td>
+                <td class="admin-table__actions">
+                  <button type="button" class="admin-btn admin-btn--save" data-id="${p.id}">Save</button>
+                  <button type="button" class="admin-btn admin-btn--delete" data-id="${p.id}">Delete</button>
+                </td>
+              </tr>
+            `
+          )
+          .join("");
+
+        tbody.querySelectorAll(".admin-btn--save").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const row = btn.closest("tr");
+            const update = {
+              name: row.querySelector('[data-field="name"]').value.trim(),
+              category: row.querySelector('[data-field="category"]').value.trim(),
+              price: Number(row.querySelector('[data-field="price"]').value),
+              quantity: Number(row.querySelector('[data-field="quantity"]').value),
+              is_featured: row.querySelector('[data-field="is_featured"]').value === "true",
+              updated_at: new Date().toISOString(),
+            };
+            btn.disabled = true;
+            btn.textContent = "Saving...";
+            const { error } = await sb.from("products").update(update).eq("id", btn.dataset.id);
+            btn.disabled = false;
+            btn.textContent = error ? "Failed" : "Saved!";
+            setTimeout(() => (btn.textContent = "Save"), 1500);
+          });
+        });
+
+        tbody.querySelectorAll(".admin-btn--delete").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            if (!confirm("Delete this product? This can't be undone.")) return;
+            btn.disabled = true;
+            const { error } = await sb.from("products").delete().eq("id", btn.dataset.id);
+            if (error) {
+              alert("Couldn't delete: " + error.message);
+              btn.disabled = false;
+              return;
+            }
+            loadProducts();
+          });
+        });
+      }
+
+      document.getElementById("addProductForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const messageEl = document.getElementById("addProductMessage");
+        const payload = {
+          name: document.getElementById("pName").value.trim(),
+          price: Number(document.getElementById("pPrice").value),
+          quantity: Number(document.getElementById("pQuantity").value),
+          is_featured: document.getElementById("pFeatured").value === "true",
+          category: document.getElementById("pCategory").value.trim(),
+          subcategory: document.getElementById("pSubcategory").value.trim() || null,
+          image_url: document.getElementById("pImage").value.trim() || null,
+          description: document.getElementById("pDescription").value.trim() || null,
+        };
+
+        if (!payload.name || !payload.category || Number.isNaN(payload.price) || Number.isNaN(payload.quantity)) {
+          messageEl.textContent = "Please fill in name, category, price, and stock quantity.";
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        const { error } = await sb.from("products").insert(payload);
+        if (error) {
+          messageEl.textContent = error.message;
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        messageEl.textContent = "Product added.";
+        messageEl.classList.remove("is-error");
+        messageEl.classList.add("is-success");
+        e.target.reset();
+        loadProducts();
+      });
+
+      /* ---------------- ORDERS ---------------- */
+      const PAYMENT_STATUSES = ["pending", "paid", "failed", "refunded"];
+      const DELIVERY_STATUSES = ["processing", "dispatched", "out_for_delivery", "delivered", "cancelled"];
+
+      function optionsFor(list, current) {
+        return list
+          .map((v) => `<option value="${v}" ${v === current ? "selected" : ""}>${v.replace(/_/g, " ")}</option>`)
+          .join("");
+      }
+
+      function renderOrdersTable() {
+        const tbody = document.getElementById("ordersTableBody");
+
+        if (ORDERS_CACHE.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6">No orders yet.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = ORDERS_CACHE.map((order) => {
+          const itemsSummary = (order.order_items || [])
+            .map((i) => `${escapeHTML(i.product_name)} ×${i.quantity}`)
+            .join(", ");
+          return `
+              <tr data-id="${order.id}">
+                <td>#${order.id.slice(0, 8).toUpperCase()}<br /><small>${new Date(order.created_at).toLocaleDateString()}</small></td>
+                <td>${escapeHTML(order.contact_email)}<br /><small>${escapeHTML(order.contact_phone)}</small></td>
+                <td>${itemsSummary}</td>
+                <td>${money(order.total)}</td>
+                <td><select class="admin-inline-input" data-field="payment_status">${optionsFor(PAYMENT_STATUSES, order.payment_status)}</select></td>
+                <td><select class="admin-inline-input" data-field="delivery_status">${optionsFor(DELIVERY_STATUSES, order.delivery_status)}</select></td>
+              </tr>
+            `;
+        }).join("");
+
+        tbody.querySelectorAll("select").forEach((select) => {
+          select.addEventListener("change", async () => {
+            const row = select.closest("tr");
+            const field = select.dataset.field;
+            select.disabled = true;
+            const { error } = await sb
+              .from("orders")
+              .update({ [field]: select.value, updated_at: new Date().toISOString() })
+              .eq("id", row.dataset.id);
+            select.disabled = false;
+
+            if (error) {
+              alert("Couldn't update: " + error.message);
+              return;
+            }
+
+            // Keep the in-memory cache consistent so Overview/Customers/Reports
+            // reflect this change without a full re-fetch.
+            const cachedOrder = ORDERS_CACHE.find((o) => o.id === row.dataset.id);
+            if (cachedOrder) cachedOrder[field] = select.value;
+            renderOverview();
+            renderCustomers();
+          });
+        });
+      }
+
+      /* ---------------- CUSTOMERS ---------------- */
+      function renderCustomers() {
+        const customers = PROFILES_CACHE.filter((p) => p.role !== "admin");
+        const weekStart = daysAgo(6);
+        const monthStart = startOfMonth();
+
+        document.getElementById("custTotal").textContent = customers.length;
+        document.getElementById("custNewWeek").textContent = customers.filter((c) => new Date(c.created_at) >= weekStart).length;
+        document.getElementById("custNewMonth").textContent = customers.filter((c) => new Date(c.created_at) >= monthStart).length;
+
+        const spendMap = new Map();
+        ORDERS_CACHE.filter((o) => o.payment_status === "paid" && o.user_id).forEach((o) => {
+          const existing = spendMap.get(o.user_id) || { orders: 0, total: 0, lastOrder: o.created_at, email: o.contact_email };
+          existing.orders += 1;
+          existing.total += Number(o.total);
+          if (new Date(o.created_at) > new Date(existing.lastOrder)) existing.lastOrder = o.created_at;
+          spendMap.set(o.user_id, existing);
+        });
+
+        const repeatCount = [...spendMap.values()].filter((c) => c.orders > 1).length;
+        document.getElementById("custRepeat").textContent = repeatCount;
+
+        const profileMap = new Map(PROFILES_CACHE.map((p) => [p.id, p]));
+        const topCustomers = [...spendMap.entries()]
+          .map(([userId, data]) => ({
+            name: profileMap.get(userId)?.full_name || data.email || "Unknown",
+            email: data.email,
+            orders: data.orders,
+            total: data.total,
+            lastOrder: data.lastOrder,
+          }))
+          .sort((a, b) => b.total - a.total)
+          .slice(0, 15);
+
+        const tbody = document.getElementById("topCustomersBody");
+
+        if (topCustomers.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4">No paid orders yet.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = topCustomers
+          .map(
+            (c) => `
+              <tr>
+                <td>${escapeHTML(c.name)}${c.email ? `<br /><small>${escapeHTML(c.email)}</small>` : ""}</td>
+                <td>${c.orders}</td>
+                <td>${money(c.total)}</td>
+                <td>${new Date(c.lastOrder).toLocaleDateString()}</td>
+              </tr>
+            `
+          )
+          .join("");
+      }
+
+      /* ---------------- EXPERTS ---------------- */
+      async function loadExperts() {
+        const { data: experts, error } = await sb
+          .from("expert_profiles")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        const tbody = document.getElementById("expertsTableBody");
+
+        if (error) {
+          tbody.innerHTML = `<tr><td colspan="5">Couldn't load experts.</td></tr>`;
+          return;
+        }
+
+        const list = experts || [];
+        const today = new Date();
+        const isOverdue = (e) => e.subscription_paid_until && new Date(e.subscription_paid_until) < today && e.status !== "inactive";
+
+        document.getElementById("expTotal").textContent = list.length;
+        document.getElementById("expActive").textContent = list.filter((e) => e.status === "active").length;
+        document.getElementById("expPending").textContent = list.filter((e) => e.status === "pending_payment").length;
+        document.getElementById("expOverdue").textContent = list.filter(isOverdue).length;
+
+        if (list.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5">No experts yet.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = list
+          .map((e) => {
+            const overdue = isOverdue(e);
+            const statusBadgeClass = e.status === "active" ? "status-badge--paid" : e.status === "inactive" ? "status-badge--failed" : "status-badge--pending";
+            return `
+              <tr data-id="${e.id}">
+                <td>${escapeHTML(e.full_name)}<br /><small>${escapeHTML(e.email)}</small></td>
+                <td>
+                  <span class="status-badge ${statusBadgeClass}">${e.status.replace(/_/g, " ")}</span>
+                  ${overdue ? `<br /><small style="color:#c0392b;">overdue</small>` : ""}
+                </td>
+                <td>${e.subscription_paid_until ? new Date(e.subscription_paid_until).toLocaleDateString() : "—"}</td>
+                <td>${money(e.monthly_fee)}</td>
+                <td>
+                  <button type="button" class="admin-btn ${e.status === "inactive" ? "admin-btn--save" : "admin-btn--delete"}" data-toggle="${e.id}" data-current="${e.status}">
+                    ${e.status === "inactive" ? "Activate" : "Deactivate"}
+                  </button>
+                </td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        tbody.querySelectorAll("[data-toggle]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const newStatus = btn.dataset.current === "inactive" ? "active" : "inactive";
+            btn.disabled = true;
+            const { error } = await sb
+              .from("expert_profiles")
+              .update({ status: newStatus, updated_at: new Date().toISOString() })
+              .eq("id", btn.dataset.toggle);
+            btn.disabled = false;
+            if (error) {
+              alert("Couldn't update: " + error.message);
+              return;
+            }
+            loadExperts();
+          });
+        });
+      }
+
+      /* ---------------- REPORTS ---------------- */
+      let currentReportOrders = [];
+      const reportMonthInput = document.getElementById("reportMonth");
+      reportMonthInput.value = new Date().toISOString().slice(0, 7);
+
+      document.getElementById("generateReportBtn").addEventListener("click", () => {
+        const val = reportMonthInput.value;
+        if (!val) {
+          alert("Please pick a month.");
+          return;
+        }
+
+        const [year, month] = val.split("-").map(Number);
+        const rangeStart = new Date(year, month - 1, 1);
+        const rangeEnd = new Date(year, month, 1);
+
+        currentReportOrders = ORDERS_CACHE.filter((o) => {
+          const d = new Date(o.created_at);
+          return d >= rangeStart && d < rangeEnd;
+        });
+
+        const paid = currentReportOrders.filter((o) => o.payment_status === "paid");
+        const totalRevenue = paid.reduce((s, o) => s + Number(o.total), 0);
+        const totalItems = paid.reduce((s, o) => s + (o.order_items || []).reduce((si, it) => si + it.quantity, 0), 0);
+
+        const summaryEl = document.getElementById("reportSummary");
+        summaryEl.hidden = false;
+        summaryEl.innerHTML = `
+          <div class="kpi-card"><span class="kpi-card__label">Orders placed</span><span class="kpi-card__value">${currentReportOrders.length}</span></div>
+          <div class="kpi-card"><span class="kpi-card__label">Paid orders</span><span class="kpi-card__value">${paid.length}</span></div>
+          <div class="kpi-card"><span class="kpi-card__label">Revenue (paid)</span><span class="kpi-card__value">${money(totalRevenue)}</span></div>
+          <div class="kpi-card"><span class="kpi-card__label">Items sold</span><span class="kpi-card__value">${totalItems}</span></div>
+        `;
+
+        document.getElementById("downloadReportBtn").hidden = currentReportOrders.length === 0;
+      });
+
+      document.getElementById("downloadReportBtn").addEventListener("click", () => {
+        if (currentReportOrders.length === 0) return;
+
+        const headers = [
+          "Order ID", "Date", "Customer Email", "Customer Phone", "Items",
+          "Subtotal", "Delivery Fee", "Total", "Payment Status", "Delivery Status",
+        ];
+        const csvEscape = (val) => `"${String(val ?? "").replace(/"/g, '""')}"`;
+
+        const rows = currentReportOrders.map((o) => {
+          const itemsStr = (o.order_items || []).map((i) => `${i.product_name} x${i.quantity}`).join("; ");
+          return [
+            o.id, new Date(o.created_at).toLocaleString(), o.contact_email, o.contact_phone,
+            itemsStr, o.subtotal, o.delivery_fee, o.total, o.payment_status, o.delivery_status,
+          ].map(csvEscape).join(",");
+        });
+
+        const csvContent = [headers.map(csvEscape).join(","), ...rows].join("\n");
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `sales-report-${reportMonthInput.value}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      /* ---------------- INIT ---------------- */
+      await Promise.all([fetchOrders(), fetchProfiles()]);
+      renderOverview();
+      renderOrdersTable();
+      renderCustomers();
+      loadProducts();
+      loadExperts();
+    })();
+  </script>
+</body>
+
+</html>

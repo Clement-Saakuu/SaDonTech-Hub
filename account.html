@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>My Account | SaDonTech Hub</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <header class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="index.html#intro" class="navbar__logo">
+        <img src="images/SaDon_logo1.PNG" alt="SaDonTech Hub logo" />
+      </a>
+      <nav class="navbar__links">
+        <a href="index.html#intro" class="nav-link">Home</a>
+        <a href="index.html#shop" class="nav-link">Shop</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="account-page">
+    <div class="account-page__inner">
+      <div id="accountLoadingState">
+        <p>Loading your account...</p>
+      </div>
+
+      <div id="accountSignedOutState" hidden>
+        <h1>You're not logged in</h1>
+        <p>Please log in from the account button on the homepage to view your account.</p>
+        <a href="index.html" class="account-page__cta">Go to homepage</a>
+      </div>
+
+      <div id="accountSignedInState" hidden>
+        <h1>My Account</h1>
+
+        <nav class="account-tabs">
+          <button type="button" class="account-tab is-active" data-tab="profile">Profile</button>
+          <button type="button" class="account-tab" data-tab="orders">Order History</button>
+          <button type="button" class="account-tab" data-tab="addresses">Addresses</button>
+          <button type="button" class="account-tab" data-tab="wishlist">Wishlist</button>
+        </nav>
+
+        <!-- PROFILE -->
+        <section class="account-panel is-active" id="panel-profile">
+          <div class="account-card">
+            <p><strong>Name:</strong> <span id="accountFullName">—</span></p>
+            <p><strong>Email:</strong> <span id="accountEmail">—</span></p>
+            <p><strong>Email verified:</strong> <span id="accountVerified">—</span></p>
+          </div>
+          <button type="button" id="logoutBtn" class="account-page__logout">Log out</button>
+        </section>
+
+        <!-- ORDER HISTORY -->
+        <section class="account-panel" id="panel-orders">
+          <div id="ordersEmpty" class="account-empty" hidden>You haven't placed any orders yet.</div>
+          <div id="ordersList" class="orders-list"></div>
+        </section>
+
+        <!-- ADDRESSES -->
+        <section class="account-panel" id="panel-addresses">
+          <div id="addressesEmpty" class="account-empty" hidden>
+            No saved addresses yet — one gets saved automatically the first time you check out, or add one below.
+          </div>
+          <div id="addressesList" class="addresses-list"></div>
+
+          <details class="address-add">
+            <summary>+ Add a new address</summary>
+            <form id="addAddressForm" class="auth-form">
+              <label for="addrLabel">Label</label>
+              <input type="text" id="addrLabel" placeholder="Home, Office, etc." maxlength="30" />
+
+              <label for="addrFullName">Full name</label>
+              <input type="text" id="addrFullName" required maxlength="80" />
+
+              <label for="addrPhone">Phone</label>
+              <input type="tel" id="addrPhone" required maxlength="20" />
+
+              <label for="addrStreet">Street address</label>
+              <input type="text" id="addrStreet" required maxlength="120" />
+
+              <label for="addrCity">City</label>
+              <input type="text" id="addrCity" required maxlength="60" />
+
+              <label for="addrCountry">Country</label>
+              <input type="text" id="addrCountry" required maxlength="60" value="Ghana" />
+
+              <button type="submit" class="auth-submit-btn">Save address</button>
+              <p class="auth-form__message" id="addAddressMessage" role="alert" aria-live="polite"></p>
+            </form>
+          </details>
+        </section>
+
+        <!-- WISHLIST -->
+        <section class="account-panel" id="panel-wishlist">
+          <div id="wishlistEmpty" class="account-empty" hidden>
+            Nothing saved yet — tap the heart icon on any product to add it here.
+          </div>
+          <div id="wishlistGrid" class="wishlist-grid"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="supabase-config.js"></script>
+  <script>
+    (async function () {
+      const loadingEl = document.getElementById("accountLoadingState");
+      const signedOutEl = document.getElementById("accountSignedOutState");
+      const signedInEl = document.getElementById("accountSignedInState");
+
+      const configured =
+        typeof SUPABASE_CONFIG !== "undefined" &&
+        SUPABASE_CONFIG.url &&
+        !SUPABASE_CONFIG.url.includes("YOUR-PROJECT-REF");
+
+      if (!configured || typeof window.supabase === "undefined") {
+        loadingEl.hidden = true;
+        signedOutEl.hidden = false;
+        signedOutEl.querySelector("p").textContent =
+          "Account features aren't set up yet. See SETUP.md to connect Supabase.";
+        return;
+      }
+
+      const sb = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+      const { data } = await sb.auth.getSession();
+      const user = data.session?.user;
+
+      loadingEl.hidden = true;
+
+      if (!user) {
+        signedOutEl.hidden = false;
+        return;
+      }
+
+      signedInEl.hidden = false;
+      document.getElementById("accountFullName").textContent = user.user_metadata?.full_name || "—";
+      document.getElementById("accountEmail").textContent = user.email || "—";
+      document.getElementById("accountVerified").textContent = user.email_confirmed_at ? "Yes" : "Not yet confirmed";
+
+      document.getElementById("logoutBtn").addEventListener("click", async () => {
+        await sb.auth.signOut();
+        window.location.href = "index.html";
+      });
+
+      /* ---------------- TABS ---------------- */
+      document.querySelectorAll(".account-tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll(".account-tab").forEach((t) => t.classList.remove("is-active"));
+          document.querySelectorAll(".account-panel").forEach((p) => p.classList.remove("is-active"));
+          tab.classList.add("is-active");
+          document.getElementById(`panel-${tab.dataset.tab}`).classList.add("is-active");
+        });
+      });
+
+      /* ---------------- HELPERS ---------------- */
+      function escapeHTML(value) {
+        const div = document.createElement("div");
+        div.textContent = String(value ?? "");
+        return div.innerHTML;
+      }
+
+      function money(n) {
+        return `GH₵ ${Number(n).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+      }
+
+      function statusLabel(status) {
+        return String(status).replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      }
+
+      /* ---------------- ORDER HISTORY ---------------- */
+      async function loadOrders() {
+        const { data: orders, error } = await sb
+          .from("orders")
+          .select("*, order_items(*)")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
+
+        const listEl = document.getElementById("ordersList");
+        const emptyEl = document.getElementById("ordersEmpty");
+
+        if (error) {
+          listEl.innerHTML = `<p class="account-empty">Couldn't load your orders right now.</p>`;
+          return;
+        }
+
+        if (!orders || orders.length === 0) {
+          emptyEl.hidden = false;
+          return;
+        }
+
+        listEl.innerHTML = orders
+          .map((order) => {
+            const itemsHtml = (order.order_items || [])
+              .map((item) => `<li>${escapeHTML(item.product_name)} × ${item.quantity} — ${money(item.unit_price * item.quantity)}</li>`)
+              .join("");
+            const placedDate = new Date(order.created_at).toLocaleDateString(undefined, {
+              year: "numeric", month: "short", day: "numeric",
+            });
+            return `
+              <article class="order-card">
+                <header class="order-card__header">
+                  <span class="order-card__ref">Order #${order.id.slice(0, 8).toUpperCase()}</span>
+                  <span class="order-card__date">${placedDate}</span>
+                </header>
+                <ul class="order-card__items">${itemsHtml}</ul>
+                <footer class="order-card__footer">
+                  <span class="status-badge status-badge--${escapeHTML(order.payment_status)}">Payment: ${statusLabel(order.payment_status)}</span>
+                  <span class="status-badge status-badge--${escapeHTML(order.delivery_status)}">Delivery: ${statusLabel(order.delivery_status)}</span>
+                  <span class="order-card__total">${money(order.total)}</span>
+                </footer>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      /* ---------------- ADDRESSES ---------------- */
+      async function loadAddresses() {
+        const { data: addresses, error } = await sb
+          .from("addresses")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
+
+        const listEl = document.getElementById("addressesList");
+        const emptyEl = document.getElementById("addressesEmpty");
+
+        if (error) {
+          listEl.innerHTML = `<p class="account-empty">Couldn't load your addresses right now.</p>`;
+          return;
+        }
+
+        if (!addresses || addresses.length === 0) {
+          emptyEl.hidden = false;
+          listEl.innerHTML = "";
+          return;
+        }
+
+        emptyEl.hidden = true;
+        listEl.innerHTML = addresses
+          .map(
+            (addr) => `
+              <article class="address-card" data-id="${addr.id}">
+                <h3>${escapeHTML(addr.label || "Address")}</h3>
+                <p>${escapeHTML(addr.full_name)} · ${escapeHTML(addr.phone)}</p>
+                <p>${escapeHTML(addr.street)}, ${escapeHTML(addr.city)}, ${escapeHTML(addr.country)}</p>
+                <button type="button" class="address-card__delete" data-id="${addr.id}">Remove</button>
+              </article>
+            `
+          )
+          .join("");
+
+        listEl.querySelectorAll(".address-card__delete").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            btn.disabled = true;
+            const { error } = await sb.from("addresses").delete().eq("id", btn.dataset.id).eq("user_id", user.id);
+            if (error) {
+              btn.disabled = false;
+              alert("Couldn't remove this address. Please try again.");
+              return;
+            }
+            loadAddresses();
+          });
+        });
+      }
+
+      document.getElementById("addAddressForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const messageEl = document.getElementById("addAddressMessage");
+        const payload = {
+          user_id: user.id,
+          label: document.getElementById("addrLabel").value.trim() || "Address",
+          full_name: document.getElementById("addrFullName").value.trim(),
+          phone: document.getElementById("addrPhone").value.trim(),
+          street: document.getElementById("addrStreet").value.trim(),
+          city: document.getElementById("addrCity").value.trim(),
+          country: document.getElementById("addrCountry").value.trim(),
+        };
+
+        if (!payload.full_name || !payload.phone || !payload.street || !payload.city || !payload.country) {
+          messageEl.textContent = "Please fill in every field.";
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        const { error } = await sb.from("addresses").insert(payload);
+        if (error) {
+          messageEl.textContent = error.message;
+          messageEl.classList.add("is-error");
+          return;
+        }
+
+        messageEl.textContent = "Address saved.";
+        messageEl.classList.remove("is-error");
+        messageEl.classList.add("is-success");
+        e.target.reset();
+        loadAddresses();
+      });
+
+      /* ---------------- WISHLIST ---------------- */
+      async function loadWishlist() {
+        const { data: rows, error } = await sb
+          .from("wishlist_items")
+          .select("product_id, products(*)")
+          .eq("user_id", user.id);
+
+        const gridEl = document.getElementById("wishlistGrid");
+        const emptyEl = document.getElementById("wishlistEmpty");
+
+        if (error) {
+          gridEl.innerHTML = `<p class="account-empty">Couldn't load your wishlist right now.</p>`;
+          return;
+        }
+
+        const valid = (rows || []).filter((r) => r.products);
+
+        if (valid.length === 0) {
+          emptyEl.hidden = false;
+          gridEl.innerHTML = "";
+          return;
+        }
+
+        emptyEl.hidden = true;
+        gridEl.innerHTML = valid
+          .map(
+            (row) => `
+              <article class="wishlist-card">
+                <img src="${escapeHTML(row.products.image_url || "images/product1.png")}" alt="${escapeHTML(row.products.name)}" />
+                <h3>${escapeHTML(row.products.name)}</h3>
+                <p>${money(row.products.price)}</p>
+                <div class="wishlist-card__actions">
+                  <a href="index.html#shop" class="wishlist-card__view">View in shop</a>
+                  <button type="button" class="wishlist-card__remove" data-id="${row.product_id}">Remove</button>
+                </div>
+              </article>
+            `
+          )
+          .join("");
+
+        gridEl.querySelectorAll(".wishlist-card__remove").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            btn.disabled = true;
+            await sb.from("wishlist_items").delete().eq("user_id", user.id).eq("product_id", btn.dataset.id);
+            loadWishlist();
+          });
+        });
+      }
+
+      loadOrders();
+      loadAddresses();
+      loadWishlist();
+    })();
+  </script>
+</body>
+
+</html>
