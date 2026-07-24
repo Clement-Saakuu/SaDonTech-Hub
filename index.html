@@ -49,6 +49,7 @@
         <a href="#shop" class="nav-link">Shop</a>
         <a href="#contact" class="nav-link">Contact</a>
         <a class="nav-link" href="staff_team.html" target="_blank" rel="noopener noreferrer">Experts/Team</a>
+        <a href="admin.html" class="nav-link" id="adminNavLink" hidden>Admin</a>
       </nav>
       <button class="navbar__account" id="accountBtn" aria-label="Account">
         <img src="images/user.svg" alt="" class="account-icon" onerror="this.style.display='none'" />
@@ -70,6 +71,7 @@
       <a href="#contact" class="nav-link" onclick="closeMobileMenu()">Contact</a>
       <a href="staff_team.html" class="nav-link" onclick="closeMobileMenu()">Experts/Team</a>
       <a href="account.html" class="nav-link" id="mobileAccountLink">My Account</a>
+      <a href="admin.html" class="nav-link" id="mobileAdminNavLink" hidden>Admin Dashboard</a>
     </div>
   </header>
   <!-- Updates section -->
@@ -156,11 +158,13 @@
         <p>
           SaDonTech Hub is a Technology Branch of the SaDonCle Group of Companies:
           a hypothetical online store for all kinds of computing and electronic gadgets
-          we believe <b>everybody, regardless of status, financial strength, or recognition, can afford with ease.</b><br />
+          we believe <b>everybody, regardless of status, financial strength, or recognition, can afford with
+            ease.</b><br />
           We stock original mobile phones, laptops, smartwatches, modern projectors, computer accessories,
           Bluetooth speakers &amp; headphones, and many other
           products. <i>Our prices are down to earth</i>. <br /> We are more than a marketplace! <br />
-          We work and collaborate with a team of highly resourceful IT and industry experts who have made an immeasurable
+          We work and collaborate with a team of highly resourceful IT and industry experts who have made an
+          immeasurable
           impact in the IT industry and beyond. <br /> They work almost 24 hours to ensure that the right solution is
           provided to solve your problem.
         </p>
@@ -169,7 +173,8 @@
           <li>Everyone is welcome to <b>SaDonTech Hub!</b></li>
           <li>Everyone gets an <b>original product and the best services.</b></li>
           <li>Everyone returns home <b>happy and smiling.</b></li>
-          <li><a href="#shop" class="about__list-link">Explore all our products and choose the ones that suit you.</a></li>
+          <li><a href="#shop" class="about__list-link">Explore all our products and choose the ones that suit you.</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -552,8 +557,7 @@
         <input type="email" id="signupEmail" name="email" required autocomplete="email" />
 
         <label for="signupPassword">Password</label>
-        <input type="password" id="signupPassword" name="password" required autocomplete="new-password"
-          minlength="6" />
+        <input type="password" id="signupPassword" name="password" required autocomplete="new-password" minlength="6" />
         <p class="auth-form__hint">At least 6 characters.</p>
 
         <button type="submit" class="auth-submit-btn" id="signupSubmitBtn">Create account</button>

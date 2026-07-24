@@ -44,6 +44,8 @@ const authModalTitle = document.getElementById("authModalTitle");
 const accountBtn = document.getElementById("accountBtn");
 const accountBtnLabel = document.getElementById("accountBtnLabel");
 const mobileAccountLink = document.getElementById("mobileAccountLink");
+const adminNavLink = document.getElementById("adminNavLink");
+const mobileAdminNavLink = document.getElementById("mobileAdminNavLink");
 
 const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
@@ -242,6 +244,26 @@ function updateAccountNav() {
   }
 }
 
+/**
+ * Shows/hides the "Admin Dashboard" nav link. This is a convenience only —
+ * admin.html independently re-checks profiles.role = 'admin' (backed by
+ * RLS) before showing anything, so hiding this link is not what makes the
+ * dashboard secure. A non-admin who saw it and clicked it would just land
+ * on admin.html's own "Admins only" screen.
+ */
+async function updateAdminNav() {
+  if (!adminNavLink && !mobileAdminNavLink) return;
+
+  let isAdmin = false;
+  if (sb && currentUser) {
+    const { data, error } = await sb.from("profiles").select("role").eq("id", currentUser.id).single();
+    isAdmin = !error && data?.role === "admin";
+  }
+
+  if (adminNavLink) adminNavLink.hidden = !isAdmin;
+  if (mobileAdminNavLink) mobileAdminNavLink.hidden = !isAdmin;
+}
+
 function handleAccountBtnClick() {
   if (currentUser) {
     window.location.href = "account.html";
@@ -291,11 +313,13 @@ function initAuth() {
   sb.auth.onAuthStateChange((_event, session) => {
     currentUser = session?.user ?? null;
     updateAccountNav();
+    updateAdminNav();
   });
 
   sb.auth.getSession().then(({ data }) => {
     currentUser = data.session?.user ?? null;
     updateAccountNav();
+    updateAdminNav();
   });
 }
 
