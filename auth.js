@@ -50,13 +50,10 @@ const mobileAdminNavLink = document.getElementById("mobileAdminNavLink");
 const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
 const forgotPasswordForm = document.getElementById("forgotPasswordForm");
-const authSwitcher = document.getElementById("authSwitcher");
 
 const authTabLogin = document.getElementById("authTabLogin");
 const authTabSignup = document.getElementById("authTabSignup");
-const showSignupBtn = document.getElementById("showSignupBtn");
-const showForgotBtn = document.getElementById("showForgotBtn");
-const signupBackToLoginBtn = document.getElementById("signupBackToLoginBtn");
+const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
 const backToLoginBtn = document.getElementById("backToLoginBtn");
 
 /* ============================================================
@@ -92,9 +89,6 @@ function showAuthView(view) {
   if (authTabSignup) {
     authTabSignup.classList.toggle("is-active", isSignup);
     authTabSignup.setAttribute("aria-selected", String(isSignup));
-  }
-  if (authSwitcher) {
-    authSwitcher.hidden = !isLogin;
   }
   if (authModalTitle) {
     authModalTitle.textContent = isSignup ? "Create your account" : isForgot ? "Reset password" : "Log in";
@@ -133,12 +127,9 @@ async function handleSignUp(event) {
   const fullName = document.getElementById("signupName").value.trim();
   const email = document.getElementById("signupEmail").value.trim();
   const password = document.getElementById("signupPassword").value;
-  const region = document.getElementById("signupRegion").value.trim();
-  const district = document.getElementById("signupDistrict").value.trim();
-  const phone = document.getElementById("signupPhone").value.trim();
   const btn = document.getElementById("signupSubmitBtn");
 
-  if (!fullName || !email || !region || !district || !phone || password.length < 6) {
+  if (!fullName || !email || password.length < 6) {
     setAuthMessage("signupMessage", "Please fill in every field (password: 6+ characters).", "error");
     return;
   }
@@ -150,7 +141,7 @@ async function handleSignUp(event) {
     email,
     password,
     options: {
-      data: { full_name: fullName, region, district, phone },
+      data: { full_name: fullName },
       emailRedirectTo: window.location.origin + window.location.pathname,
     },
   });
@@ -305,9 +296,9 @@ function initAuth() {
   const authModalClose = document.getElementById("authModalClose");
   if (authModalClose) authModalClose.addEventListener("click", closeAuthModal);
 
-  if (showSignupBtn) showSignupBtn.addEventListener("click", () => showAuthView("signup"));
-  if (showForgotBtn) showForgotBtn.addEventListener("click", () => showAuthView("forgot"));
-  if (signupBackToLoginBtn) signupBackToLoginBtn.addEventListener("click", () => showAuthView("login"));
+  if (authTabLogin) authTabLogin.addEventListener("click", () => showAuthView("login"));
+  if (authTabSignup) authTabSignup.addEventListener("click", () => showAuthView("signup"));
+  if (forgotPasswordBtn) forgotPasswordBtn.addEventListener("click", () => showAuthView("forgot"));
   if (backToLoginBtn) backToLoginBtn.addEventListener("click", () => showAuthView("login"));
 
   if (loginForm) loginForm.addEventListener("submit", handleLogIn);
