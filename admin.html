@@ -10,6 +10,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -133,8 +134,9 @@
               </div>
               <label for="pImage">Image path or URL</label>
               <input type="text" id="pImage" placeholder="images/my-product.jpg" maxlength="300" />
-              <label for="pDescription">Description</label>
-              <textarea id="pDescription" rows="2" maxlength="500"></textarea>
+              <label for="pDescriptionEditor">Description</label>
+              <div id="pDescriptionEditor" class="admin-quill"></div>
+              <textarea id="pDescription" hidden></textarea>
               <button type="submit" class="auth-submit-btn">Add product</button>
               <p class="auth-form__message" id="addProductMessage" role="alert" aria-live="polite"></p>
             </form>
@@ -256,6 +258,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
   <script>
     (async function () {
       const loadingEl = document.getElementById("adminLoadingState");
@@ -298,6 +301,24 @@
       }
 
       dashboardEl.hidden = false;
+
+      /* ---------------- DESCRIPTION EDITOR (Quill) ---------------- */
+      // Toolbar limited to what was asked for: bold, italic, bullet/numbered
+      // lists. Quill stores content as sanitized HTML internally — the
+      // hidden #pDescription field is kept in sync so the existing
+      // form-submit code below doesn't need to change how it reads the value.
+      const descriptionQuill = new Quill("#pDescriptionEditor", {
+        theme: "snow",
+        placeholder: "Describe the product...",
+        modules: {
+          toolbar: [["bold", "italic"], [{ list: "ordered" }, { list: "bullet" }]],
+        },
+      });
+      const pDescriptionHidden = document.getElementById("pDescription");
+      descriptionQuill.on("text-change", () => {
+        // An empty editor still contains "<p><br></p>" — treat that as blank.
+        pDescriptionHidden.value = descriptionQuill.getText().trim() ? descriptionQuill.root.innerHTML : "";
+      });
 
       /* ---------------- TABS ---------------- */
       document.querySelectorAll(".account-tab").forEach((tab) => {
@@ -570,6 +591,7 @@
         messageEl.classList.remove("is-error");
         messageEl.classList.add("is-success");
         e.target.reset();
+        descriptionQuill.setText("");
         loadProducts();
       });
 

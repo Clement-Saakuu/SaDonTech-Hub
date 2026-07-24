@@ -250,6 +250,19 @@ function escapeHTML(value) {
   return div.innerHTML;
 }
 
+/**
+ * Strips HTML tags down to plain text — used for compact card previews
+ * (product grid, best sellers) where a rich description (bold/italic/lists
+ * from the admin's editor) would otherwise render awkwardly inside a
+ * clamped 2-line box. The full formatted description still shows in the
+ * product detail modal via openProductModal().
+ */
+function stripHTML(html) {
+  const div = document.createElement("div");
+  div.innerHTML = String(html ?? "");
+  return (div.textContent || div.innerText || "").replace(/\s+/g, " ").trim();
+}
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /* ============================================================
@@ -409,7 +422,7 @@ function getFilteredProducts() {
   return PRODUCTS.filter((product) => {
     const matchesCategory = !category || product.category === category;
     const matchesSubcategory = !subcategory || product.subcategory === subcategory;
-    const searchableText = `${product.name} ${product.description} ${product.category} ${product.subcategory}`.toLowerCase();
+    const searchableText = `${product.name} ${stripHTML(product.description)} ${product.category} ${product.subcategory}`.toLowerCase();
     const matchesSearch = !query || searchableText.includes(query);
     return matchesCategory && matchesSubcategory && matchesSearch;
   });
@@ -534,7 +547,7 @@ function renderProducts() {
         </div>
         <div class="product-card__info">
           <h3 class="product-card__name">${p.name}</h3>
-          <p class="product-card__desc">${p.description}</p>
+          <p class="product-card__desc">${escapeHTML(stripHTML(p.description))}</p>
           <div class="product-card__header">
             <div class="product-card__quantity ${status.className}">
               <span class="product-card__quantity-dot"></span>
@@ -631,7 +644,7 @@ function openProductModal(productId) {
       <div class="product-modal__info">
         <h3>${product.name}</h3>
         <p class="product-modal__price">${CONFIG.CURRENCY_SYMBOL} ${formatPrice(product.price)}</p>
-        <p>${product.description}</p>
+        <div class="product-modal__description">${product.description || ""}</div>
         <ul>
           <li>Category: ${product.category}</li>
           <li>Subcategory: ${product.subcategory}</li>
@@ -692,8 +705,7 @@ function renderBestSellers() {
       <img src="${product.image}" alt="${product.name}" />
       <div>
         <h3>${product.name}</h3>
-        <p>${product.description}</p>
-        <span>${CONFIG.CURRENCY_SYMBOL} ${formatPrice(product.price)}</span>
+        <p>${escapeHTML(stripHTML(product.description))}</p>
       </div>
     </article>
   `).join("");
