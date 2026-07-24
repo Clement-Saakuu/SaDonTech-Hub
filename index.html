@@ -528,10 +528,12 @@
       <button class="modal__close" id="authModalClose" aria-label="Close">&times;</button>
     </div>
     <div class="modal__body">
-      <div class="auth-tabs" role="tablist">
-        <button type="button" class="auth-tab is-active" id="authTabLogin" role="tab" aria-selected="true">Log
-          in</button>
-        <button type="button" class="auth-tab" id="authTabSignup" role="tab" aria-selected="false">Sign up</button>
+      <div class="auth-switcher" id="authSwitcher">
+        <span class="auth-form__hint">Need an account or a reset link?</span>
+        <div class="auth-switch-actions">
+          <button type="button" class="auth-link-btn auth-link-btn--inline" id="showSignupBtn">Create account</button>
+          <button type="button" class="auth-link-btn auth-link-btn--inline" id="showForgotBtn">Forgot password?</button>
+        </div>
       </div>
 
       <!-- LOGIN -->
@@ -544,7 +546,6 @@
           minlength="6" />
 
         <button type="submit" class="auth-submit-btn" id="loginSubmitBtn">Log in</button>
-        <button type="button" class="auth-link-btn" id="forgotPasswordBtn">Forgot your password?</button>
         <p class="auth-form__message" id="loginMessage" role="alert" aria-live="polite"></p>
       </form>
 
@@ -560,7 +561,35 @@
         <input type="password" id="signupPassword" name="password" required autocomplete="new-password" minlength="6" />
         <p class="auth-form__hint">At least 6 characters.</p>
 
+        <label for="signupRegion">Region</label>
+        <select id="signupRegion" name="region" required>
+          <option value="">Select your region</option>
+          <option value="Ahafo">Ahafo</option>
+          <option value="Ashanti">Ashanti</option>
+          <option value="Bono">Bono</option>
+          <option value="Bono East">Bono East</option>
+          <option value="Central">Central</option>
+          <option value="Eastern">Eastern</option>
+          <option value="Greater Accra">Greater Accra</option>
+          <option value="North East">North East</option>
+          <option value="Northern">Northern</option>
+          <option value="Oti">Oti</option>
+          <option value="Savannah">Savannah</option>
+          <option value="Western">Western</option>
+          <option value="Western North">Western North</option>
+          <option value="Volta">Volta</option>
+          <option value="Upper East">Upper East</option>
+          <option value="Upper West">Upper West</option>
+        </select>
+
+        <label for="signupDistrict">District</label>
+        <input type="text" id="signupDistrict" name="district" required autocomplete="address-level2" maxlength="80" />
+
+        <label for="signupPhone">Phone number</label>
+        <input type="tel" id="signupPhone" name="phone" required autocomplete="tel" maxlength="20" />
+
         <button type="submit" class="auth-submit-btn" id="signupSubmitBtn">Create account</button>
+        <button type="button" class="auth-link-btn" id="signupBackToLoginBtn">Back to log in</button>
         <p class="auth-form__message" id="signupMessage" role="alert" aria-live="polite"></p>
       </form>
 
