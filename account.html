@@ -23,6 +23,25 @@
       <nav class="navbar__links">
         <a href="index.html#intro" class="nav-link">Home</a>
         <a href="index.html#shop" class="nav-link">Shop</a>
+        <div class="navbar__inbox">
+          <button class="navbar__inbox-btn" id="inboxBtn" type="button" aria-label="Open inbox" aria-haspopup="true"
+            aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <path d="M4 6h16l-2 7H6L4 6Z"></path>
+              <path d="M6 13l1 5h10l1-5"></path>
+            </svg>
+            <span>Inbox</span>
+            <span class="navbar__inbox-badge" id="inboxCount">0</span>
+          </button>
+          <div class="navbar__inbox-panel" id="inboxPanel" hidden>
+            <div class="navbar__inbox-header">
+              <strong>Order updates</strong>
+              <span>Latest progress</span>
+            </div>
+            <ul class="navbar__inbox-list" id="inboxList"></ul>
+          </div>
+        </div>
       </nav>
     </div>
   </header>
@@ -117,6 +136,10 @@
       const loadingEl = document.getElementById("accountLoadingState");
       const signedOutEl = document.getElementById("accountSignedOutState");
       const signedInEl = document.getElementById("accountSignedInState");
+      const inboxBtn = document.getElementById("inboxBtn");
+      const inboxPanel = document.getElementById("inboxPanel");
+      const inboxList = document.getElementById("inboxList");
+      const inboxCount = document.getElementById("inboxCount");
 
       const configured =
         typeof SUPABASE_CONFIG !== "undefined" &&
@@ -152,6 +175,22 @@
         window.location.href = "index.html";
       });
 
+      if (inboxBtn && inboxPanel) {
+        inboxBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const shouldOpen = inboxPanel.hidden;
+          inboxPanel.hidden = !shouldOpen;
+          inboxBtn.setAttribute("aria-expanded", String(shouldOpen));
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!inboxPanel.hidden && !inboxBtn.contains(event.target) && !inboxPanel.contains(event.target)) {
+            inboxPanel.hidden = true;
+            inboxBtn.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
       /* ---------------- TABS ---------------- */
       document.querySelectorAll(".account-tab").forEach((tab) => {
         tab.addEventListener("click", () => {
@@ -175,6 +214,67 @@
 
       function statusLabel(status) {
         return String(status).replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      }
+
+      async function loadInboxNotifications() {
+        if (!sb || !user || !inboxList || !inboxCount) return;
+
+        const { data: orders, error } = await sb
+          .from("orders")
+          .select("id, created_at, payment_status, delivery_status")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(5);
+
+        if (error || !orders || orders.length === 0) {
+          inboxList.innerHTML = '<li class="navbar__inbox-empty">No updates yet. Once you place an order, progress notifications will appear here.</li>';
+          inboxCount.textContent = "0";
+          return;
+        }
+
+        const notifications = orders.map((order) => {
+          const placedDate = new Date(order.created_at).toLocaleDateString(undefined, {
+            month: "short",
+            day: "numeric",
+          });
+
+          if (order.delivery_status === "delivered") {
+            return {
+              title: "Your order was delivered",
+              meta: `${placedDate} · Everything reached your address`,
+            };
+          }
+
+          if (order.delivery_status === "shipped") {
+            return {
+              title: "Your order is on the way",
+              meta: `${placedDate} · Tracking update is now available`,
+            };
+          }
+
+          if (order.payment_status === "paid") {
+            return {
+              title: "Payment confirmed",
+              meta: `${placedDate} · Your order is being prepared`,
+            };
+          }
+
+          return {
+            title: "Order received",
+            meta: `${placedDate} · We’ve started processing your request`,
+          };
+        });
+
+        inboxList.innerHTML = notifications
+          .map(
+            (item) => `
+              <li class="navbar__inbox-item">
+                <strong>${escapeHTML(item.title)}</strong>
+                <span>${escapeHTML(item.meta)}</span>
+              </li>`
+          )
+          .join("");
+        inboxCount.textContent = String(notifications.length);
       }
 
       /* ---------------- ORDER HISTORY ---------------- */
@@ -223,6 +323,8 @@
           })
           .join("");
       }
+
+      await loadInboxNotifications();
 
       /* ---------------- ADDRESSES ---------------- */
       async function loadAddresses() {
